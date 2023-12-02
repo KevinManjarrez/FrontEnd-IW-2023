@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import Router from "./navigation/NaviRoutesSecurity";
+import Router from "./navigation/NaviRoutesCommerce";
 import Footer from "./share/footer/components/Footer";
 //FIC: import for redux
 import { GET_DATA_START } from "./security/redux/thunks";
