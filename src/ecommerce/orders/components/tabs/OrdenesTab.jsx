@@ -1,12 +1,12 @@
-//import InstitutesTable from '../tables/InstitutesTable';
-import { Box } from "@mui/material";
-import InstitutesTable from "../tables/OrdenesTable";
 
-  export default function InstitutesTab() {
+import { Box } from "@mui/material";
+import OrdenesTable from "../tables/OrdenesTable";
+
+  export default function OrdenesTab() {
       return (
   
         <Box>
-          <InstitutesTable></InstitutesTable>
+          <OrdenesTable></OrdenesTable>
         </Box>
   
       );

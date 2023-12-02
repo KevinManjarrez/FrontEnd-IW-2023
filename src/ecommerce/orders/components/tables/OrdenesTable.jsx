@@ -15,43 +15,35 @@ import AddOrdenesModal from "../modals/AddOrdenesModal";
 //FIC: Columns Table Definition.
 const InstitutesColumns = [
     {
-      accessorKey: "IdInstitutoOK",
+      accessorKey: "IdOrdenOK",
       header: "ID OK",
       size: 30, //small column
     },
     {
-      accessorKey: "IdInstitutoBK",
+      accessorKey: "IdOrdenBK",
       header: "ID BK",
       size: 30, //small column
     },
     {
-      accessorKey: "DesInstituto",
-      header: "INSTITUTO",
+      accessorKey: "IdTipoOrdenOK",
+      header: "ID Orden OK",
       size: 150, //small column
     },
     {
-      accessorKey: "Alias",
-      header: "ALIAS",
+      accessorKey: "IdRolOK",
+      header: "ID ROL OK",
       size: 50, //small column
     },
     {
-      accessorKey: "Matriz",
-      header: "MATRIZ",
-      size: 30, //small column
+      accessorKey: "IdPersonaOK",
+      header: "ID Persona OK ",
+      size: 50, //small column
     },
-    {
-      accessorKey: "IdTipoGiroOK",
-      header: "GIRO",
-      size: 150, //small column
-    },
-    {
-      accessorKey: "IdInstitutoSupOK",
-      header: "ID OK SUP",
-      size: 30, //small column
-    },
+  
+    
   ];
   //FIC: Table - FrontEnd.
-  const InstitutesTable = () => {
+  const OrdenesTable = () => {
     //FIC: controlar el estado del indicador (loading).
     const [loadingTable, setLoadingTable] = useState(true);
    
@@ -67,7 +59,7 @@ const InstitutesColumns = [
           //setInstitutesData(InstitutesStaticData);
           setLoadingTable(false);
         } catch (error) {
-          console.error("Error al obtener los institutos en useEffect de InstitutesTable:", error);
+          console.error("Error al obtener las ordenes ", error);
         }
       }
       fetchData();
@@ -125,4 +117,4 @@ const InstitutesColumns = [
         </Box>
       );
   };
-  export default InstitutesTable;
+  export default OrdenesTable;
