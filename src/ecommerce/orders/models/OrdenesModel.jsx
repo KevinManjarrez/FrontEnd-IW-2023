@@ -1,6 +1,6 @@
 import { getDetailRow } from "../helpers/Utils";
-export function InstituteModel() {
-    let Institute = {
+export function OrdenesModel() {
+    let Ordenes = {
         IdInstitutoOK: { type: String },
         IdInstitutoBK: { type: String },
         IdInstitutoSupOK : { type : String },
@@ -11,5 +11,5 @@ export function InstituteModel() {
         cat_negocios: [],
         detail_row: getDetailRow(),
     };
-    return Institute
+    return Ordenes
 };

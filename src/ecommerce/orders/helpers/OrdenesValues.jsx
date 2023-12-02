@@ -1,15 +1,15 @@
-import {  InstituteModel } from "../models/OrdenesModel";
+import { OrdenesModel } from "../models/OrdenesModel";
 
 //FIC: obtiene los valores capturados en la ventana modal
 //enviados desde el evento onSubmit de Formik
-export const InstituteValues = (values)=>{
-  let Institute =  InstituteModel()
-  Institute.IdInstitutoOK=values.IdInstitutoOK,
-  Institute.IdInstitutoBK=values.IdInstitutoBK,
-  Institute.DesInstituto=values.DesInstituto,
-  Institute.Alias=values.Alias,
-  Institute.Matriz=values.Matriz,
-  Institute.IdTipoGiroOK=values.IdTipoGiroOK,
-  Institute.IdInstitutoSupOK=values.IdInstitutoSupOK
-  return Institute
+export const OrdenesValues = (values)=>{
+  let Ordenes =  OrdenesModel()
+  Ordenes.IdInstitutoOK=values.IdInstitutoOK,
+  Ordenes.IdInstitutoBK=values.IdInstitutoBK,
+  Ordenes.DesInstituto=values.DesInstituto,
+  Ordenes.Alias=values.Alias,
+  Ordenes.Matriz=values.Matriz,
+  Ordenes.IdTipoGiroOK=values.IdTipoGiroOK,
+  Ordenes.IdInstitutoSupOK=values.IdInstitutoSupOK
+  return Ordenes
 }

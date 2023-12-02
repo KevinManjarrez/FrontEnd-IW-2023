@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function AddOneInstitute(institute) {
+export function AddOneOrdenes(institute) {
    
     console.log("<<EJECUTA>> API <<AddOneInstitute>> Requiere:", institute)
     return new Promise((resolve, reject) => {
