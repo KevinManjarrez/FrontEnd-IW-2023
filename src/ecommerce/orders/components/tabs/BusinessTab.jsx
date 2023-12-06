@@ -15,7 +15,7 @@ export default function BusinessTab() {
  
   //FIC: indicamos que el estado inicial del tab page principal por default sera INSTITUTOS.
 
-  const [currentNameTabInBusinessTab, setCurrentNameTabInBusinessTab] = useState("NEGOCIOS");
+  const [currentNameTabInBusinessTab, setCurrentNameTabInBusinessTab] = useState("ORDENES_STATUS");
  
   return (
       <Box> 

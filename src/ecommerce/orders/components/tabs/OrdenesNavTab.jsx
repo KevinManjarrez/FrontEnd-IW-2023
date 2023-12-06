@@ -1,8 +1,9 @@
 import { Box, Tabs, Tab } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
+
 //import { Link, useHistory } from "react-router-dom";
-const InstitutesTabs = ["ORDENES", "NEGOCIOS","ORDENES_INFO","ORDENES_DETALLES"];
+const InstitutesTabs = ["ORDENES", "ORDENES_STATUS","ORDENES_INFO","ORDENES_DETALLES"];
 
 const InstitutesNavTab = ({currentRowInInstitutesTab, setCurrentTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected}) => {
     const [currenTabIndex, setCurrentTabIndex] = useState(0);
@@ -21,8 +22,16 @@ const InstitutesNavTab = ({currentRowInInstitutesTab, setCurrentTabInPrincipalTa
                 setCurrentTabIndex(0);
 
                 break;
-            case "NEGOCIOS":
+            case "ORDENES_STATUS":
                 setCurrentTabIndex(1);
+                break;
+
+            case "ORDENES_INFO":
+                setCurrentTabIndex(2);
+                break;
+
+            case "ORDENES_DETALLES":
+                setCurrentTabIndex(3);
                 break;
 
                
@@ -31,7 +40,7 @@ const InstitutesNavTab = ({currentRowInInstitutesTab, setCurrentTabInPrincipalTa
         //que el usuario ya hizo click en esta pestaña y entonces se despliegue el
         //BusinessNavTap con los tab pages de este nivel (subdocumento) que contiene
         //mas subdocumentos como: negocio, info adicional, archivos, telefonos, etc.
-        if (e.target.innerText.toUpperCase() == "NEGOCIOS") setBusinessTabInPrincipalTabIsSelected(true);
+        if (e.target.innerText.toUpperCase() == "ORDENES_STATUS") setBusinessTabInPrincipalTabIsSelected(true);
         
     };
 

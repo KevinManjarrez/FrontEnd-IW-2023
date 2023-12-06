@@ -27,11 +27,11 @@ const Institutes = () => {
            
             {/* FIC: si en el tap principal esta seleccionado es el tab de INSTITUTOS
             manda llamar la pagina que va dentro del tab de Institutos. */}
-            {currentTabInPrincipalTab == "INSTITUTES" && <InstitutesTab />}
+            {currentTabInPrincipalTab == "ORDENES" && <InstitutesTab />}
 
             {/* FIC: si en el tap principal esta seleccionado el tab de NEGOCIOS
             manda llamar la pagina que va dentro del tab de Business. */}
-            {currentTabInPrincipalTab == "NEGOCIOS" && <BusinessTab />}   
+            {currentTabInPrincipalTab == "ORDENES_STATUS" && <BusinessTab />}   
 
         </Box>
     );
