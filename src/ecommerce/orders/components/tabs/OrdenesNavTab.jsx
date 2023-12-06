@@ -1,11 +1,9 @@
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-
-//import { Link, useHistory } from "react-router-dom";
 const OrdenesTabs = ["ORDENES", "ORDENES_STATUS","ORDENES_INFO","ORDENES_DETALLES"];
 
-const OrdenesNavTab = ({currentRowInOrdenesTab, setCurrentTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected}) => {
+const OrdenesNavTab = ({currentRowInOrdenesTab, setCurrentTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected, setOrdenesDetalleTabInPricipalTabIsSelected}) => {
     const [currenTabIndex, setCurrentTabIndex] = useState(0);
     
 
@@ -16,6 +14,7 @@ const OrdenesNavTab = ({currentRowInOrdenesTab, setCurrentTabInPrincipalTab, set
         //FIC: cada que realice un click en algun tap page
         //reiniciamos el valor del tap pase de business a false.
         setBusinessTabInPrincipalTabIsSelected(false);
+        setOrdenesDetalleTabInPricipalTabIsSelected(false);
         //FIC: opciones (subdocumentos de la coleccion principal de institutos).
         switch (e.target.innerText.toUpperCase()) {
             case "ORDENES":
@@ -40,7 +39,9 @@ const OrdenesNavTab = ({currentRowInOrdenesTab, setCurrentTabInPrincipalTab, set
         //que el usuario ya hizo click en esta pestaña y entonces se despliegue el
         //BusinessNavTap con los tab pages de este nivel (subdocumento) que contiene
         //mas subdocumentos como: negocio, info adicional, archivos, telefonos, etc.
-        if (e.target.innerText.toUpperCase() == "ORDENES_STATUS") setBusinessTabInPrincipalTabIsSelected(true);
+        //if (e.target.innerText.toUpperCase() == "ORDENES_STATUS") setBusinessTabInPrincipalTabIsSelected(true);
+        //if (e.target.innerText.toUpperCase() == "ORDENES_INFO") setUserTabInPrincipalTabIsSelected(true);
+        //if (e.target.innerText.toUpperCase() == "ORDENES_DETALLES") setBusinessTabInPrincipalTabIsSelected(true);
         
     };
 

@@ -11,7 +11,7 @@ import WebAddressesTab from "./WebAddressesTab.jsx";
 export default function BusinessTab() {
  
   //FIC: indicamos que al iniciar no hay ningun Instituto seleccionado.
-  const [currentRowInBusinessTab, setCurrentRowInBusinessTab] = useState(1);   
+  const [currentRowInBusinessTab, setCurrentRowInBusinessTab] = useState(0);   
  
   //FIC: indicamos que el estado inicial del tab page principal por default sera INSTITUTOS.
 

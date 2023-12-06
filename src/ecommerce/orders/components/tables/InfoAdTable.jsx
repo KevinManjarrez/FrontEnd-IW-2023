@@ -1,5 +1,5 @@
 //FIC: React
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 //FIC: Material UI
 import { MaterialReactTable } from 'material-react-table';
 import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
@@ -8,89 +8,90 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 //FIC: DB
-//import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
-import { getAllOrdenes} from '../../service/remote/get/GetAllOrdenes';
-//FIC: Modals
-import AddOrdenesModal from "../modals/AddOrdenesModal";
+
+//FEAK: MODALS
+import InfoAdModal from "../modals/InfoAdModal";
+
+//REDUX
+import { useSelector } from "react-redux";
+import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
+
 //FIC: Columns Table Definition.
-const OdenesColumns = [
+const InfoAdColumns = [
     {
-      accessorKey: "IdInstitutoOK",
-      header: "ID OK",
+      accessorKey: "IdEtiquetaOK",
+      header: "Id Etiqueta OK",
       size: 30, //small column
     },
     {
-      accessorKey: "IdNegocioOK",
-      header: "ID BK",
+      accessorKey: "IdEtiqueta",
+      header: "Id Etiqueta",
       size: 30, //small column
     },
     {
-      accessorKey: "IdTipoOrdenOK",
-      header: "ID Orden OK",
+      accessorKey: "Etiqueta",
+      header: "Etiqueta",
       size: 150, //small column
     },
     {
-      accessorKey: "IdOrdenBK",
-      header: "ID Orden BK",
+      accessorKey: "Valor",
+      header: "Valor",
       size: 50, //small column
     },
     {
-      accessorKey: "IdTipoOrdenOK",
-      header: "ID Tipo Orden OK",
+      accessorKey: "IdTipoSeccionOK",
+      header: "Tipo seccion",
+      size: 30, //small column
+    },
+    {
+      accessorKey: "Secuencia",
+      header: "Secuencia",
       size: 150, //small column
     },
-    {
-      accessorKey: "IdRolOK",
-      header: "ID ROL OK",
-      size: 50, //small column
-    },
-    {
-      accessorKey: "IdPersonaOK",
-      header: "ID Persona OK ",
-      size: 50, //small column
-    },
-  
-    
   ];
+
   //FIC: Table - FrontEnd.
-  const OrdenesTable = () => {
+  const InfoAdTable = ({ }) => {
+
     //FIC: controlar el estado del indicador (loading).
     const [loadingTable, setLoadingTable] = useState(true);
-   
-    //FIC: controlar el estado de la data de Institutos.
-    const [OrdenesData, setOrdenesData] = useState([]);
-    //FIC: controlar el estado que muesta u oculta la modal de nuevo Instituto.
-    const [AddOrdenesShowModal, setAddOrdenesShowModal] = useState(false);
+    //FIC: controlar el estado de la data de InfoAd.
+    const [InfoAdData, setInfoAdData] = useState([]);
+    //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
+    const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
+
+    //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
+    const selectedOrdenesData = useSelector((state) => state.shippingsReducer.selectedOrdenesData);
+    // console.log(selectedShippingData);
+
     useEffect(() => {
       async function fetchData() {
         try {
-          const AllOrdenesData = await getAllOrdenes();
-          setOrdenesData(AllOrdenesData);
-          //setInstitutesData(InstitutesStaticData);
+          setInfoAdData(selectedOrdenesData.info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
           setLoadingTable(false);
         } catch (error) {
-          console.error("Error al obtener las ordenes ", error);
+          console.error("Error al obtener info_ad:", error);
         }
       }
       fetchData();
     }, []);
+
     return (
         <Box>
           <Box>
             <MaterialReactTable
-              columns={OdenesColumns}
-              data={OrdenesData}
+              columns={InfoAdColumns}
+              data={InfoAdData}
               state={{isLoading: loadingTable}}
               initialState={{ density: "compact", showGlobalFilter: true }}
               renderTopToolbarCustomActions={({ table }) => (
                   <>
-                    {/* ------- BARRA DE ACCIONES ------ */}
+                    {/* ------- ACTIONS TOOLBAR INIT ------ */}
                     <Stack direction="row" sx={{ m: 1 }}>
                       <Box>
                         <Tooltip title="Agregar">
-                          <IconButton
-                            onClick={() => AddOrdenesShowModal(true)}
-                          >
+                          <IconButton 
+                          onClick={() => setInfoAdShowModal(true)}>
                             <AddCircleIcon />
                           </IconButton>
                         </Tooltip>
@@ -111,20 +112,24 @@ const OdenesColumns = [
                         </Tooltip>
                       </Box>
                     </Stack>
-                    {/* ------- BARRA DE ACCIONES FIN ------ */}
+                    {/* ------- ACTIONS TOOLBAR END ------ */}
                   </>
                 )}
             />
           </Box>
-          {/* M O D A L E S */}
-          <Dialog open={AddOrdenesShowModal}>
-            <AddOrdenesModal
-              AddOrdenesShowModal={AddOrdenesShowModal}
-              SetAddOrdenesShowModal={AddOrdenesShowModal}
-              onClose={() => AddOrdenesShowModal(false)}
+
+          {/* M O D A L E S */}   
+          <Dialog open={InfoAdShowModal}>
+            <InfoAdModal
+              InfoAdShowModal={InfoAdShowModal}
+              setInfoAdShowModal={setInfoAdShowModal}
+              selectedShippingData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
+              onClose={() => setInfoAdShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>
+
         </Box>
       );
   };
-  export default OrdenesTable;
+
+  export default InfoAdTable;
