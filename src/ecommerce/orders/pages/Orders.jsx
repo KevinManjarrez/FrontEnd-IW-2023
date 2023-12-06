@@ -34,6 +34,11 @@ const Ordenes = () => {
             manda llamar la pagina que va dentro del tab de Institutos. */}
             {currentTabInPrincipalTab == "ORDENES" && <OrdenesTab />}
 
+
+            {currentTabInPrincipalTab == "ORDENES_STATUS" && <OrdenesStatusTab />}
+
+            {currentTabInPrincipalTab == "ORDENES_INFO" && <OrdenesTab />}
+
             {/* FIC: si en el tap principal esta seleccionado el tab de NEGOCIOS
             manda llamar la pagina que va dentro del tab de Business. */}
             {/*currentTabInPrincipalTab == "ORDENES_STATUS" && <BusinessTab />*/}  
