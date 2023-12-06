@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 
 
 //import { Link, useHistory } from "react-router-dom";
-const InstitutesTabs = ["ORDENES", "ORDENES_STATUS","ORDENES_INFO","ORDENES_DETALLES"];
+const OrdenesTabs = ["ORDENES", "ORDENES_STATUS","ORDENES_INFO","ORDENES_DETALLES"];
 
-const InstitutesNavTab = ({currentRowInInstitutesTab, setCurrentTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected}) => {
+const OrdenesNavTab = ({currentRowInOrdenesTab, setCurrentTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected}) => {
     const [currenTabIndex, setCurrentTabIndex] = useState(0);
     
 
@@ -53,11 +53,11 @@ const InstitutesNavTab = ({currentRowInInstitutesTab, setCurrentTabInPrincipalTa
                 aria-label="icon tabs example"
                 textColor="primary"
             >
-                {InstitutesTabs.map((tab) => {
-                    return <Tab key={tab} label={tab}  disabled ={currentRowInInstitutesTab === null}/>;
+                {OrdenesTabs.map((tab) => {
+                    return <Tab key={tab} label={tab}  disabled ={currentRowInOrdenesTab === null}/>;
                 })}
             </Tabs>
         </Box>
     );
 }
-export default InstitutesNavTab;
+export default OrdenesNavTab;

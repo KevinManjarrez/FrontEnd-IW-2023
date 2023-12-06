@@ -9,11 +9,11 @@ import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 //FIC: DB
 //import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
-import {getAllInstitutes} from '../../service/remote/get/GetAllOrdenes';
+import { getAllOrdenes} from '../../service/remote/get/GetAllOrdenes';
 //FIC: Modals
 import AddOrdenesModal from "../modals/AddOrdenesModal";
 //FIC: Columns Table Definition.
-const InstitutesColumns = [
+const OdenesColumns = [
     {
       accessorKey: "IdOrdenOK",
       header: "ID OK",
@@ -48,14 +48,14 @@ const InstitutesColumns = [
     const [loadingTable, setLoadingTable] = useState(true);
    
     //FIC: controlar el estado de la data de Institutos.
-    const [InstitutesData, setInstitutesData] = useState([]);
+    const [OrdenesData, setOrdenesData] = useState([]);
     //FIC: controlar el estado que muesta u oculta la modal de nuevo Instituto.
-    const [AddInstituteShowModal, setAddInstituteShowModal] = useState(false);
+    const [AddOrdenesShowModal, setAddOrdenesShowModal] = useState(false);
     useEffect(() => {
       async function fetchData() {
         try {
-          const AllInstitutesData = await getAllInstitutes();
-          setInstitutesData(AllInstitutesData);
+          const AllOrdenesData = await getAllOrdenes();
+          setOrdenesData(AllOrdenesData);
           //setInstitutesData(InstitutesStaticData);
           setLoadingTable(false);
         } catch (error) {
@@ -68,8 +68,8 @@ const InstitutesColumns = [
         <Box>
           <Box>
             <MaterialReactTable
-              columns={InstitutesColumns}
-              data={InstitutesData}
+              columns={OdenesColumns}
+              data={OrdenesData}
               state={{isLoading: loadingTable}}
               initialState={{ density: "compact", showGlobalFilter: true }}
               renderTopToolbarCustomActions={({ table }) => (
@@ -79,7 +79,7 @@ const InstitutesColumns = [
                       <Box>
                         <Tooltip title="Agregar">
                           <IconButton
-                            onClick={() => setAddInstituteShowModal(true)}
+                            onClick={() => AddOrdenesShowModal(true)}
                           >
                             <AddCircleIcon />
                           </IconButton>
@@ -107,11 +107,11 @@ const InstitutesColumns = [
             />
           </Box>
           {/* M O D A L E S */}
-          <Dialog open={AddInstituteShowModal}>
+          <Dialog open={AddOrdenesShowModal}>
             <AddOrdenesModal
-              AddInstituteShowModal={AddInstituteShowModal}
-              setAddInstituteShowModal={setAddInstituteShowModal}
-              onClose={() => setAddInstituteShowModal(false)}
+              AddOrdenesShowModal={AddOrdenesShowModal}
+              SetAddOrdenesShowModal={AddOrdenesShowModal}
+              onClose={() => AddOrdenesShowModal(false)}
             />
           </Dialog>
         </Box>
