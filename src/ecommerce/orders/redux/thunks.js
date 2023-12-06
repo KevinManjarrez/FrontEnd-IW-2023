@@ -1,8 +1,8 @@
 //NOTA: Este archivo contiene funciones ASYNCRONAS
 //que nos ayuda a obtener la respuesta del servidor
 //y poder mandarla al SLICE y a su estado
-import { getOrdenesAll } from './actions/OrdenesActions';
-import { SET_DATA_ORDENES } from './silices/OrdenesSlice';
+import { getOrdenesAll } from './actions/ordenesActions';
+import { SET_DATA_ORDENES } from './silices/ordenesSlice';
 
 export const GET_DATA_START = () => {
     return async (dispatch, getState) => {

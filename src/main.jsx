@@ -7,7 +7,7 @@ import AppAllModules from './AppAllModules';
 //import AppDemo from './AppDemo';
 //FIC: For Redux
 import { Provider } from "react-redux";
-import store from '../src/security/redux/store/store';
+import store from '../src/ecommerce/orders/redux/store/store';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
