@@ -1,16 +1,16 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
-import InstitutesNavTab from "../components/tabs/OrdenesNavTab";
-import InstitutesTab from "../components/tabs/OrdenesTab";
+import OrdenesNavTab from "../components/tabs/OrdenesNavTab";
+import OrdenesTab from "../components/tabs/OrdenesTab";
 import BusinessTab from "../components/tabs/BusinessTab";
 
-const Institutes = () => {
+const Ordenes = () => {
 
     //FIC: indicamos que al iniciar no hay ningun Instituto seleccionado.
-    const [currentRowInInstitutesTab, setCurrentRowInInstitutesTab] = useState(0);
+    const [currentRowInOrdenesTab, setCurrentRowInOrdenesTab] = useState(0);
    
     //FIC: indicamos que el estado inicial del tab page principal por default sera INSTITUTOS.
-    const [currentTabInPrincipalTab, setCurrentTabInPrincipalTab] = useState("INSTITUTES");
+    const [currentTabInPrincipalTab, setCurrentTabInPrincipalTab] = useState("ORDENES");
     const [currentTabInPrincipalTaba, setBusinessTabInPrincipalTabIsSelected] = useState(false);
 
     //const InstitutosAllData = useSelector((state) => state.institutesReducer);
@@ -19,15 +19,15 @@ const Institutes = () => {
 
             {/* FIC: llamada intrinsica (props) */}
 
-            <InstitutesNavTab
-                setCurrentRowInInstitutesTab={setCurrentRowInInstitutesTab}
+            <OrdenesNavTab
+                setCurrentRowInOrdenesTab={setCurrentRowInOrdenesTab}
                 setCurrentTabInPrincipalTab={setCurrentTabInPrincipalTab}
                 setBusinessTabInPrincipalTabIsSelected={setBusinessTabInPrincipalTabIsSelected}
             />
            
             {/* FIC: si en el tap principal esta seleccionado es el tab de INSTITUTOS
             manda llamar la pagina que va dentro del tab de Institutos. */}
-            {currentTabInPrincipalTab == "ORDENES" && <InstitutesTab />}
+            {currentTabInPrincipalTab == "ORDENES" && <OrdenesTab />}
 
             {/* FIC: si en el tap principal esta seleccionado el tab de NEGOCIOS
             manda llamar la pagina que va dentro del tab de Business. */}
@@ -37,4 +37,4 @@ const Institutes = () => {
     );
 };
 
-export default Institutes;
+export default Ordenes;

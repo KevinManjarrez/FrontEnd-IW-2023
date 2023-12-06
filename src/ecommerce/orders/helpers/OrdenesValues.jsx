@@ -5,11 +5,11 @@ import { OrdenesModel } from "../models/OrdenesModel";
 export const OrdenesValues = (values)=>{
   let Ordenes =  OrdenesModel()
   Ordenes.IdInstitutoOK=values.IdInstitutoOK,
-  Ordenes.IdInstitutoBK=values.IdInstitutoBK,
-  Ordenes.DesInstituto=values.DesInstituto,
-  Ordenes.Alias=values.Alias,
-  Ordenes.Matriz=values.Matriz,
-  Ordenes.IdTipoGiroOK=values.IdTipoGiroOK,
-  Ordenes.IdInstitutoSupOK=values.IdInstitutoSupOK
+  Ordenes.IdNegocioOK=values.IdNegocioOK,
+  Ordenes.IdOrdenOK=values.IdOrdenOK,
+  Ordenes.IdOrdenBK=values.IdOrdenBK,
+  Ordenes.IdTipoOrdenOK=values.IdTipoOrdenOK,
+  Ordenes.IdRolOK=values.IdRolOK,
+  Ordenes.IdPersonaOK=values.IdPersonaOK
   return Ordenes
 }
