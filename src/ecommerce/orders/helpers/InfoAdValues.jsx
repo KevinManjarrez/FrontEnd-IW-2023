@@ -1,8 +1,8 @@
-import { OrdenesEstatusValues } from "../models/OrdenesEstatusModel"
+import { InfoAdModel } from "../models/InfoAdModel"
 
 //FIC: obtiene los valores capturados en la ventana modal
 //enviados desde el evento onSubmit de Formik
-export const OrdenesEstatusValues = (values)=>{
+export const InfoAdValues = (values)=>{
   let InfoAd =  InfoAdModel()
   InfoAd.IdEtiquetaOK=values.IdEtiquetaOK,
   InfoAd.IdEtiqueta=values.IdEtiqueta,

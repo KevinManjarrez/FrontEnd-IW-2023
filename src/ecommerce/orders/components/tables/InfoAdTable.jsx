@@ -60,16 +60,16 @@ const InfoAdTable = ({}) => {
   const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
 
     //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
-    const selectedOrdenesData = useSelector((state) => state.shippingsReducer.selectedOrdenesData);
+    const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
     // console.log(selectedShippingData);
 
     useEffect(() => {
       async function fetchData() {
         try {
-          setInfoAdData(selectedOrdenesData.info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
+          setInfoAdData(selectedOrdenesData.ordenes_info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
           setLoadingTable(false);
         } catch (error) {
-          console.error("Error al obtener info_ad:", error);
+          console.error("Error al obtener ordenes_info_ad:", error);
         }
       }
       fetchData();
@@ -121,7 +121,7 @@ const InfoAdTable = ({}) => {
             <InfoAdModal
               InfoAdShowModal={InfoAdShowModal}
               setInfoAdShowModal={setInfoAdShowModal}
-              selectedShippingData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
+              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
               onClose={() => setInfoAdShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>

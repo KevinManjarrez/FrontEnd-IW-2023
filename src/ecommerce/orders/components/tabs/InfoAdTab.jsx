@@ -1,16 +1,11 @@
 //import InstitutesTable from '../tables/InstitutesTable';
 import { Box } from "@mui/material";
-import OrdenesEstatusTable from "../tables/OrdenesStatusTable";
+import InfoAdTable from "../tables/InfoAdTable";
 
 export default function InfoAdTab() {
     return (
-
-      <Box>
-
-            <h2>Tab InfoAd</h2>
-
-      </Box>
-
+    <Box>
+      <InfoAdTable></InfoAdTable>
+    </Box>
     );
-
   }
