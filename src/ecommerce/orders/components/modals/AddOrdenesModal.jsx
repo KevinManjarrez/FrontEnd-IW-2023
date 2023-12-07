@@ -39,13 +39,17 @@ import { v4 as genID } from "uuid";
 const AddOrdenesModal = ({
   AddOrdenesShowModal,
   setAddOrdenesShowModal,
-  isEditMode, isDeleteMode, row 
+  isEditMode,
+  isDeleteMode,
+  row,
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
   const [Loading, setLoading] = useState(false);
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
-  const [IdGen, setIdGen] = useState(genID().replace(/-/g, "").substring(0, 12));
+  const [IdGen, setIdGen] = useState(
+    genID().replace(/-/g, "").substring(0, 12)
+  );
   //FIC: en cuanto se abre la modal llama el metodo
   //que ejecuta la API que trae todas las etiquetas de la BD.
   useEffect(() => {
@@ -60,7 +64,7 @@ const AddOrdenesModal = ({
     try {
       const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
-        (label) => label.IdEtiquetaOK === "IdTipoGiros"
+        (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
       );
       setOrdenesValuesLabel(OrdenesTypes.valores);
     } catch (e) {
@@ -72,20 +76,20 @@ const AddOrdenesModal = ({
   }
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
-    // Dentro del componente AddShippingModal
-    useEffect(() => {
-      // Si estamos en modo edición, deshabilita el campo
-      if (isEditMode) {
+  // Dentro del componente AddShippingModal
+  useEffect(() => {
+    // Si estamos en modo edición, deshabilita el campo
+    if (isEditMode) {
       formik.setFieldValue("IdOrdenOK", formik.values.IdOrdenOK); // Asegúrate de establecer el valor
       formik.setFieldTouched("IdOrdenOK", false); // También puedes desactivar el indicador de "touched" si lo deseas
-      }
+    }
   }, [isEditMode]);
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
     initialValues: {
       IdInstitutoOK: "9001",
       IdNegocioOK: "1101",
-      IdOrdenOK: row ? row.IdOrdenOK : `9001-${IdGen}`, 
+      IdOrdenOK: row ? row.IdOrdenOK : `9001-${IdGen}`,
       IdOrdenBK: row ? row.IdOrdenBK : "",
       IdTipoOrdenOK: "",
       IdRolOK: "",
@@ -95,8 +99,11 @@ const AddOrdenesModal = ({
     },
     validationSchema: Yup.object({
       IdOrdenOK: Yup.string()
-      .required("Campo requerido")
-      .matches(/^[a-zA-Z0-9-]+$/, 'Solo se permiten caracteres alfanuméricos'),
+        .required("Campo requerido")
+        .matches(
+          /^[a-zA-Z0-9-]+$/,
+          "Solo se permiten caracteres alfanuméricos"
+        ),
       IdOrdenBK: Yup.string().required("Campo requerido"),
       IdTipoOrdenOK: Yup.string().required("Campo requerido"),
       IdRolOK: Yup.string().required("Campo requerido"),
@@ -111,7 +118,7 @@ const AddOrdenesModal = ({
           /^[a-zA-Z0-9-]+$/,
           'Solo se permiten caracteres alfanuméricos y el simbolo "-"'
         ),*/
-        IdPersonaOK: Yup.string().required("Campo requerido"),
+      IdPersonaOK: Yup.string().required("Campo requerido"),
     }),
 
     onSubmit: async (values) => {
@@ -133,7 +140,6 @@ const AddOrdenesModal = ({
         //formik.values.IdInstitutoBK = `${formik.values.IdInstitutoOK}-${formik.values.IdCEDI}`;
         //formik.values.Matriz = autoChecksSelecteds.join(",");
 
-
         /*if(isEditMode) {
             console.log("SE ESTA ACTUALIZANDO RAAAAAAAAAH");
             const Ordenes = OrdenesValues(values);
@@ -153,8 +159,7 @@ const AddOrdenesModal = ({
             onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
         }else{*/
         //FIC: mutar los valores (true o false) de Matriz.
-        
-        
+
         //values.Matriz == true ? (values.Matriz = "S") : (values.Matriz = "N");
 
         //FIC: Extraer los datos de los campos de
@@ -205,7 +210,13 @@ const AddOrdenesModal = ({
         {/* FIC: Aqui va el Titulo de la Modal */}
         <DialogTitle>
           <Typography>
-            <strong>{isEditMode ? "ACTUALIZAR ENVÍO" : isDeleteMode ? "ELIMINAR ENVÍO" : "AGREGAR ENVÍO"}</strong>
+            <strong>
+              {isEditMode
+                ? "ACTUALIZAR ENVÍO"
+                : isDeleteMode
+                ? "ELIMINAR ENVÍO"
+                : "AGREGAR ENVÍO"}
+            </strong>
           </Typography>
         </DialogTitle>
         {/* FIC: Aqui va un tipo de control por cada Propiedad de Institutos */}
@@ -222,26 +233,16 @@ const AddOrdenesModal = ({
             value={formik.values.IdOrdenOK}
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
-            error={
-              formik.touched.IdOrdenOK &&
-              Boolean(formik.errors.IdOrdenOK)
-            }
-            helperText={
-              formik.touched.IdOrdenOK && formik.errors.IdOrdenBK
-            }
+            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
           />
           <TextField
             id="IdOrdenBK"
             label="IdOrdenBK*"
             value={formik.values.IdOrdenBK}
             {...commonTextFieldProps}
-            error={
-              formik.touched.IdOrdenBK &&
-              Boolean(formik.errors.IdOrdenBK)
-            }
-            helperText={
-              formik.touched.IdOrdenBK && formik.errors.IdOrdenBK
-            }
+            error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
+            helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
           <TextField
             id="IdTipoOrdenOK"
@@ -249,7 +250,8 @@ const AddOrdenesModal = ({
             value={formik.values.IdTipoOrdenOK}
             {...commonTextFieldProps}
             error={
-              formik.touched.IdTipoOrdenOK && Boolean(formik.errors.IdTipoOrdenOK)
+              formik.touched.IdTipoOrdenOK &&
+              Boolean(formik.errors.IdTipoOrdenOK)
             }
             helperText={
               formik.touched.IdTipoOrdenOK && formik.errors.IdTipoOrdenOK
@@ -315,20 +317,17 @@ const AddOrdenesModal = ({
             label="IdRolOK*"
             value={formik.values.IdRolOK}
             {...commonTextFieldProps}
-            error={
-              formik.touched.IdRolOK &&
-              Boolean(formik.errors.IdRolOK)
-            }
-            helperText={
-              formik.touched.IdRolOK && formik.errors.IdRolOK
-            }
+            error={formik.touched.IdRolOK && Boolean(formik.errors.IdRolOK)}
+            helperText={formik.touched.IdRolOK && formik.errors.IdRolOK}
           />
           <TextField
             id="IdPersonaOK"
             label="IdPersonaOK*"
             value={formik.values.IdPersonaOK}
             {...commonTextFieldProps}
-            error={formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)}
+            error={
+              formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)
+            }
             helperText={formik.touched.IdPersonaOK && formik.errors.IdPersonaOK}
           />
         </DialogContent>
@@ -370,7 +369,13 @@ const AddOrdenesModal = ({
             disabled={!!mensajeExitoAlert}
             loading={Loading}
           >
-            <span>{isEditMode ? "ACTUALIZAR" : isDeleteMode ? "ELIMINAR" : "GUARDAR"}</span>
+            <span>
+              {isEditMode
+                ? "ACTUALIZAR"
+                : isDeleteMode
+                ? "ELIMINAR"
+                : "GUARDAR"}
+            </span>
           </LoadingButton>
         </DialogActions>
       </form>

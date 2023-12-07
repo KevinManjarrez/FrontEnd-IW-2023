@@ -6,7 +6,9 @@ export default function InfoAdTab() {
     return (
 
       <Box>
-          <OrdenesEstatusTable></OrdenesEstatusTable>
+
+            <h2>Tab InfoAd</h2>
+
       </Box>
 
     );
