@@ -7,6 +7,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CachedIcon from '@mui/icons-material/Cached';
 //FIC: DB
 //import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
@@ -174,6 +175,11 @@ const OrdenesTable = () => {
                   <Tooltip title="Detalles ">
                     <IconButton>
                       <InfoIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Recargar">
+                    <IconButton onClick={fetchData}>
+                      <CachedIcon/>
                     </IconButton>
                   </Tooltip>
                 </Box>
