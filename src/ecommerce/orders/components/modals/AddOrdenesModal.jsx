@@ -47,6 +47,7 @@ const AddOrdenesModal = ({
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
   const [Loading, setLoading] = useState(false);
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
+  const [selectedValue, setSelectedValue] = useState('');
   const [IdGen, setIdGen] = useState(
     genID().replace(/-/g, "").substring(0, 12)
   );
@@ -66,7 +67,13 @@ const AddOrdenesModal = ({
       const OrdenesTypes = Labels.find(
         (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
       );
-      setOrdenesValuesLabel(OrdenesTypes.valores);
+      const valores = OrdenesTypes.valores; // Obtenemos el array de valores
+      const IdValoresOK = valores.map((valor, index) => ({
+        IdValorOK: valor.IdValorOK,
+        key: index, // Asignar el índice como clave temporal
+      }));
+      setOrdenesValuesLabel(IdValoresOK);
+      console.log(OrdenesValuesLabel)
     } catch (e) {
       console.error(
         "Error al obtener Etiquetas para Tipos Giros de Institutos:",
@@ -74,6 +81,9 @@ const AddOrdenesModal = ({
       );
     }
   }
+  const handleSelectChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
   // Dentro del componente AddShippingModal
@@ -227,10 +237,12 @@ const AddOrdenesModal = ({
           dividers
         >
           {/* FIC: Campos de captura o selección */}
+
           <TextField
             id="IdOrdenOK"
             label="IdOrdenOK*"
             value={formik.values.IdOrdenOK}
+            disabled
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
             error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
@@ -244,19 +256,18 @@ const AddOrdenesModal = ({
             error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
             helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
-          <TextField
-            id="IdTipoOrdenOK"
-            label="IdTipoOrdenOK*"
-            value={formik.values.IdTipoOrdenOK}
-            {...commonTextFieldProps}
-            error={
-              formik.touched.IdTipoOrdenOK &&
-              Boolean(formik.errors.IdTipoOrdenOK)
-            }
-            helperText={
-              formik.touched.IdTipoOrdenOK && formik.errors.IdTipoOrdenOK
-            }
-          />
+          <Select
+            id="dynamic-select"
+            value={selectedValue}
+            onChange={handleSelectChange}
+            label="TipoOrden"
+          >
+            {OrdenesValuesLabel.map((option, index) => (
+              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+                {option.IdValorOK}
+              </MenuItem>
+            ))}
+          </Select>
           {/*
           <TextField
             id="Matriz"
