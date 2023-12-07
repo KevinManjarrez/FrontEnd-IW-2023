@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import { InfoAdValues } from "../../helpers/InfoAdValues";
 
 //SERVICES
-//import { AddOneInfoAd } from "../../services/remote/post/AddOneInfoAd";
+import { AddOneInfoAd } from "../../service/remote/post/AddOneInfoAd";
 
 const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
@@ -29,10 +29,10 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
             Etiqueta: "",
             Valor: "",
             IdTipoSeccionOK: "",
-            Secuencia: null,
+            Secuencia: "",
         },
         validationSchema: Yup.object({
-            IdEtiquetaOK: Yup.string().required("Campo requerido"),
+            IdEtiquetaOK: Yup.string(),
             IdEtiqueta: Yup.string().required("Campo requerido"),
             Etiqueta: Yup.string().required("Campo requerido"),
             Valor: Yup.string().required("Campo requerido"),
@@ -51,17 +51,19 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
                 const infoAdSubdocument = InfoAdValues(values);
                 
                 //Poner el Id del documento existente para pasar al servicio POST
-                const existingShippingId = selectedShippingData.IdEntregaOK;
-
+                const existingOrdenesId = selectedOrdenesData.IdOrdenOk;
+                console.log("selecion:",existingOrdenesId);
                 //Pasar los parametros al servicio de POST del archivo AddOneInfoAd.jsx
                 //En el mismo orden se pasa: Id del documento existente || Los valores que el usuario pone en el form y que se sacan
                 //de formik || El objeto con los valores predefinidos (IdEtiquetaOK, IdEtiqueta, Etiqueta,...etc...)
-                await AddOneInfoAd(existingShippingId, values, infoAdSubdocument);
+                await AddOneInfoAd(existingOrdenesId, values, infoAdSubdocument);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
             } catch (e) {
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
+                console.log("selecion:",existingOrdenesId);
+
             }
         },
     });
@@ -84,7 +86,7 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
             <form onSubmit={formik.handleSubmit}>
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
-                    <Typography component="h6">
+                    <Typography >
                         <strong>Agregar Nueva Info Adicional</strong>
                     </Typography>
                 </DialogTitle>
@@ -96,11 +98,11 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
                     {/* FIC: Campos de captura o selección */}
                     <TextField
                         id="IdEtiquetaOK"
-                        label="IdEtiquetaOK*"
-                        value={formik.values.IdEtiquetaOK}
+                        label="IdEtiquetaOK"
+                        value={formik.values.IdEtiquetaOK || ''} // Asegúrate de que no sea null
                         {...commonTextFieldProps}
-                        error={ formik.touched.IdEtiquetaOK && Boolean(formik.errors.IdEtiquetaOK) }
-                        helperText={ formik.touched.IdEtiquetaOK && formik.errors.IdEtiquetaOK }
+                        error={formik.touched.IdEtiquetaOK && Boolean(formik.errors.IdEtiquetaOK)}
+                        helperText={formik.touched.IdEtiquetaOK && formik.errors.IdEtiquetaOK}
                     />
                     <TextField
                         id="IdEtiqueta"
@@ -134,6 +136,25 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
                         error={ formik.touched.IdTipoSeccionOK && Boolean(formik.errors.IdTipoSeccionOK) }
                         helperText={ formik.touched.IdTipoSeccionOK && formik.errors.IdTipoSeccionOK }
                     />
+                    {/*<Select
+                        value={formik.values.IdTipoSeccionOK}
+                        label="Selecciona una opción"
+                        onChange={formik.handleChange}
+                        name="IdTipoSeccionOK" //FIC: Asegúrate que coincida con el nombre del campo
+                        onBlur={formik.handleBlur}
+                        disabled={!!mensajeExitoAlert}
+                    >
+                        {OrdenesValuesLabel.map((tipoGiro) => {
+                        return (
+                            <MenuItem
+                            value={`IdTipoSeccionOK-${tipoGiro.IdValorOK}`}
+                            key={tipoGiro.Valor}
+                            >
+                            {tipoGiro.Valor}
+                            </MenuItem>
+                        );
+                        })}
+                    </Select>*/}
                     <TextField
                         id="Secuencia"
                         label="Secuencia*"

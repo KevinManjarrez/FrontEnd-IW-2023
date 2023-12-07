@@ -17,7 +17,7 @@ import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
 import { SET_SELECTED_ORDENES_DATA } from '../../redux/silices/ordenesSlice';
 
 
-const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal, selectedOrdenesData }) => {
+const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal, selectedOrdenesData }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
@@ -42,9 +42,9 @@ const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal,
             setMensajeErrorAlert(null);
             setMensajeExitoAlert(null);
 
-            try {
+            /*try {
                 //Usar InfoAdValues para obtener los valores definidos del subdocumento en el archivo del mismo nombre
-                const infoAdSubdocument = OrdenesEstatusValues(values);
+                const ordenEstatusSubdocument = OrdenesEstatusValues(values);
                 
                 //Poner el Id del documento existente para pasar al servicio POST
                 const existingOrdenesId = selectedOrdenesData.IdEntregaOK;
@@ -52,13 +52,13 @@ const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal,
                 //Pasar los parametros al servicio de POST del archivo AddOneInfoAd.jsx
                 //En el mismo orden se pasa: Id del documento existente || Los valores que el usuario pone en el form y que se sacan
                 //de formik || El objeto con los valores predefinidos (IdEtiquetaOK, IdEtiqueta, Etiqueta,...etc...)
-                await AddOneOrdenes(existingOrdenesId, values, infoAdSubdocument);
+                await AddOneOrdenes(existingOrdenesId, values, ordenEstatusSubdocument);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
             } catch (e) {
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
-            }
+            }*/
         },
     });
 
@@ -73,14 +73,14 @@ const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal,
 
     return(
         <Dialog
-            open={OrdenesStatusShowModal}
-            onClose={() => setOrdenesStatusShowModal(false)}
+            open={OrdenesEstatusShowModal}
+            onClose={() => setOrdenesEstatusShowModal(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
-                    <Typography component="h6">
+                    <Typography >
                         <strong>Agregar Nuevo Estado de la Orden</strong>
                     </Typography>
                 </DialogTitle>
@@ -139,7 +139,7 @@ const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal,
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setOrdenesStatusShowModal(false)}
+                        onClick={() => setOrdenesEstatusShowModal(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
@@ -159,4 +159,4 @@ const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal,
         </Dialog>
     );
 };
-export default OrdenesStatusModal;
+export default OrdenesEstatusModal;

@@ -7,12 +7,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
-//FIC: DB
-
 //FEAK: MODALS
 import InfoAdModal from "../modals/InfoAdModal";
 
 //REDUX
+import { useDispatch } from "react-redux";
+
 import { useSelector } from "react-redux";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
 
@@ -61,7 +61,14 @@ const InfoAdTable = ({}) => {
 
     //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
     const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
-    // console.log(selectedShippingData);
+
+    //PARA CONTROLAR LO DE GUARDAR O ACTUALIZAR
+  const [isEditMode, setIsEditMode] = useState(false); //Para determinar si la modal está en modo de edicion/agregar (true=editar || false=agregar)
+  const [editData, setEditData] = useState(false); //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
+  const [isDeleteMode, setIsDeleteMode] = useState(false); //Para saber si está en modo de eliminación o no
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
+
+  const dispatch = useDispatch();
 
     useEffect(() => {
       async function fetchData() {
@@ -75,6 +82,34 @@ const InfoAdTable = ({}) => {
       fetchData();
     }, []);
 
+    useEffect(() => {
+      const handleRowClick = (index) => {
+        if (index >= 0) {
+          const clickedRow = InfoAdData[index];
+        if (clickedRow) {
+          console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdEtiquetaOK);
+          setIsEditMode(true);
+          setEditData(clickedRow);
+          console.log("INDICE SELECCIONADO", index);
+          setSelectedRowIndex(index);
+          dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
+        }
+      }
+      };
+  
+      const rows = document.querySelectorAll(".MuiTableRow-root");
+  
+      rows.forEach((row, index) => {
+        row.addEventListener("click", () => handleRowClick(index - 1));
+      });
+  
+      return () => {
+        rows.forEach((row, index) => {
+          row.addEventListener("click", () => handleRowClick(index - 1));
+        });
+      };
+    }, [InfoAdData]);
+
   return (
     <Box>
       <Box>
@@ -83,18 +118,29 @@ const InfoAdTable = ({}) => {
           data={InfoAdData}
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
+          onRowClick={(rowData, index) => handleRowClick(index)}
           renderTopToolbarCustomActions={({ table }) => (
             <>
               {/* ------- ACTIONS TOOLBAR INIT ------ */}
               <Stack direction="row" sx={{ m: 1 }}>
                 <Box>
                   <Tooltip title="Agregar">
-                    <IconButton onClick={() => setInfoAdShowModal(true)}>
+                    <IconButton onClick={() => {
+                    setInfoAdShowModal(true);
+                    //setIsEditMode(false); //Poner modo de edición en falso porque vamos a agregar no editar
+                    //setEditData(null); //Poner la edición de data en nulo porque no tiene que haber nada en los textfield
+                    //setIsDeleteMode(false);
+                  }}>
                       <AddCircleIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Editar">
-                    <IconButton>
+                  <IconButton
+                      /*onClick={() => {
+                        setInfoAdShowModal(true)
+                        setIsDeleteMode(false);
+                      }}*/
+                    >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
@@ -121,8 +167,15 @@ const InfoAdTable = ({}) => {
             <InfoAdModal
               InfoAdShowModal={InfoAdShowModal}
               setInfoAdShowModal={setInfoAdShowModal}
-              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
-              onClose={() => setInfoAdShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
+              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde latabla
+              /*isEditMode={isEditMode}
+              isDeleteMode={isDeleteMode}
+              initialData={isEditMode || isDeleteMode ? editData : null} //Para que en ambos modales de eliminar y
+              row={isEditMode || isDeleteMode ? editData : null}*/
+              onClose={() => {setInfoAdShowModal(false)
+                //setIsEditMode(false); //Resetear el modo de edición
+                //setEditData(null);
+              }}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>
 
