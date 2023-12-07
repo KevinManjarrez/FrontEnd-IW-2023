@@ -90,27 +90,31 @@ const OdenesColumns = [
 
     useEffect(() => {
       const handleRowClick = (index) => {
-        // ... el resto del código de manejo de clics
+        const clickedRow = OrdenesData[index];
+        if (clickedRow) {
+          console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
+          setIsEditMode(true);
+          setEditData(clickedRow);
+          console.log("INDICE SELECCIONADO", index);
+          setSelectedRowIndex(index);
+          dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
+        }
       };
     
       const rows = document.querySelectorAll('.MuiTableRow-root');
     
-      const clickHandler = (event) => {
-        const index = Array.from(rows).indexOf(event.currentTarget);
-        handleRowClick(index);
-      };
-    
-      rows.forEach((row) => {
-        row.addEventListener('click', clickHandler);
+      rows.forEach((row, index) => {
+        row.addEventListener('click', () => handleRowClick(index - 1));
+
       });
     
-      // Limpiar event listeners
       return () => {
-        rows.forEach((row) => {
-          row.removeEventListener('click', clickHandler);
+        rows.forEach((row, index) => {
+          row.addEventListener('click', () => handleRowClick(index - 1));
         });
       };
-    }, []);
+    }, [OrdenesData]);
+
 
     //PARA LA FUNCIÓN OrdenesData en AddShippingsModal.jsx
     const handleUpdateOrdenesData = async () => {
@@ -138,7 +142,11 @@ const OdenesColumns = [
                       <Box>
                         <Tooltip title="Agregar">
                           <IconButton
-                            onClick={() => {AddOrdenesShowModal(true);
+                            onClick={() => {//AddOrdenesShowModal(true);
+                              setAddOrdenesShowModal(true);
+                          setIsEditMode(false); //Poner modo de edición en falso porque vamos a agregar no editar
+                          setEditData(null); //Poner la edición de data en nulo porque no tiene que haber nada en los textfield
+                          setIsDeleteMode(false);
                               }}>
                             <AddCircleIcon />
                           </IconButton>
