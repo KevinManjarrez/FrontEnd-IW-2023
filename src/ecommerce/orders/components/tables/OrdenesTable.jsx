@@ -11,7 +11,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 //import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
 import { getAllOrdenes} from '../../service/remote/get/GetAllOrdenes';
 //FIC: Modals
+import { useDispatch } from 'react-redux';
 import AddOrdenesModal from "../modals/AddOrdenesModal";
+import { SET_SELECTED_ORDENES_DATA } from '../../redux/silices/ordenesSlice';
+
 //FIC: Columns Table Definition.
 const OdenesColumns = [
     {
@@ -25,7 +28,7 @@ const OdenesColumns = [
       size: 30, //small column
     },
     {
-      accessorKey: "IdTipoOrdenOK",
+      accessorKey: "IdOrdenOK",
       header: "ID Orden OK",
       size: 150, //small column
     },
@@ -61,6 +64,15 @@ const OdenesColumns = [
     const [OrdenesData, setOrdenesData] = useState([]);
     //FIC: controlar el estado que muesta u oculta la modal de nuevo Instituto.
     const [AddOrdenesShowModal, setAddOrdenesShowModal] = useState(false);
+
+    //PARA CONTROLAR LO DE GUARDAR O ACTUALIZAR
+    const [isEditMode, setIsEditMode] = useState(false); //Para determinar si la modal está en modo de edicion/agregar (true=editar || false=agregar)
+    const [editData, setEditData] = useState(false);     //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
+    const [isDeleteMode, setIsDeleteMode] = useState(false); //Para saber si está en modo de eliminación o no
+    const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
       async function fetchData() {
         try {
@@ -74,6 +86,43 @@ const OdenesColumns = [
       }
       fetchData();
     }, []);
+
+
+    useEffect(() => {
+      const handleRowClick = (index) => {
+        // ... el resto del código de manejo de clics
+      };
+    
+      const rows = document.querySelectorAll('.MuiTableRow-root');
+    
+      const clickHandler = (event) => {
+        const index = Array.from(rows).indexOf(event.currentTarget);
+        handleRowClick(index);
+      };
+    
+      rows.forEach((row) => {
+        row.addEventListener('click', clickHandler);
+      });
+    
+      // Limpiar event listeners
+      return () => {
+        rows.forEach((row) => {
+          row.removeEventListener('click', clickHandler);
+        });
+      };
+    }, []);
+
+    //PARA LA FUNCIÓN OrdenesData en AddShippingsModal.jsx
+    const handleUpdateOrdenesData = async () => {
+      try {
+          const updatedOrdenesData = await getAllOrdenes();
+          setOrdenesData(updatedOrdenesData);
+          console.log("DATA EN EL editData RAAAH", editData); //Para saber que datos tiene almacenados editData
+      } catch (error) {
+          console.error("Error updating shipping data:", error);
+      }
+    };
+    
     return (
         <Box>
           <Box>
@@ -89,20 +138,27 @@ const OdenesColumns = [
                       <Box>
                         <Tooltip title="Agregar">
                           <IconButton
-                            onClick={() => AddOrdenesShowModal(true)}
-                          >
+                            onClick={() => {AddOrdenesShowModal(true);
+                              }}>
                             <AddCircleIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Editar">
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
+                        <IconButton onClick={() => {
+                          setAddOrdenesShowModal(true);
+                          setIsDeleteMode(false);
+                          }}> {/*Para que se abra la modal de actualizar SOLO despues de dar clic al boton */}
+                          <EditIcon />
+                        </IconButton>
                         </Tooltip>
                         <Tooltip title="Eliminar">
-                          <IconButton>
-                            <DeleteIcon />
-                          </IconButton>
+                        <IconButton onClick={() => {
+                          setIsDeleteMode(true);
+                          setIsEditMode(false);
+                          setAddOrdenesShowModal(true);
+                          }}>
+                          <DeleteIcon />
+                        </IconButton>
                         </Tooltip>
                         <Tooltip title="Detalles ">
                           <IconButton>
@@ -121,7 +177,16 @@ const OdenesColumns = [
             <AddOrdenesModal
               AddOrdenesShowModal={AddOrdenesShowModal}
               SetAddOrdenesShowModal={AddOrdenesShowModal}
-              onClose={() => AddOrdenesShowModal(false)}
+              onUpdateShippingData={handleUpdateOrdenesData} //PARTE DE LA FUNCION handleUpdateShippingData
+              isEditMode={isEditMode}
+              isDeleteMode={isDeleteMode}
+              initialData={isEditMode || isDeleteMode ? editData : null} //Para que en ambos modales de eliminar y 
+              row={isEditMode || isDeleteMode ? editData : null}
+              onClose={() => {AddOrdenesShowModal(false);
+                setAddOrdenesShowModal(false); //Cerrar la modal
+                setIsEditMode(false); //Resetear el modo de edición
+                setEditData(null);}
+              }
             />
           </Dialog>
         </Box>

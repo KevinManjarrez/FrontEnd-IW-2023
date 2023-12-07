@@ -1,5 +1,5 @@
 //FIC: React
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 //FIC: Material UI
 import { MaterialReactTable } from 'material-react-table';
 import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
@@ -8,46 +8,31 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 //FIC: DB
-
-//FEAK: MODALS
-import InfoAdModal from "../modals/InfoAdModal";
-
+//import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
+import { getAllOrdenes} from '../../service/remote/get/GetAllOrdenes';
+//FIC: Modals
+import AddOrdenesModal from "../modals/OrdenesEstatusModal";
 //REDUX
 import { useSelector } from "react-redux";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
 
 //FIC: Columns Table Definition.
-const InfoAdColumns = [
+const OrdenesEstatus = [
     {
-      accessorKey: "IdEtiquetaOK",
-      header: "Id Etiqueta OK",
+      accessorKey: "IdTipoEstatusOK",
+      header: "Id Tipo Estatus OK",
       size: 30, //small column
     },
     {
-      accessorKey: "IdEtiqueta",
-      header: "Id Etiqueta",
+      accessorKey: "Actual",
+      header: "Actual",
       size: 30, //small column
     },
     {
-      accessorKey: "Etiqueta",
-      header: "Etiqueta",
+      accessorKey: "Observacion",
+      header: "Observacion",
       size: 150, //small column
-    },
-    {
-      accessorKey: "Valor",
-      header: "Valor",
-      size: 50, //small column
-    },
-    {
-      accessorKey: "IdTipoSeccionOK",
-      header: "Tipo seccion",
-      size: 30, //small column
-    },
-    {
-      accessorKey: "Secuencia",
-      header: "Secuencia",
-      size: 150, //small column
-    },
+    }
   ];
 
   //FIC: Table - FrontEnd.
@@ -80,7 +65,7 @@ const InfoAdColumns = [
         <Box>
           <Box>
             <MaterialReactTable
-              columns={InfoAdColumns}
+              columns={OrdenesEstatus}
               data={InfoAdData}
               state={{isLoading: loadingTable}}
               initialState={{ density: "compact", showGlobalFilter: true }}

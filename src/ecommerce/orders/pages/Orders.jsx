@@ -4,7 +4,8 @@ import OrdenesNavTab from "../components/tabs/OrdenesNavTab";
 import OrdenesTab from "../components/tabs/OrdenesTab";
 import BusinessTab from "../components/tabs/BusinessTab";
 //import OrdenesDetalleNavTap from "../components/tabs/OrdenesDetalleNavTab"
-import OrdenesDetalleTap from "../components/tabs/OrdenesDetalleTab"
+import OrdenesDetalleTap from "../components/tabs/OrdenesDetalleTab";
+import OrdenesStatusTab from "../components/tabs/OrdenesStatusTab";
 
 
 const Ordenes = () => {
@@ -43,7 +44,7 @@ const Ordenes = () => {
             manda llamar la pagina que va dentro del tab de Business. */}
             {/*currentTabInPrincipalTab == "ORDENES_STATUS" && <BusinessTab />*/}  
 
-            {currentTabInPrincipalTab == "ORDENES_DETALLES" && <OrdenesDetalleTap/>} 
+            {/*currentTabInPrincipalTab == "ORDENES_DETALLES" && <OrdenesDetalleTap/>*/} 
 
         </Box>
     );

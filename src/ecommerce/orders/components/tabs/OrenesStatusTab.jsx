@@ -2,9 +2,9 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 //FIC:
 import OrdenesStatusTabNavTab from "./OrdenesStatusTabNavTab";
-import InfoAdTab from "./InfoAdTab";
-import FilesTab from "./FilesTab";
-import PhonsTab from "./PhonesTab";
+import InfoAdTab from "./InfoAdTab.jsx";
+import FilesTab from "./FilesTab.jsx";
+import PhonsTab from "./PhonesTab.jsx";
 import AddressesTab from "./AddressesTab.jsx";
 import WebAddressesTab from "./WebAddressesTab.jsx";
 

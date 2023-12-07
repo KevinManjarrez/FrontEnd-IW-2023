@@ -33,14 +33,17 @@ import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
 const AddOrdenesModal = ({
   AddOrdenesShowModal,
   setAddOrdenesShowModal,
+  isEditMode, isDeleteMode, row 
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
   const [Loading, setLoading] = useState(false);
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
+  const [IdGen, setIdGen] = useState(genID().replace(/-/g, "").substring(0, 12));
   //FIC: en cuanto se abre la modal llama el metodo
   //que ejecuta la API que trae todas las etiquetas de la BD.
   useEffect(() => {
@@ -65,35 +68,48 @@ const AddOrdenesModal = ({
       );
     }
   }
+
+  //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
+    // Dentro del componente AddShippingModal
+    useEffect(() => {
+      // Si estamos en modo edición, deshabilita el campo
+      if (isEditMode) {
+      formik.setFieldValue("IdOrdenOK", formik.values.IdOrdenOK); // Asegúrate de establecer el valor
+      formik.setFieldTouched("IdOrdenOK", false); // También puedes desactivar el indicador de "touched" si lo deseas
+      }
+  }, [isEditMode]);
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
     initialValues: {
-      IdInstitutoOK: "",
-      IdInstitutoBK: "",
-      DesInstituto: "",
-      Alias: "",
+      IdInstitutoOK: "9001",
+      IdNegocioOK: "1101",
+      IdOrdenOK: row ? row.IdOrdenOK : `9001-${IdGen}`, 
+      IdOrdenBK: row ? row.IdOrdenBK : "",
+      IdTipoOrdenOK: "",
+      IdRolOK: "",
       /* Matriz: "", */
-      Matriz: false,
-      IdTipoGiroOK: "",
-      IdInstitutoSupOK: "",
+      //Matriz: false,
+      IdPersonaOK: row ? row.IdPersonaOK : `9001-${IdGen}`,
     },
     validationSchema: Yup.object({
-      IdInstitutoOK: Yup.string().required("Campo requerido"),
-      IdInstitutoBK: Yup.string().required("Campo requerido"),
-      DesInstituto: Yup.string().required("Campo requerido"),
-      Alias: Yup.string().required("Campo requerido"),
+      IdOrdenOK: Yup.string()
+      .required("Campo requerido")
+      .matches(/^[a-zA-Z0-9-]+$/, 'Solo se permiten caracteres alfanuméricos'),
+      IdOrdenBK: Yup.string().required("Campo requerido"),
+      IdTipoOrdenOK: Yup.string().required("Campo requerido"),
+      IdRolOK: Yup.string().required("Campo requerido"),
       /*Matriz: Yup.string()
           .required("Campo requerido"),
           .max(1, 'Solo se permite una letra')
           .matches(/^[SN]$/, 'Solo se permite un caracter S/N'), */
-      Matriz: Yup.boolean().required("Campo requerido"),
-      IdTipoGiroOK: Yup.string()
+      //Matriz: Yup.boolean().required("Campo requerido"),
+      /*IdTipoGiroOK: Yup.string()
         .required("Campo requerido")
         .matches(
           /^[a-zA-Z0-9-]+$/,
           'Solo se permiten caracteres alfanuméricos y el simbolo "-"'
-        ),
-      IdInstitutoSupOK: Yup.string(),
+        ),*/
+        IdPersonaOK: Yup.string().required("Campo requerido"),
     }),
 
     onSubmit: async (values) => {
@@ -115,8 +131,29 @@ const AddOrdenesModal = ({
         //formik.values.IdInstitutoBK = `${formik.values.IdInstitutoOK}-${formik.values.IdCEDI}`;
         //formik.values.Matriz = autoChecksSelecteds.join(",");
 
+
+        /*if(isEditMode) {
+            console.log("SE ESTA ACTUALIZANDO RAAAAAAAAAH");
+            const Ordenes = OrdenesValues(values);
+            console.log("<<Shipping>>", Ordenes);
+            // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
+            // Utiliza la función de actualización si estamos en modo de edición
+            await UpdateOneShipping(Ordenes, row ? row.IdEntregaOK : null); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+            setMensajeExitoAlert("Envío actualizado Correctamente");
+            onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+        }else if(isDeleteMode){
+            const Shipping = OrdenesValues(values);
+            console.log("<<Shipping>>", Shipping);
+            // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
+            // Utiliza la función de eliminar si estamos en modo de eliminación
+            await DeleteOneShipping(row.IdEntregaOK);
+            setMensajeExitoAlert("Envío eliminado Correctamente");
+            onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+        }else{*/
         //FIC: mutar los valores (true o false) de Matriz.
-        values.Matriz == true ? (values.Matriz = "S") : (values.Matriz = "N");
+        
+        
+        //values.Matriz == true ? (values.Matriz = "S") : (values.Matriz = "N");
 
         //FIC: Extraer los datos de los campos de
         //la ventana modal que ya tiene Formik.
@@ -137,6 +174,7 @@ const AddOrdenesModal = ({
         //FIC: falta actualizar el estado actual (documentos/data) para que
         //despues de insertar el nuevo instituto se visualice en la tabla.
         //fetchDataInstitute();
+        //}
       } catch (e) {
         setMensajeExitoAlert(null);
         setMensajeErrorAlert("No se pudo crear el Instituto");
@@ -154,6 +192,7 @@ const AddOrdenesModal = ({
     margin: "dense",
     disabled: !!mensajeExitoAlert,
   };
+
   return (
     <Dialog
       open={AddOrdenesShowModal}
@@ -164,7 +203,7 @@ const AddOrdenesModal = ({
         {/* FIC: Aqui va el Titulo de la Modal */}
         <DialogTitle>
           <Typography>
-            <strong>Agregar Nueva Orden</strong>
+            <strong>{isEditMode ? "ACTUALIZAR ENVÍO" : isDeleteMode ? "ELIMINAR ENVÍO" : "AGREGAR ENVÍO"}</strong>
           </Typography>
         </DialogTitle>
         {/* FIC: Aqui va un tipo de control por cada Propiedad de Institutos */}
@@ -176,42 +215,42 @@ const AddOrdenesModal = ({
         >
           {/* FIC: Campos de captura o selección */}
           <TextField
-            id="IdInstitutoOK"
-            label="IdInstitutoOK*"
-            value={formik.values.IdInstitutoOK}
+            id="IdOrdenOK"
+            label="IdOrdenOK*"
+            value={formik.values.IdOrdenOK}
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
             error={
-              formik.touched.IdInstitutoOK &&
-              Boolean(formik.errors.IdInstitutoOK)
+              formik.touched.IdOrdenOK &&
+              Boolean(formik.errors.IdOrdenOK)
             }
             helperText={
-              formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK
+              formik.touched.IdOrdenOK && formik.errors.IdOrdenBK
             }
           />
           <TextField
-            id="IdInstitutoBK"
-            label="IdInstitutoBK*"
-            value={formik.values.IdInstitutoBK}
+            id="IdOrdenBK"
+            label="IdOrdenBK*"
+            value={formik.values.IdOrdenBK}
             {...commonTextFieldProps}
             error={
-              formik.touched.IdInstitutoBK &&
-              Boolean(formik.errors.IdInstitutoBK)
+              formik.touched.IdOrdenBK &&
+              Boolean(formik.errors.IdOrdenBK)
             }
             helperText={
-              formik.touched.IdInstitutoBK && formik.errors.IdInstitutoBK
+              formik.touched.IdOrdenBK && formik.errors.IdOrdenBK
             }
           />
           <TextField
-            id="DesInstituto"
-            label="DesInstituto*"
-            value={formik.values.DesInstituto}
+            id="IdTipoOrdenOK"
+            label="IdTipoOrdenOK*"
+            value={formik.values.IdTipoOrdenOK}
             {...commonTextFieldProps}
             error={
-              formik.touched.DesInstituto && Boolean(formik.errors.DesInstituto)
+              formik.touched.IdTipoOrdenOK && Boolean(formik.errors.IdTipoOrdenOK)
             }
             helperText={
-              formik.touched.DesInstituto && formik.errors.DesInstituto
+              formik.touched.IdTipoOrdenOK && formik.errors.IdTipoOrdenOK
             }
           />
           {/*
@@ -223,7 +262,7 @@ const AddOrdenesModal = ({
             error={formik.touched.Matriz && Boolean(formik.errors.Matriz)}
             helperText={formik.touched.Matriz && formik.errors.Matriz}
           />*/}
-          <FormControlLabel
+          {/*<FormControlLabel
             control={
               <Checkbox
                 checked={formik.values.Matriz}
@@ -236,7 +275,7 @@ const AddOrdenesModal = ({
               />
             }
             label="Matriz"
-          />
+          />*/}
 
           {/* <TextField
             id="IdTipoGiroOK"
@@ -250,7 +289,7 @@ const AddOrdenesModal = ({
               formik.touched.IdTipoGiroOK && formik.errors.IdTipoGiroOK
             }
           /> */}
-          <Select
+          {/*<Select
             value={formik.values.IdTipoGiroOK}
             label="Selecciona una opción"
             onChange={formik.handleChange}
@@ -268,27 +307,27 @@ const AddOrdenesModal = ({
                 </MenuItem>
               );
             })}
-          </Select>
+          </Select>*/}
           <TextField
-            id="IdInstitutoSupOK"
-            label="IdInstitutoSupOK*"
-            value={formik.values.IdInstitutoSupOK}
+            id="IdRolOK"
+            label="IdRolOK*"
+            value={formik.values.IdRolOK}
             {...commonTextFieldProps}
             error={
-              formik.touched.IdInstitutoSupOK &&
-              Boolean(formik.errors.IdInstitutoSupOK)
+              formik.touched.IdRolOK &&
+              Boolean(formik.errors.IdRolOK)
             }
             helperText={
-              formik.touched.IdInstitutoSupOK && formik.errors.IdInstitutoSupOK
+              formik.touched.IdRolOK && formik.errors.IdRolOK
             }
           />
           <TextField
-            id="Alias"
-            label="Alias*"
-            value={formik.values.Alias}
+            id="IdPersonaOK"
+            label="IdPersonaOK*"
+            value={formik.values.IdPersonaOK}
             {...commonTextFieldProps}
-            error={formik.touched.Alias && Boolean(formik.errors.Alias)}
-            helperText={formik.touched.Alias && formik.errors.Alias}
+            error={formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)}
+            helperText={formik.touched.IdPersonaOK && formik.errors.IdPersonaOK}
           />
         </DialogContent>
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
@@ -329,7 +368,7 @@ const AddOrdenesModal = ({
             disabled={!!mensajeExitoAlert}
             loading={Loading}
           >
-            <span>GUARDAR</span>
+            <span>{isEditMode ? "ACTUALIZAR" : isDeleteMode ? "ELIMINAR" : "GUARDAR"}</span>
           </LoadingButton>
         </DialogActions>
       </form>

@@ -1,11 +1,12 @@
+
 import { Box } from "@mui/material";
-import OrdenesTable from "../tables/OrdenesTable";
+import OrdenesStatusTable from "../tables/OrdenesStatusTable";
 
   export default function OrdenesTab() {
       return (
   
         <Box>
-          <OrdenesTable></OrdenesTable>
+          <OrdenesStatusTable></OrdenesStatusTable>
         </Box>
   
       );

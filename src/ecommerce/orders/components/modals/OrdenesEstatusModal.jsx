@@ -10,34 +10,30 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 //HELPERS
-import { InfoAdValues } from "../helpers/InfoAdValues";
+import { OrdenesEstatusValues } from "../../helpers/OrdenesEstatusValues";
 
 //SERVICES
-import { AddOneInfoAd } from "../services/remote/post/AddOneInfoAd";
+import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
+import { SET_SELECTED_ORDENES_DATA } from '../../redux/silices/ordenesSlice';
 
-const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedShippingData }) => {
+
+const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
-    console.log("DATA YA PASADA EN INFOADMODAL AAAAAAA",selectedShippingData); 
+    console.log("DATA YA PASADA EN INFOADMODAL AAAAAAA",selectedOrdenesData); 
 
     //FIC: Definition Formik y Yup.
     const formik = useFormik({
         initialValues: {
-            IdEtiquetaOK: "",
-            IdEtiqueta: "",
-            Etiqueta: "",
-            Valor: "",
-            IdTipoSeccionOK: "",
-            Secuencia: null,
+            IdTipoEstatusOK: "",
+            Actual: "",
+            Observacion: ""
         },
         validationSchema: Yup.object({
-            IdEtiquetaOK: Yup.string().required("Campo requerido"),
-            IdEtiqueta: Yup.string().required("Campo requerido"),
-            Etiqueta: Yup.string().required("Campo requerido"),
-            Valor: Yup.string().required("Campo requerido"),
-            IdTipoSeccionOK: Yup.string().required("Campo requerido"),
-            Secuencia: Yup.string().required("Campo requerido"),
+            IdTipoEstatusOK: Yup.string().required("Campo requerido"),
+            Actual: Yup.string().required("Campo requerido").max(1, 'Solo se permite una letra').matches(/^[SN]$/, 'Solo se permite un caracter S/N'),
+            Observacion: Yup.string().required("Campo requerido"),
         }),
         onSubmit: async (values) => {
             console.log("FIC: entro al onSubmit despues de hacer click en boton Guardar");
@@ -48,15 +44,15 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedShippingData
 
             try {
                 //Usar InfoAdValues para obtener los valores definidos del subdocumento en el archivo del mismo nombre
-                const infoAdSubdocument = InfoAdValues(values);
+                const infoAdSubdocument = OrdenesEstatusValues(values);
                 
                 //Poner el Id del documento existente para pasar al servicio POST
-                const existingShippingId = selectedShippingData.IdEntregaOK;
+                const existingOrdenesId = selectedOrdenesData.IdEntregaOK;
 
                 //Pasar los parametros al servicio de POST del archivo AddOneInfoAd.jsx
                 //En el mismo orden se pasa: Id del documento existente || Los valores que el usuario pone en el form y que se sacan
                 //de formik || El objeto con los valores predefinidos (IdEtiquetaOK, IdEtiqueta, Etiqueta,...etc...)
-                await AddOneInfoAd(existingShippingId, values, infoAdSubdocument);
+                await AddOneOrdenes(existingOrdenesId, values, infoAdSubdocument);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
             } catch (e) {
@@ -85,7 +81,7 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedShippingData
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
                     <Typography component="h6">
-                        <strong>Agregar Nueva Info Adicional</strong>
+                        <strong>Agregar Nuevo Estado de la Orden</strong>
                     </Typography>
                 </DialogTitle>
                 {/* FIC: Aqui va un tipo de control por cada Propiedad de Institutos */}
@@ -95,52 +91,28 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedShippingData
                 >
                     {/* FIC: Campos de captura o selección */}
                     <TextField
-                        id="IdEtiquetaOK"
-                        label="IdEtiquetaOK*"
-                        value={formik.values.IdEtiquetaOK}
+                        id="IdTipoEstatusOK"
+                        label="IdTipoEstatusOK*"
+                        value={formik.values.IdTipoEstatusOK}
                         {...commonTextFieldProps}
-                        error={ formik.touched.IdEtiquetaOK && Boolean(formik.errors.IdEtiquetaOK) }
-                        helperText={ formik.touched.IdEtiquetaOK && formik.errors.IdEtiquetaOK }
+                        error={ formik.touched.IdTipoEstatusOK && Boolean(formik.errors.IdTipoEstatusOK) }
+                        helperText={ formik.touched.IdTipoEstatusOK && formik.errors.IdTipoEstatusOK }
                     />
                     <TextField
-                        id="IdEtiqueta"
-                        label="IdEtiqueta*"
-                        value={formik.values.IdEtiqueta}
+                        id="Actual"
+                        label="Actual*"
+                        value={formik.values.Actual}
                         {...commonTextFieldProps}
-                        error={ formik.touched.IdEtiqueta && Boolean(formik.errors.IdEtiqueta) }
-                        helperText={ formik.touched.IdEtiqueta && formik.errors.IdEtiqueta }
+                        error={ formik.touched.Actual && Boolean(formik.errors.Actual) }
+                        helperText={ formik.touched.Actual && formik.errors.Actual }
                     />
                     <TextField
-                        id="Etiqueta"
-                        label="Etiqueta*"
-                        value={formik.values.Etiqueta}
+                        id="Observacion"
+                        label="Observacion*"
+                        value={formik.values.Observacion}
                         {...commonTextFieldProps}
-                        error={ formik.touched.Etiqueta && Boolean(formik.errors.Etiqueta) }
-                        helperText={ formik.touched.Etiqueta && formik.errors.Etiqueta }
-                    />
-                    <TextField
-                        id="Valor"
-                        label="Valor*"
-                        value={formik.values.Valor}
-                        {...commonTextFieldProps}
-                        error={ formik.touched.Valor && Boolean(formik.errors.Valor) }
-                        helperText={ formik.touched.Valor && formik.errors.Valor }
-                    />
-                    <TextField
-                        id="IdTipoSeccionOK"
-                        label="IdTipoSeccionOK*"
-                        value={formik.values.IdTipoSeccionOK}
-                        {...commonTextFieldProps}
-                        error={ formik.touched.IdTipoSeccionOK && Boolean(formik.errors.IdTipoSeccionOK) }
-                        helperText={ formik.touched.IdTipoSeccionOK && formik.errors.IdTipoSeccionOK }
-                    />
-                    <TextField
-                        id="Secuencia"
-                        label="Secuencia*"
-                        value={formik.values.Secuencia}
-                        {...commonTextFieldProps}
-                        error={ formik.touched.Secuencia && Boolean(formik.errors.Secuencia) }
-                        helperText={ formik.touched.Secuencia && formik.errors.Secuencia }
+                        error={ formik.touched.Observacion && Boolean(formik.errors.Observacion) }
+                        helperText={ formik.touched.Observacion && formik.errors.Observacion }
                     />
                 </DialogContent>
                 {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
