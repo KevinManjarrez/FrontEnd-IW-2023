@@ -3,7 +3,7 @@ export function GetAllLabels() {
     return new Promise((resolve, reject) => {
       //FIC: URL = http://localhost:8080/api/pwa/labels 
       //axios.get("http://localhost:8080/api/pwa/labels") 
-      axios.get(import.meta.env.VITE_CAT_ETIQUETAS_URL)
+      axios.get("http://127.0.0.1:3020/api/pwa/orders/labels")
         .then((response) => {
           const data = response.data;
         //console.log("getAllLabels()", data);
