@@ -30,6 +30,9 @@ import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
 
 //FIC: Services
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
+import { GetTipoOrden } from "../../../labels/services/remote/get/GetAllTipoOrden";
+import { GetRol } from "../../../labels/services/remote/get/GetRol";
+import { GetPersona } from "../../../labels/services/remote/get/GetPersona";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -47,14 +50,24 @@ const AddOrdenesModal = ({
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
   const [Loading, setLoading] = useState(false);
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
+  const [RolValuesLabel, setRolValuesLabel] = useState([]);
+  const [PersonaValuesLabel, setPersonaValuesLabel] = useState([]);
+
   const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue2, setSelectedValue2] = useState('');
+  const [selectedValue3, setSelectedValue3] = useState('');
+  
+
   const [IdGen, setIdGen] = useState(
     genID().replace(/-/g, "").substring(0, 12)
   );
   //FIC: en cuanto se abre la modal llama el metodo
   //que ejecuta la API que trae todas las etiquetas de la BD.
   useEffect(() => {
-    getDataSelectOrdenesType();
+    //getDataSelectOrdenesType();
+    getDataSelectOrdenesType2();
+    getDataSelectOrdenesType3();
+    getDataSelectOrdenesType4();
   }, []);
 
   //FIC: Ejecutamos la API que obtiene todas las etiquetas
@@ -81,8 +94,77 @@ const AddOrdenesModal = ({
       );
     }
   }
+  async function getDataSelectOrdenesType2() {
+    try {
+      const Labels = await GetTipoOrden();
+      const OrdenesTypes = Labels.find(
+        (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
+      );
+      const valores = OrdenesTypes.valores; // Obtenemos el array de valores
+      const IdValoresOK = valores.map((valor, index) => ({
+        IdValorOK: valor.IdValorOK,
+        key: index, // Asignar el índice como clave temporal
+      }));
+      setOrdenesValuesLabel(IdValoresOK);
+      console.log(OrdenesValuesLabel)
+    } catch (e) {
+      console.error(
+        "Error al obtener Etiquetas para Tipos Giros de Institutos:",
+        e
+      );
+    }
+  }
+  async function getDataSelectOrdenesType3() {
+    try {
+      const Labels = await GetRol();
+      const OrdenesTypes = Labels.find(
+        (label) => label.IdEtiquetaOK === "IdTiposRolesUsuarios"
+      );
+      const valores = OrdenesTypes.valores; // Obtenemos el array de valores
+      const IdValoresOK = valores.map((valor, index) => ({
+        IdValorOK: valor.IdValorOK,
+        key: index, // Asignar el índice como clave temporal
+      }));
+      setRolValuesLabel(IdValoresOK);
+      console.log(OrdenesValuesLabel)
+    } catch (e) {
+      console.error(
+        "Error al obtener Etiquetas para Tipos Giros de Institutos:",
+        e
+      );
+    }
+  }
+  async function getDataSelectOrdenesType4() {
+    try {
+      const Labels = await GetPersona();
+      
+      // Comprueba si Labels es un array y si tiene datos
+      if (Array.isArray(Labels) && Labels.length > 0) {
+        const IdValoresOK = Labels.map((valor, index) => ({
+          IdValorOK: valor.IdPersonaOK,
+          key: index,
+        }));
+        
+        setPersonaValuesLabel(IdValoresOK);
+        console.log(OrdenesValuesLabel);
+      } else {
+        console.log('El resultado de GetPersona() no es un array o está vacío');
+      }
+    } catch (e) {
+      console.error(
+        "Error al obtener Etiquetas para Tipos Giros de Institutos:",
+        e
+      );
+    }
+  }
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
+  };
+  const handleSelectChange2 = (event) => {
+    setSelectedValue2(event.target.value);
+  };
+  const handleSelectChange3 = (event) => {
+    setSelectedValue3(event.target.value);
   };
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
@@ -237,16 +319,36 @@ const AddOrdenesModal = ({
           dividers
         >
           {/* FIC: Campos de captura o selección */}
-
           <TextField
-            id="IdOrdenOK"
-            label="IdOrdenOK*"
-            value={formik.values.IdOrdenOK}
-            disabled
+            id="IdInstitutoOK"
+            label="IdInstitutoOK*"
+            value={formik.values.IdInstitutoOK}
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
             error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
             helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            disabled={true}
+          />
+          <TextField
+            id="IdNegocioOK"
+            label="IdNegocioOK*"
+            value={formik.values.IdNegocioOK}
+            
+            /* onChange={formik.handleChange} */
+            {...commonTextFieldProps}
+            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            disabled={true}
+          />
+          <TextField
+            id="IdOrdenOK"
+            label="IdOrdenOK*"
+            value={formik.values.IdOrdenOK}
+            /* onChange={formik.handleChange} */
+            {...commonTextFieldProps}
+            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            disabled={true}
           />
           <TextField
             id="IdOrdenBK"
@@ -263,6 +365,30 @@ const AddOrdenesModal = ({
             label="TipoOrden"
           >
             {OrdenesValuesLabel.map((option, index) => (
+              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+                {option.IdValorOK}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            id="dynamic-select2"
+            value={selectedValue2}
+            onChange={handleSelectChange2}
+            label="TipoOrden"
+          >
+            {RolValuesLabel.map((option, index) => (
+              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+                {option.IdValorOK}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            id="dynamic-select3"
+            value={selectedValue3}
+            onChange={handleSelectChange3}
+            label="TipoOrden"
+          >
+            {PersonaValuesLabel.map((option, index) => (
               <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
                 {option.IdValorOK}
               </MenuItem>
@@ -323,24 +449,6 @@ const AddOrdenesModal = ({
               );
             })}
           </Select>*/}
-          <TextField
-            id="IdRolOK"
-            label="IdRolOK*"
-            value={formik.values.IdRolOK}
-            {...commonTextFieldProps}
-            error={formik.touched.IdRolOK && Boolean(formik.errors.IdRolOK)}
-            helperText={formik.touched.IdRolOK && formik.errors.IdRolOK}
-          />
-          <TextField
-            id="IdPersonaOK"
-            label="IdPersonaOK*"
-            value={formik.values.IdPersonaOK}
-            {...commonTextFieldProps}
-            error={
-              formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)
-            }
-            helperText={formik.touched.IdPersonaOK && formik.errors.IdPersonaOK}
-          />
         </DialogContent>
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
         <DialogActions sx={{ display: "flex", flexDirection: "row" }}>
