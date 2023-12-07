@@ -1,10 +1,11 @@
 //import InstitutesTable from '../tables/InstitutesTable';
 import { Box } from "@mui/material";
+import InfoAdTable from "../tables/InfoAdTable";
 
 export default function InfoAdTab() {
-  return (
+    return (
     <Box>
-      <h2>Tab InfoAd</h2>
+      <InfoAdTable></InfoAdTable>
     </Box>
-  );
-}
+    );
+  }

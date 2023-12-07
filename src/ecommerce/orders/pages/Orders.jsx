@@ -6,6 +6,7 @@ import BusinessTab from "../components/tabs/BusinessTab";
 //import OrdenesDetalleNavTap from "../components/tabs/OrdenesDetalleNavTab"
 import OrdenesDetalleTap from "../components/tabs/OrdenesDetalleTab";
 import OrdenesStatusTab from "../components/tabs/OrdenesStatusTab";
+import InfoAdModal from "../components/tabs/InfoAdTab";
 
 
 const Ordenes = () => {
@@ -38,7 +39,7 @@ const Ordenes = () => {
 
             {currentTabInPrincipalTab == "ORDENES_STATUS" && <OrdenesStatusTab />}
 
-            {currentTabInPrincipalTab == "ORDENES_INFO" && <OrdenesTab />}
+            {currentTabInPrincipalTab == "ORDENES_INFO" && <InfoAdModal />}
 
             {/* FIC: si en el tap principal esta seleccionado el tab de NEGOCIOS
             manda llamar la pagina que va dentro del tab de Business. */}

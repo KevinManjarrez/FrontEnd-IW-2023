@@ -64,7 +64,7 @@ const AddOrdenesModal = ({
     try {
       const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
-        (label) => label.IdEtiquetaOK === "IdTipoGiros"
+        (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
       );
       setOrdenesValuesLabel(OrdenesTypes.valores);
     } catch (e) {

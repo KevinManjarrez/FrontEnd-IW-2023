@@ -18,37 +18,37 @@ import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
 
 //FIC: Columns Table Definition.
 const InfoAdColumns = [
-  {
-    accessorKey: "IdEtiquetaOK",
-    header: "Id Etiqueta OK",
-    size: 30, //small column
-  },
-  {
-    accessorKey: "IdEtiqueta",
-    header: "Id Etiqueta",
-    size: 30, //small column
-  },
-  {
-    accessorKey: "Etiqueta",
-    header: "Etiqueta",
-    size: 150, //small column
-  },
-  {
-    accessorKey: "Valor",
-    header: "Valor",
-    size: 50, //small column
-  },
-  {
-    accessorKey: "IdTipoSeccionOK",
-    header: "Tipo seccion",
-    size: 30, //small column
-  },
-  {
-    accessorKey: "Secuencia",
-    header: "Secuencia",
-    size: 150, //small column
-  },
-];
+    {
+      accessorKey: "IdEtiquetaOK",
+      header: "Id Etiqueta OK",
+      size: 30, //small column
+    },
+    {
+      accessorKey: "IdEtiqueta",
+      header: "Id Etiqueta",
+      size: 30, //small column
+    },
+    {
+      accessorKey: "Etiqueta",
+      header: "Etiqueta",
+      size: 150, //small column
+    },
+    {
+      accessorKey: "Valor",
+      header: "Valor",
+      size: 50, //small column
+    },
+    {
+      accessorKey: "IdTipoSeccionOK",
+      header: "Tipo seccion",
+      size: 30, //small column
+    },
+    {
+      accessorKey: "Secuencia",
+      header: "Secuencia",
+      size: 150, //small column
+    },
+  ];
 
 //FIC: Table - FrontEnd.
 const InfoAdTable = ({}) => {
@@ -59,23 +59,21 @@ const InfoAdTable = ({}) => {
   //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
   const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
 
-  //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
-  const selectedOrdenesData = useSelector(
-    (state) => state.shippingsReducer.selectedOrdenesData
-  );
-  // console.log(selectedShippingData);
+    //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
+    const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
+    // console.log(selectedShippingData);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setInfoAdData(selectedOrdenesData.info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
-        setLoadingTable(false);
-      } catch (error) {
-        console.error("Error al obtener info_ad:", error);
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          setInfoAdData(selectedOrdenesData.ordenes_info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
+          setLoadingTable(false);
+        } catch (error) {
+          console.error("Error al obtener ordenes_info_ad:", error);
+        }
       }
-    }
-    fetchData();
-  }, []);
+      fetchData();
+    }, []);
 
   return (
     <Box>
@@ -118,17 +116,18 @@ const InfoAdTable = ({}) => {
         />
       </Box>
 
-      {/* M O D A L E S */}
-      <Dialog open={InfoAdShowModal}>
-        <InfoAdModal
-          InfoAdShowModal={InfoAdShowModal}
-          setInfoAdShowModal={setInfoAdShowModal}
-          selectedShippingData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para
-          onClose={() => setInfoAdShowModal(false)} //usarlos en InfoAdModal y consecuentemente en formik.
-        />
-      </Dialog>
-    </Box>
-  );
-};
+          {/* M O D A L E S */}   
+          <Dialog open={InfoAdShowModal}>
+            <InfoAdModal
+              InfoAdShowModal={InfoAdShowModal}
+              setInfoAdShowModal={setInfoAdShowModal}
+              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
+              onClose={() => setInfoAdShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
+            />
+          </Dialog>
 
-export default InfoAdTable;
+        </Box>
+      );
+  };
+
+  export default InfoAdTable;

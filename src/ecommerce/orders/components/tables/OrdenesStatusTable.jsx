@@ -11,7 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 //import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
 //FIC: Modals
-import AddOrdenesModal from "../modals/OrdenesEstatusModal";
+import OrdenesEstatusModal from "../modals/OrdenesEstatusModal";
 //REDUX
 import { useSelector } from "react-redux";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
@@ -35,85 +35,86 @@ const OrdenesEstatus = [
   },
 ];
 
-//FIC: Table - FrontEnd.
-const InfoAdTable = ({}) => {
-  //FIC: controlar el estado del indicador (loading).
-  const [loadingTable, setLoadingTable] = useState(true);
-  //FIC: controlar el estado de la data de InfoAd.
-  const [InfoAdData, setInfoAdData] = useState([]);
-  //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
-  const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
+  //FIC: Table - FrontEnd.
+  const InfoAdTable = ({ }) => {
 
-  //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
-  const selectedOrdenesData = useSelector(
-    (state) => state.shippingsReducer.selectedOrdenesData
-  );
-  // console.log(selectedShippingData);
+    //FIC: controlar el estado del indicador (loading).
+    const [loadingTable, setLoadingTable] = useState(true);
+    //FIC: controlar el estado de la data de InfoAd.
+    const [InfoAdData, setInfoAdData] = useState([]);
+    //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
+    const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setInfoAdData(selectedOrdenesData.info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
-        setLoadingTable(false);
-      } catch (error) {
-        console.error("Error al obtener info_ad:", error);
+    //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
+    const selectedOrdenesData = useSelector((state) => state.shippingsReducer.selectedOrdenesData);
+    // console.log(selectedShippingData);
+
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          setInfoAdData(selectedOrdenesData.info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
+          setLoadingTable(false);
+        } catch (error) {
+          console.error("Error al obtener info_ad:", error);
+        }
       }
-    }
-    fetchData();
-  }, []);
+      fetchData();
+    }, []);
 
-  return (
-    <Box>
-      <Box>
-        <MaterialReactTable
-          columns={OrdenesEstatus}
-          data={InfoAdData}
-          state={{ isLoading: loadingTable }}
-          initialState={{ density: "compact", showGlobalFilter: true }}
-          renderTopToolbarCustomActions={({ table }) => (
-            <>
-              {/* ------- ACTIONS TOOLBAR INIT ------ */}
-              <Stack direction="row" sx={{ m: 1 }}>
-                <Box>
-                  <Tooltip title="Agregar">
-                    <IconButton onClick={() => setInfoAdShowModal(true)}>
-                      <AddCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Editar">
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Eliminar">
-                    <IconButton>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Detalles ">
-                    <IconButton>
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </Stack>
-              {/* ------- ACTIONS TOOLBAR END ------ */}
-            </>
-          )}
-        />
-      </Box>
+    return (
+        <Box>
+          <Box>
+            <MaterialReactTable
+              columns={OrdenesEstatus}
+              data={InfoAdData}
+              state={{isLoading: loadingTable}}
+              initialState={{ density: "compact", showGlobalFilter: true }}
+              renderTopToolbarCustomActions={({ table }) => (
+                  <>
+                    {/* ------- ACTIONS TOOLBAR INIT ------ */}
+                    <Stack direction="row" sx={{ m: 1 }}>
+                      <Box>
+                        <Tooltip title="Agregar">
+                          <IconButton 
+                          onClick={() => setInfoAdShowModal(true)}>
+                            <AddCircleIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Editar">
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                          <IconButton>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Detalles ">
+                          <IconButton>
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </Stack>
+                    {/* ------- ACTIONS TOOLBAR END ------ */}
+                  </>
+                )}
+            />
+          </Box>
 
-      {/* M O D A L E S */}
-      <Dialog open={InfoAdShowModal}>
-        <InfoAdModal
-          InfoAdShowModal={InfoAdShowModal}
-          setInfoAdShowModal={setInfoAdShowModal}
-          selectedShippingData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para
-          onClose={() => setInfoAdShowModal(false)} //usarlos en InfoAdModal y consecuentemente en formik.
-        />
-      </Dialog>
-    </Box>
-  );
-};
+          {/* M O D A L E S */}   
+          <Dialog open={InfoAdShowModal}>
+            <InfoAdModal
+              InfoAdShowModal={InfoAdShowModal}
+              setInfoAdShowModal={setInfoAdShowModal}
+              selectedShippingData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
+              onClose={() => setInfoAdShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
+            />
+          </Dialog>
 
-export default InfoAdTable;
+        </Box>
+      );
+  };
+
+  export default InfoAdTable;

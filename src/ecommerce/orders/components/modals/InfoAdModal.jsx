@@ -10,16 +10,16 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 //HELPERS
-import { InfoAdValues } from "../helpers/InfoAdValues";
+import { InfoAdValues } from "../../helpers/InfoAdValues";
 
 //SERVICES
-import { AddOneInfoAd } from "../services/remote/post/AddOneInfoAd";
+//import { AddOneInfoAd } from "../../services/remote/post/AddOneInfoAd";
 
-const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedShippingData }) => {
+const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
-    console.log("DATA YA PASADA EN INFOADMODAL AAAAAAA",selectedShippingData); 
+    console.log("DATA YA PASADA EN INFOADMODAL AAAAAAA",selectedOrdenesData); 
 
     //FIC: Definition Formik y Yup.
     const formik = useFormik({

@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     //DATA
 ordenesDataArr: [],
- 
+selectedOrdenesData: null,
+
   //SELECCIONES
   //instituteDataObj: {},
     //BOOLEANS/VARIABLES
@@ -17,7 +18,7 @@ SET_DATA_ORDENES: (state, action) => {
 state.ordenesDataArr = action.payload
 },
 SET_SELECTED_ORDENES_DATA: (state, action) => {
-    state.selectedShippingData = action.payload;
+    state.selectedOrdenesData = action.payload;
 },
     }
 }
