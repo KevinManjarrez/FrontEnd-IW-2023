@@ -17,12 +17,12 @@ import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
 import { SET_SELECTED_ORDENES_DATA } from '../../redux/silices/ordenesSlice';
 
 
-const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData }) => {
+const OrdenesStatusModal = ({ OrdenesStatusShowModal, setOrdenesStatusShowModal, selectedOrdenesData }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
     console.log("DATA YA PASADA EN INFOADMODAL AAAAAAA",selectedOrdenesData); 
-
+    
     //FIC: Definition Formik y Yup.
     const formik = useFormik({
         initialValues: {
@@ -73,8 +73,8 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
 
     return(
         <Dialog
-            open={InfoAdShowModal}
-            onClose={() => setInfoAdShowModal(false)}
+            open={OrdenesStatusShowModal}
+            onClose={() => setOrdenesStatusShowModal(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
@@ -139,7 +139,7 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setInfoAdShowModal(false)}
+                        onClick={() => setOrdenesStatusShowModal(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
@@ -159,4 +159,4 @@ const InfoAdModal = ({ InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData 
         </Dialog>
     );
 };
-export default InfoAdModal;
+export default OrdenesStatusModal;

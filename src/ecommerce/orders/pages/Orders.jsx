@@ -29,12 +29,12 @@ const Ordenes = () => {
                 setCurrentTabInPrincipalTab={setCurrentTabInPrincipalTab}
                 setBusinessTabInPrincipalTabIsSelected={setBusinessTabInPrincipalTabIsSelected}
                 setOrdenesDetalleTabInPricipalTabIsSelected={setOrdenesDetalleTabInPricipalTabIsSelected}
+
             />
            
             {/* FIC: si en el tap principal esta seleccionado es el tab de INSTITUTOS
             manda llamar la pagina que va dentro del tab de Institutos. */}
             {currentTabInPrincipalTab == "ORDENES" && <OrdenesTab />}
-
 
             {currentTabInPrincipalTab == "ORDENES_STATUS" && <OrdenesStatusTab />}
 
