@@ -7,17 +7,13 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
-//FIC: DB
-//import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
-import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
 //FIC: Modals
 import OrdenesEstatusModal from "../modals/OrdenesEstatusModal";
 //REDUX
 import { useSelector } from "react-redux";
-import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
 
 //FIC: Columns Table Definition.
-const OrdenesEstatus = [
+const OrdenesEstatusColumn = [
   {
     accessorKey: "IdTipoEstatusOK",
     header: "Id Tipo Estatus OK",
@@ -36,26 +32,26 @@ const OrdenesEstatus = [
 ];
 
   //FIC: Table - FrontEnd.
-  const InfoAdTable = ({ }) => {
+  const OrdenesEstatusTable = ({ }) => {
 
     //FIC: controlar el estado del indicador (loading).
     const [loadingTable, setLoadingTable] = useState(true);
     //FIC: controlar el estado de la data de InfoAd.
-    const [InfoAdData, setInfoAdData] = useState([]);
+    const [OrdenesEstatusData, setOrdenesEstatusData] = useState([]);
     //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
-    const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
+    const [OrdenesEstatusShowModal, setOrdenesEstatusShowModal] = useState(false);
 
     //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
-    const selectedOrdenesData = useSelector((state) => state.shippingsReducer.selectedOrdenesData);
+    const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
     // console.log(selectedShippingData);
 
     useEffect(() => {
       async function fetchData() {
         try {
-          setInfoAdData(selectedOrdenesData.info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
+          setOrdenesEstatusData(selectedOrdenesData.ordenes_estatus); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
           setLoadingTable(false);
         } catch (error) {
-          console.error("Error al obtener info_ad:", error);
+          console.error("Error al obtener ordenes_estatus:", error);
         }
       }
       fetchData();
@@ -65,8 +61,8 @@ const OrdenesEstatus = [
         <Box>
           <Box>
             <MaterialReactTable
-              columns={OrdenesEstatus}
-              data={InfoAdData}
+              columns={OrdenesEstatusColumn}
+              data={OrdenesEstatusData}
               state={{isLoading: loadingTable}}
               initialState={{ density: "compact", showGlobalFilter: true }}
               renderTopToolbarCustomActions={({ table }) => (
@@ -76,7 +72,8 @@ const OrdenesEstatus = [
                       <Box>
                         <Tooltip title="Agregar">
                           <IconButton 
-                          onClick={() => setInfoAdShowModal(true)}>
+                          onClick={() => setOrdenesEstatusShowModal(true)}
+                          >
                             <AddCircleIcon />
                           </IconButton>
                         </Tooltip>
@@ -104,12 +101,12 @@ const OrdenesEstatus = [
           </Box>
 
           {/* M O D A L E S */}   
-          <Dialog open={InfoAdShowModal}>
-            <InfoAdModal
-              InfoAdShowModal={InfoAdShowModal}
-              setInfoAdShowModal={setInfoAdShowModal}
-              selectedShippingData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ShippingsTable para 
-              onClose={() => setInfoAdShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
+          <Dialog open={OrdenesEstatusShowModal}>
+            <OrdenesEstatusModal
+              OrdenesEstatusShowModal={OrdenesEstatusShowModal}
+              setOrdenesEstatusShowModal={setOrdenesEstatusShowModal}
+              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
+              onClose={() => setOrdenesEstatusShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>
 
@@ -117,4 +114,4 @@ const OrdenesEstatus = [
       );
   };
 
-  export default InfoAdTable;
+  export default OrdenesEstatusTable;
