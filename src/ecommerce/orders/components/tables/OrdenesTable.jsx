@@ -2,8 +2,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 //FIC: Material UI
 import { MaterialReactTable } from "material-react-table";
-import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
+import { Box, Stack, Tooltip, Button, IconButton, Dialog, darken } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { MRT_Localization_ES } from "material-react-table/locales/es";
+import BarActionsTable from "../../../../components/elements/bars/BarActionsTable";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,10 +13,16 @@ import CachedIcon from '@mui/icons-material/Cached';
 //FIC: DB
 //import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
+import { DeleteOneOrder } from "../../service/remote/delete/DeleteOneOrder";
 //FIC: Modals
 import { useDispatch } from "react-redux";
 import AddOrdenesModal from "../modals/AddOrdenesModal";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
+//REutilizables
+import {
+  showMensajeConfirm,
+  showMensajeError,
+} from "../../../../components/elements/messages/MySwalAlerts";
 
 //FIC: Columns Table Definition.
 const OdenesColumns = [
@@ -69,15 +77,16 @@ const OrdenesTable = () => {
   const [editData, setEditData] = useState(false); //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
   const [isDeleteMode, setIsDeleteMode] = useState(false); //Para saber si está en modo de eliminación o no
   const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
-
+  const [idRowSel, setIdRowSel] = useState(null);
+  //Este funciona para extraer la informacion de la orden que seleccionemos
   const dispatch = useDispatch();
 
+  //Codigo para optener las todas ordenes
   useEffect(() => {
     async function fetchData() {
       try {
         const AllOrdenesData = await getAllOrdenes();
         setOrdenesData(AllOrdenesData);
-        //setInstitutesData(InstitutesStaticData);
         setLoadingTable(false);
       } catch (error) {
         console.error("Error al obtener las ordenes ", error);
@@ -86,31 +95,44 @@ const OrdenesTable = () => {
     fetchData();
   }, []);
 
+  //Este es el metodo para seleccionar la orden de la tabla 
   useEffect(() => {
     const handleRowClick = (index) => {
       const clickedRow = OrdenesData[index];
       if (clickedRow) {
-        //console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
+        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
         setIsEditMode(true);
         setEditData(clickedRow);
-        
+        setIdRowSel(clickedRow.IdOrdenOK);
         setSelectedRowIndex(index);
         dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
       }
     };
 
+    //Delimita el rango de selecion en la tabla
     const rows = document.querySelectorAll(".MuiTableRow-root");
 
     rows.forEach((row, index) => {
       row.addEventListener("click", () => handleRowClick(index - 1));
     });
 
-    return () => {
+    /*return () => {
       rows.forEach((row, index) => {
         row.addEventListener("click", () => handleRowClick(index - 1));
       });
-    };
+    };*/
+    
   }, [OrdenesData]);
+
+  
+
+  //Este metodo es para refrescar la tabla
+  const handleReload = async () => {
+    await fetchDataOrden?.();
+    await fetchDataOrdenSelect?.(ordenSel?.IdOrdenOK);
+    setSelectedRowIndex(null);
+    //setInfoAdSel(null);
+  };
 
   //PARA LA FUNCIÓN OrdenesData en AddShippingsModal.jsx
   const handleUpdateOrdenesData = async () => {
@@ -122,6 +144,33 @@ const OrdenesTable = () => {
     }
   };
 
+  //Para funcion Ordenes Delete en Tabla Ordenes
+  const handleDelete = async () => {
+    const res = await showMensajeConfirm(
+      `La Orden con el ID: ${
+        (idRowSel) 
+      } será eliminada, ¿Desea continuar?`
+    );
+    if (res) {
+      try {
+        let orden = idRowSel;
+        //const indexToDelete = idRowSel;
+        //orden.splice(indexToDelete, 1);
+        await DeleteOneOrder(orden);
+        /*const dataToUpdate = {
+          cat_prod_serv_info_ad: orden,
+        };
+
+        await updateProduct(productSel.IdProdServOK, dataToUpdate);*/
+        showMensajeConfirm("Orden Eliminada");
+        //handleReload();
+      } catch (e) {
+        console.error("handleDelete", e);
+        showMensajeError(`No se pudo Eliminar el Info Ad`);
+      }
+    }
+  };
+
   return (
     <Box>
       <Box>
@@ -130,10 +179,46 @@ const OrdenesTable = () => {
           data={OrdenesData}
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
+          //
+          enableColumnActions={false}
+          localization={MRT_Localization_ES}
+          enableStickyHeader
+          muiTableContainerProps={{
+            sx: {
+              "&::-webkit-scrollbar": { display: "none" },
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
+              overflow: "auto",
+              width: "parent",
+            },
+          }}
+          positionToolbarAlertBanner="bottom"
+          //
           renderTopToolbarCustomActions={({ table }) => (
-            <>
+            //<>
+            <BarActionsTable
+              handleBtnAdd={() => setAddOrdenesShowModal(true)}
+              handleBtnUpdate={() => setIsEditMode(true)}
+              handleBtnDelete={() => handleDelete()}
+              handleBtnDetails={() => console.log("clic handleBtnDetails")}
+              //handleBtnReload={() => handleReload()}
+              isItemSelected={!!selectedRowIndex}
+            />
+          )}
+            muiTableBodyRowProps={({ row }) => ({
+              onClick: () => {
+                setSelectedRowIndex(row.original);
+                setSelectedRowIndex(row.id);
+              },
+              sx: {
+                cursor: loadingTable ? "not-allowed" : "pointer",
+                backgroundColor:
+                selectedRowIndex === row.id ? darken("#EFF999", 0.01) : "inherit",
+              },
+            })}
+          />
               {/* ------- BARRA DE ACCIONES ------ */}
-              <Stack direction="row" sx={{ m: 1 }}>
+              {/*<Stack direction="row" sx={{ m: 1 }}>
                 <Box>
                   <Tooltip title="Agregar">
                     <IconButton
@@ -157,7 +242,7 @@ const OrdenesTable = () => {
                     >
                       {" "}
                       {/*Para que se abra la modal de actualizar SOLO despues de dar clic al boton */}
-                      <EditIcon />
+                      {/*<EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Eliminar">
@@ -184,9 +269,9 @@ const OrdenesTable = () => {
                 </Box>
               </Stack>
               {/* ------- BARRA DE ACCIONES FIN ------ */}
-            </>
-          )}
-        />
+            {/*</Box></>
+          //)}
+        //>*/}
       </Box>
       {/* M O D A L E S */}
       <Dialog open={AddOrdenesShowModal}>

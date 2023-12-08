@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { /*getProduct,*/ getAllOrdenes } from "../service/remote/get/GetAllOrdenes";
+import { GetOneOrderByID } from "../service/remote/get/GetOneOrderByID";
 import { getDetailRow } from "../helpers/Utils";
 //import { TOAST_EXITO } from "../../../components/elements/messages/MySwalAlerts";
 // Crear un contexto para compartir datos y funciones, y un componente que contendrá todos los estados y funciones
@@ -29,25 +30,26 @@ export const OrdenesProvider = ({ children }) => {
     }
     setLoadingTable(false);
   };
-  /*const fetchDataProductSelect = async (id) => {
+
+  const fetchDataOrdenSelect = async (id) => {
     setLoadingTable(true);
     await esperar(200);
     try {
-      setProductSel(await getProduct(id));
+      setOrdenSel(await GetOneOrderByID(id));
     } catch (error) {
       console.error(`Error al obtener producto:${id}`, error);
     }
     setLoadingTable(false);
-  };*/
-  /*const fetchPresentationSelect = async (id) => {
+  };
+  const fetchPresentationSelect = async (id) => {
     setLoadingTable(true);
     try {
-      let productoSel = await getProduct(id);
-      let presentaciones = productoSel.cat_prod_serv_presenta;
-      let presentacion = presentaciones.find((p) => {
-        return p.IdPresentaOK === presentationSel.IdPresentaOK;
-      });
-      setPresentationSel(presentacion);
+      let ordenSel = await GetOneOrderByID(id);
+      //let presentaciones = productoSel.cat_prod_serv_presenta;
+      //let presentacion = presentaciones.find((p) => {
+        //return p.IdPresentaOK === presentationSel.IdPresentaOK;
+      //});
+      //setPresentationSel(presentacion);
     } catch (error) {
       console.error(
         `Error al obtener la presentacion del producto ${id}`,
@@ -55,7 +57,7 @@ export const OrdenesProvider = ({ children }) => {
       );
     }
     setLoadingTable(false);
-  };*/
+  };
   // Pasar los datos y funciones a través del contexto
   const contextValue = {
     ordenes,
@@ -66,11 +68,11 @@ export const OrdenesProvider = ({ children }) => {
     presentationSel,
     setOrdenSel,
     fetchDataOrdenes,
-    //fetchDataProductSelect,
+    fetchDataOrdenSelect,
     //showToastExito,
     setIdSelectedRowOrden,
     setIdSelectedRowPresentation,
-    setPresentationSel,
+    //setPresentationSel,
     //fetchPresentationSelect,
   };
   return (
