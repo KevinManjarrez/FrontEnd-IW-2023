@@ -12,9 +12,6 @@ import * as Yup from "yup";
 //HELPERS
 import { OrdenesEstatusValues } from "../../helpers/OrdenesEstatusValues";
 
-//SERVICES
-import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
-import { SET_SELECTED_ORDENES_DATA } from '../../redux/silices/ordenesSlice';
 
 
 const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal, selectedOrdenesData }) => {

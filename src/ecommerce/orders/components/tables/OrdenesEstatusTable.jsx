@@ -77,16 +77,6 @@ const OrdenesEstatusColumn = [
                             <AddCircleIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Editar">
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Eliminar">
-                          <IconButton>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
                         <Tooltip title="Detalles ">
                           <IconButton>
                             <InfoIcon />

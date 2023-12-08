@@ -11,7 +11,6 @@ const OrdenesTabs = [
 const OrdenesNavTab = ({
   currentRowInOrdenesTab,
   setCurrentTabInPrincipalTab,
-  setBusinessTabInPrincipalTabIsSelected,
   setOrdenesDetalleTabInPricipalTabIsSelected,
 }) => {
   const [currenTabIndex, setCurrentTabIndex] = useState(0);
@@ -22,9 +21,8 @@ const OrdenesNavTab = ({
     setCurrentTabInPrincipalTab(e.target.innerText.toUpperCase());
     //FIC: cada que realice un click en algun tap page
     //reiniciamos el valor del tap pase de business a false.
-    setBusinessTabInPrincipalTabIsSelected(false);
     setOrdenesDetalleTabInPricipalTabIsSelected(false);
-    //FIC: opciones (subdocumentos de la coleccion principal de institutos).
+    //FIC: opciones (subdocumentos de la coleccion principal de Ordenes).
     switch (e.target.innerText.toUpperCase()) {
       case "ORDENES":
         setCurrentTabIndex(0);

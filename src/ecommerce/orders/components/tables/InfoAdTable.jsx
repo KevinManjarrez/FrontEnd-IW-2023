@@ -1,21 +1,32 @@
 //FIC: React
-import React, { useEffect, useState } from "react";
-//FIC: Material UI
-import { MaterialReactTable } from "material-react-table";
-import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import EditIcon from "@mui/icons-material/Edit";
-import InfoIcon from "@mui/icons-material/Info";
-import DeleteIcon from "@mui/icons-material/Delete";
-//FEAK: MODALS
+import React, {useMemo, useEffect, useState } from "react";
+import MaterialReactTable from "material-react-table";
+import { MRT_Localization_ES } from "material-react-table/locales/es";
+import { Box, darken, Dialog } from "@mui/material";
 import InfoAdModal from "../modals/InfoAdModal";
 
-//REDUX
-import { useDispatch } from "react-redux";
 
-import { useSelector } from "react-redux";
-import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
+import { useProductsContext } from "../../pages/ProductsProvider";
+import BarActionsTable from "../../../../components/elements/bars/BarActionsTable";
+import UpdateInfoAd from "../modals/UpdateInfoAd";
+import {
+  showMensajeConfirm,
+  showMensajeError,
+} from "../../../../components/elements/messages/MySwalAlerts";
+import { updateProduct } from "../../../../services/update";
 
+const InfoAdTable = () => {
+  const {
+    productSel,
+    loadingTable,
+    showToastExito,
+    fetchDataProductSelect,
+    fetchDataProducts,
+  } = useProductsContext();
+  const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [infoAdSel, setInfoAdSel] = useState(null);
+  const [idRowSel, setIdRowSel] = useState(null);
 //FIC: Columns Table Definition.
 const InfoAdColumns = [
     {
@@ -49,66 +60,35 @@ const InfoAdColumns = [
       size: 150, //small column
     },
   ];
-
-//FIC: Table - FrontEnd.
-const InfoAdTable = ({}) => {
-  //FIC: controlar el estado del indicador (loading).
-  const [loadingTable, setLoadingTable] = useState(true);
-  //FIC: controlar el estado de la data de InfoAd.
-  const [InfoAdData, setInfoAdData] = useState([]);
-  //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
-  const [InfoAdShowModal, setInfoAdShowModal] = useState(false);
-
-    //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
-    const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
-
-    //PARA CONTROLAR LO DE GUARDAR O ACTUALIZAR
-  const [isEditMode, setIsEditMode] = useState(false); //Para determinar si la modal está en modo de edicion/agregar (true=editar || false=agregar)
-  const [editData, setEditData] = useState(false); //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
-  const [isDeleteMode, setIsDeleteMode] = useState(false); //Para saber si está en modo de eliminación o no
-  const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
-
-  const dispatch = useDispatch();
-
-    useEffect(() => {
-      async function fetchData() {
-        try {
-          setInfoAdData(selectedOrdenesData.ordenes_info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
-          setLoadingTable(false);
-        } catch (error) {
-          console.error("Error al obtener ordenes_info_ad:", error);
-        }
+  const handleReload = async () => {
+    await fetchDataProducts();
+    await fetchDataProductSelect(productSel.IdProdServOK);
+    setIdRowSel(null);
+    setInfoAdSel(null);
+  };
+  const handleDelete = async () => {
+    const res = await showMensajeConfirm(
+      `La Info Adicional #${
+        Number(idRowSel) + 1
+      } será eliminada, ¿Desea continuar?`
+    );
+    if (res) {
+      try {
+        let infoAd = productSel.cat_prod_serv_info_ad;
+        const indexToDelete = idRowSel;
+        infoAd.splice(indexToDelete, 1);
+        const dataToUpdate = {
+          cat_prod_serv_info_ad: infoAd,
+        };
+        await updateProduct(productSel.IdProdServOK, dataToUpdate);
+        showToastExito("Info Ad Eliminado");
+        handleReload();
+      } catch (e) {
+        console.error("handleDelete", e);
+        showMensajeError(`No se pudo Eliminar el Info Ad`);
       }
-      fetchData();
-    }, []);
-
-    useEffect(() => {
-      const handleRowClick = (index) => {
-        if (index >= 0) {
-          const clickedRow = InfoAdData[index];
-        if (clickedRow) {
-          console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdEtiquetaOK);
-          setIsEditMode(true);
-          setEditData(clickedRow);
-          console.log("INDICE SELECCIONADO", index);
-          setSelectedRowIndex(index);
-          dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
-        }
-      }
-      };
-  
-      const rows = document.querySelectorAll(".MuiTableRow-root");
-  
-      rows.forEach((row, index) => {
-        row.addEventListener("click", () => handleRowClick(index - 1));
-      });
-  
-      return () => {
-        rows.forEach((row, index) => {
-          row.addEventListener("click", () => handleRowClick(index - 1));
-        });
-      };
-    }, [InfoAdData]);
+    }
+  };
 
   return (
     <Box>
@@ -118,47 +98,47 @@ const InfoAdTable = ({}) => {
           data={InfoAdData}
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
-          onRowClick={(rowData, index) => handleRowClick(index)}
+          enableColumnActions={false}
+          localization={MRT_Localization_ES}
+          enableStickyHeader
+          enableStickyFooter
+          muiTableContainerProps={{
+            sx: {
+              "&::-webkit-scrollbar": { display: "none" },
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
+              overflow: "auto",
+              width: "parent",
+            },
+          }}
+          //enableRowSelection
+          positionToolbarAlertBanner="bottom" //show selected rows count on bottom toolbar
           renderTopToolbarCustomActions={({ table }) => (
             <>
-              {/* ------- ACTIONS TOOLBAR INIT ------ */}
-              <Stack direction="row" sx={{ m: 1 }}>
-                <Box>
-                  <Tooltip title="Agregar">
-                    <IconButton onClick={() => {
-                    setInfoAdShowModal(true);
-                    //setIsEditMode(false); //Poner modo de edición en falso porque vamos a agregar no editar
-                    //setEditData(null); //Poner la edición de data en nulo porque no tiene que haber nada en los textfield
-                    //setIsDeleteMode(false);
-                  }}>
-                      <AddCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Editar">
-                  <IconButton
-                      /*onClick={() => {
-                        setInfoAdShowModal(true)
-                        setIsDeleteMode(false);
-                      }}*/
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Eliminar">
-                    <IconButton>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Detalles ">
-                    <IconButton>
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </Stack>
-              {/* ------- ACTIONS TOOLBAR END ------ */}
+              {/* ------- BARRA DE ACCIONES ------ */}
+              <BarActionsTable
+                handleBtnAdd={() => setOpenModalAdd(true)}
+                handleBtnUpdate={() => setOpenModalUpdate(true)}
+                handleBtnDelete={() => handleDelete()}
+                handleBtnDetails={() => console.log("clic handleBtnDetails")}
+                handleBtnReload={() => handleReload()}
+                isItemSelected={!!infoAdSel}
+              />
             </>
           )}
+          muiTableBodyRowProps={({ row }) => ({
+            onClick: (event) => {
+              //Si esta cargando no puedes dar clic
+              console.log(row.id, row.original);
+              setInfoAdSel(row.original);
+              setIdRowSel(row.id);
+            },
+            sx: {
+              cursor: loadingTable ? "not-allowed" : "pointer", //si esta cargando no debes dar clic aun
+              backgroundColor:
+                idRowSel === row.id ? darken("#EFF999", 0.01) : "inherit",
+            },
+          })}
         />
       </Box>
 
@@ -167,18 +147,22 @@ const InfoAdTable = ({}) => {
             <InfoAdModal
               InfoAdShowModal={InfoAdShowModal}
               setInfoAdShowModal={setInfoAdShowModal}
-              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde latabla
-              /*isEditMode={isEditMode}
-              isDeleteMode={isDeleteMode}
-              initialData={isEditMode || isDeleteMode ? editData : null} //Para que en ambos modales de eliminar y
-              row={isEditMode || isDeleteMode ? editData : null}*/
+              selectedOrdenesData={selectedOrdenesData} 
               onClose={() => {setInfoAdShowModal(false)
-                //setIsEditMode(false); //Resetear el modo de edición
-                //setEditData(null);
               }}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>
-
+          <Dialog open={openModalUpdate}>
+            <UpdateInfoAd
+              idRowSel={idRowSel}
+              infoAdSel={infoAdSel}
+              productSel={productSel}
+              openModalUpdate={openModalUpdate}
+              handleReload={handleReload}
+              setOpenModalUpdate={setOpenModalUpdate}
+              onClose={() => setOpenModalUpdate(false)}
+            />
+          </Dialog>
         </Box>
       );
   };

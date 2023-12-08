@@ -89,10 +89,10 @@ const OrdenesTable = () => {
     const handleRowClick = (index) => {
       const clickedRow = OrdenesData[index];
       if (clickedRow) {
-        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
+        //console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
         setIsEditMode(true);
         setEditData(clickedRow);
-        console.log("INDICE SELECCIONADO", index);
+        
         setSelectedRowIndex(index);
         dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
       }
