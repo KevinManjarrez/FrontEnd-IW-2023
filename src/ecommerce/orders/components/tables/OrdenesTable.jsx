@@ -117,7 +117,6 @@ const OrdenesTable = () => {
     try {
       const updatedOrdenesData = await getAllOrdenes();
       setOrdenesData(updatedOrdenesData);
-      console.log("DATA EN EL editData RAAAH", editData); //Para saber que datos tiene almacenados editData
     } catch (error) {
       console.error("Error updating shipping data:", error);
     }
@@ -193,14 +192,14 @@ const OrdenesTable = () => {
       <Dialog open={AddOrdenesShowModal}>
         <AddOrdenesModal
           AddOrdenesShowModal={AddOrdenesShowModal}
-          SetAddOrdenesShowModal={AddOrdenesShowModal}
-          onUpdateShippingData={handleUpdateOrdenesData} //PARTE DE LA FUNCION handleUpdateShippingData
+          setAddOrdenesShowModal={setAddOrdenesShowModal}
+          onUpdateOrdenesData={handleUpdateOrdenesData} //PARTE DE LA FUNCION handleUpdateShippingData
           isEditMode={isEditMode}
           isDeleteMode={isDeleteMode}
           initialData={isEditMode || isDeleteMode ? editData : null} //Para que en ambos modales de eliminar y
           row={isEditMode || isDeleteMode ? editData : null}
           onClose={() => {
-            AddOrdenesShowModal(false);
+            AddOrdenesShowModal;
             setAddOrdenesShowModal(false); //Cerrar la modal
             setIsEditMode(false); //Resetear el modo de edición
             setEditData(null);

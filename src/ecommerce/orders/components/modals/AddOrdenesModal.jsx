@@ -42,6 +42,7 @@ import { v4 as genID } from "uuid";
 const AddOrdenesModal = ({
   AddOrdenesShowModal,
   setAddOrdenesShowModal,
+  onUpdateOrdenesData,
   isEditMode,
   isDeleteMode,
   row,
