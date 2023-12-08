@@ -41,7 +41,11 @@ import { v4 as genID } from "uuid";
 
 const AddOrdenesModal = ({
   AddOrdenesShowModal,
-  setAddOrdenesShowModal
+  setAddOrdenesShowModal,
+  onUpdateOrdenesData,
+  isEditMode,
+  isDeleteMode,
+  row,
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
@@ -71,7 +75,7 @@ const AddOrdenesModal = ({
   //y filtramos solo la etiqueta de Tipos Giros de Institutos
   //para que los ID y Nombres se agreguen como items en el
   //control <Select> del campo IdTipoGiroOK en la Modal.
-  /*async function getDataSelectOrdenesType() {
+  async function getDataSelectOrdenesType() {
     try {
       const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
@@ -90,7 +94,7 @@ const AddOrdenesModal = ({
         e
       );
     }
-  }*/
+  }
   async function getDataSelectOrdenesType2() {
     try {
       const Labels = await GetTipoOrden();
@@ -123,7 +127,7 @@ const AddOrdenesModal = ({
         key: index, // Asignar el índice como clave temporal
       }));
       setRolValuesLabel(IdValoresOK);
-      console.log(RolValuesLabel)
+      console.log(OrdenesValuesLabel)
     } catch (e) {
       console.error(
         "Error al obtener Etiquetas para Tipos Giros de Institutos:",
@@ -143,7 +147,7 @@ const AddOrdenesModal = ({
         }));
         
         setPersonaValuesLabel(IdValoresOK);
-        console.log(PersonaValuesLabel);
+        console.log(OrdenesValuesLabel);
       } else {
         console.log('El resultado de GetPersona() no es un array o está vacío');
       }
@@ -154,7 +158,6 @@ const AddOrdenesModal = ({
       );
     }
   }
-  
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -167,19 +170,25 @@ const AddOrdenesModal = ({
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
   // Dentro del componente AddShippingModal
-  
+  useEffect(() => {
+    // Si estamos en modo edición, deshabilita el campo
+    if (isEditMode) {
+      formik.setFieldValue("IdOrdenOK", formik.values.IdOrdenOK); // Asegúrate de establecer el valor
+      formik.setFieldTouched("IdOrdenOK", false); // También puedes desactivar el indicador de "touched" si lo deseas
+    }
+  }, [isEditMode]);
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
     initialValues: {
       IdInstitutoOK: "9001",
       IdNegocioOK: "1101",
-      IdOrdenOK: `9001-${IdGen}`,
-      IdOrdenBK: "",
+      IdOrdenOK: row ? row.IdOrdenOK : `9001-${IdGen}`,
+      IdOrdenBK: row ? row.IdOrdenBK : "",
       IdTipoOrdenOK: "",
       IdRolOK: "",
       /* Matriz: "", */
       //Matriz: false,
-      IdPersonaOK: `9001-${IdGen}`,
+      IdPersonaOK: row ? row.IdPersonaOK : `9001-${IdGen}`,
     },
     validationSchema: Yup.object({
       IdOrdenOK: Yup.string()
@@ -207,8 +216,6 @@ const AddOrdenesModal = ({
 
     onSubmit: async (values) => {
       //FIC: mostramos el Loading.
-      setMensajeExitoAlert("");
-      setMensajeErrorAlert("");
       setLoading(true);
 
       //FIC: notificamos en consola que si se llamo y entro al evento.
@@ -292,12 +299,16 @@ const AddOrdenesModal = ({
       onClose={() => setAddOrdenesShowModal(false)}
       fullWidth
     >
-      <form onSubmit={(e) => { console.log('Form Submitted!'); formik.handleSubmit(e); }}>
+      <form onSubmit={formik.handleSubmit}>
         {/* FIC: Aqui va el Titulo de la Modal */}
         <DialogTitle>
           <Typography>
             <strong>
-              Agregar nueva Orden
+              {isEditMode
+                ? "ACTUALIZAR ENVÍO"
+                : isDeleteMode
+                ? "ELIMINAR ENVÍO"
+                : "AGREGAR ENVÍO"}
             </strong>
           </Typography>
         </DialogTitle>
@@ -315,8 +326,8 @@ const AddOrdenesModal = ({
             value={formik.values.IdInstitutoOK}
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
-            error={formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK)}
-            helperText={formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK}
+            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
             disabled={true}
           />
           <TextField
@@ -326,8 +337,8 @@ const AddOrdenesModal = ({
             
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
-            error={formik.touched.IdNegocioOK && Boolean(formik.errors.IdNegocioOK)}
-            helperText={formik.touched.IdNegocioOK && formik.errors.IdNegocioOK}
+            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
             disabled={true}
           />
           <TextField
@@ -443,6 +454,8 @@ const AddOrdenesModal = ({
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
         <DialogActions sx={{ display: "flex", flexDirection: "row" }}>
           <Box m="auto">
+            {console.log("mensajeExitoAlert", mensajeExitoAlert)}
+            {console.log("mensajeErrorAlert", mensajeErrorAlert)}
             {mensajeErrorAlert && (
               <Alert severity="error">
                 <b>¡ERROR!</b> ─ {mensajeErrorAlert}
@@ -473,11 +486,15 @@ const AddOrdenesModal = ({
             startIcon={<SaveIcon />}
             variant="contained"
             type="submit"
-            disabled={formik.isSubmitting || !!mensajeExitoAlert || Loading}
+            disabled={!!mensajeExitoAlert}
             loading={Loading}
           >
             <span>
-              Guardar
+              {isEditMode
+                ? "ACTUALIZAR"
+                : isDeleteMode
+                ? "ELIMINAR"
+                : "GUARDAR"}
             </span>
           </LoadingButton>
         </DialogActions>

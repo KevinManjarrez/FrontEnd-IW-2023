@@ -11,5 +11,8 @@ export const OrdenesValues = (values)=>{
   Ordenes.IdTipoOrdenOK=values.IdTipoOrdenOK,
   Ordenes.IdRolOK=values.IdRolOK,
   Ordenes.IdPersonaOK=values.IdPersonaOK
+  Ordenes.ordenes_estatus= [],
+  Ordenes.ordenes_info_ad= [],
+  Ordenes.ordenes_detalle= []
   return Ordenes
 }

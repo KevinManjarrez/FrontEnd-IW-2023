@@ -17,6 +17,7 @@ import { DeleteOneOrder } from "../../service/remote/delete/DeleteOneOrder";
 //FIC: Modals
 import { useDispatch } from "react-redux";
 import AddOrdenesModal from "../modals/AddOrdenesModal";
+import PatchOrdenesModal from "../modals/PatchOrdenesModal";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
 //REutilizables
 import {
@@ -71,6 +72,8 @@ const OrdenesTable = () => {
   const [OrdenesData, setOrdenesData] = useState([]);
   //FIC: controlar el estado que muesta u oculta la modal de nuevo Instituto.
   const [AddOrdenesShowModal, setAddOrdenesShowModal] = useState(false);
+  //Constante para patch model
+  const [PatchOrdenesShowModal, setPatchOrdenesShowModal] = useState(false);
 
   //PARA CONTROLAR LO DE GUARDAR O ACTUALIZAR
   const [isEditMode, setIsEditMode] = useState(false); //Para determinar si la modal está en modo de edicion/agregar (true=editar || false=agregar)
@@ -198,7 +201,7 @@ const OrdenesTable = () => {
             //<>
             <BarActionsTable
               handleBtnAdd={() => setAddOrdenesShowModal(true)}
-              handleBtnUpdate={() => setIsEditMode(true)}
+              handleBtnUpdate={() => setPatchOrdenesShowModal(true)}
               handleBtnDelete={() => handleDelete()}
               handleBtnDetails={() => console.log("clic handleBtnDetails")}
               //handleBtnReload={() => handleReload()}
@@ -278,18 +281,27 @@ const OrdenesTable = () => {
         <AddOrdenesModal
           AddOrdenesShowModal={AddOrdenesShowModal}
           setAddOrdenesShowModal={setAddOrdenesShowModal}
-          onUpdateOrdenesData={handleUpdateOrdenesData} //PARTE DE LA FUNCION handleUpdateShippingData
+          onClose={() => {
+            AddOrdenesShowModal;
+            setAddOrdenesShowModal(false);
+          }}
+        />
+      </Dialog>
+      <Dialog open={PatchOrdenesShowModal}>
+        <PatchOrdenesModal
+          setPatchOrdenesShowModal={setPatchOrdenesShowModal}
+          onUpdateOrdenesData={handleUpdateOrdenesData}
           isEditMode={isEditMode}
           isDeleteMode={isDeleteMode}
           initialData={isEditMode || isDeleteMode ? editData : null} //Para que en ambos modales de eliminar y
           row={isEditMode || isDeleteMode ? editData : null}
           onClose={() => {
             AddOrdenesShowModal;
-            setAddOrdenesShowModal(false); //Cerrar la modal
+            setPatchOrdenesShowModal(false); //Cerrar la modal
             setIsEditMode(false); //Resetear el modo de edición
             setEditData(null);
           }}
-        />
+          />
       </Dialog>
     </Box>
   );
