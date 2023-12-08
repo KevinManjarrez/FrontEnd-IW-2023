@@ -1,33 +1,35 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { getProduct, getProducts } from "../../../services/get";
-import { esperar } from "../../../helpers/utils";
-import { TOAST_EXITO } from "../../../components/elements/messages/MyToastAlerts";
+import { /*getProduct,*/ getAllOrdenes } from "../service/remote/get/GetAllOrdenes";
+import { getDetailRow } from "../helpers/Utils";
+//import { TOAST_EXITO } from "../../../components/elements/messages/MySwalAlerts";
 // Crear un contexto para compartir datos y funciones, y un componente que contendrá todos los estados y funciones
-const ProductsContext = createContext();
-export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState([]);
-  const [productSel, setProductSel] = useState(null);
+const OrdenesContext = createContext();
+export const OrdenesProvider = ({ children }) => {
+  const [ordenes, setOrdenes] = useState([]);
+  const [ordenSel, setOrdenSel] = useState(null);
   const [presentationSel, setPresentationSel] = useState(null);
   const [loadingTable, setLoadingTable] = useState(false);
-  const [idSelectedRowProduct, setIdSelectedRowProduct] = useState(null);
+  const [idSelectedRowOrden, setIdSelectedRowOrden] = useState(null);
   const [idSelectedRowPresentation, setIdSelectedRowPresentation] =
     useState(null);
-  const showToastExito = (mensaje) => TOAST_EXITO(mensaje);
+  //const showToastExito = (mensaje) => TOAST_EXITO(mensaje);
   useEffect(() => {
-    fetchDataProducts();
+    fetchDataOrdenes();
   }, []);
-  const fetchDataProducts = async (id) => {
+
+  const fetchDataOrdenes = async (id) => {
     setLoadingTable(true);
     await esperar(300);
+
     try {
-      setProducts(await getProducts());
+      setOrdenes(await getAllOrdenes());
     } catch (error) {
       console.error(`Error al obtener los productos`, error);
     }
     setLoadingTable(false);
   };
-  const fetchDataProductSelect = async (id) => {
+  /*const fetchDataProductSelect = async (id) => {
     setLoadingTable(true);
     await esperar(200);
     try {
@@ -36,8 +38,8 @@ export const ProductsProvider = ({ children }) => {
       console.error(`Error al obtener producto:${id}`, error);
     }
     setLoadingTable(false);
-  };
-  const fetchPresentationSelect = async (id) => {
+  };*/
+  /*const fetchPresentationSelect = async (id) => {
     setLoadingTable(true);
     try {
       let productoSel = await getProduct(id);
@@ -53,29 +55,29 @@ export const ProductsProvider = ({ children }) => {
       );
     }
     setLoadingTable(false);
-  };
+  };*/
   // Pasar los datos y funciones a través del contexto
   const contextValue = {
-    products,
-    productSel,
+    ordenes,
+    ordenSel,
     loadingTable,
-    idSelectedRowProduct,
+    idSelectedRowProduct: idSelectedRowOrden,
     idSelectedRowPresentation,
     presentationSel,
-    setProductSel,
-    fetchDataProducts,
-    fetchDataProductSelect,
-    showToastExito,
-    setIdSelectedRowProduct,
+    setOrdenSel,
+    fetchDataOrdenes,
+    //fetchDataProductSelect,
+    //showToastExito,
+    setIdSelectedRowOrden,
     setIdSelectedRowPresentation,
     setPresentationSel,
-    fetchPresentationSelect,
+    //fetchPresentationSelect,
   };
   return (
-    <ProductsContext.Provider value={contextValue}>
+    <OrdenesContext.Provider value={contextValue}>
       {children} <ToastContainer />
-    </ProductsContext.Provider>
+    </OrdenesContext.Provider>
   );
 };
 // Crear un hook personalizado para acceder al contexto
-export const useProductsContext = () => useContext(ProductsContext);
+export const useOrdenesContext = () => useContext(OrdenesContext);

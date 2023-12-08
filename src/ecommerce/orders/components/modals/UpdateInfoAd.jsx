@@ -14,7 +14,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { updateProduct } from "../../../../services/update";
+import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
 const UpdateInfoAd = ({
   infoAdSel,
   productSel,

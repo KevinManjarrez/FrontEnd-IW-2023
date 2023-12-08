@@ -1,28 +1,28 @@
 //FIC: React
 import React, {useMemo, useEffect, useState } from "react";
-import MaterialReactTable from "material-react-table";
+import {MaterialReactTable} from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { Box, darken, Dialog } from "@mui/material";
 import InfoAdModal from "../modals/InfoAdModal";
 
 
-import { useProductsContext } from "../../pages/ProductsProvider";
+import { useOrdenesContext } from "../../pages/ProductsProvider";
 import BarActionsTable from "../../../../components/elements/bars/BarActionsTable";
 import UpdateInfoAd from "../modals/UpdateInfoAd";
 import {
   showMensajeConfirm,
   showMensajeError,
 } from "../../../../components/elements/messages/MySwalAlerts";
-import { updateProduct } from "../../../../services/update";
+import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
 
 const InfoAdTable = () => {
   const {
-    productSel,
+    ordenSel,
     loadingTable,
     showToastExito,
-    fetchDataProductSelect,
-    fetchDataProducts,
-  } = useProductsContext();
+    fetchDataOrdenSelect,
+    fetchDataOrden,
+  } = useOrdenesContext();
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [infoAdSel, setInfoAdSel] = useState(null);
@@ -60,12 +60,14 @@ const InfoAdColumns = [
       size: 150, //small column
     },
   ];
+
   const handleReload = async () => {
-    await fetchDataProducts();
-    await fetchDataProductSelect(productSel.IdProdServOK);
+    await fetchDataOrden();
+    await fetchDataOrdenSelect(ordenSel.IdOrdenOK);
     setIdRowSel(null);
     setInfoAdSel(null);
   };
+
   const handleDelete = async () => {
     const res = await showMensajeConfirm(
       `La Info Adicional #${
@@ -74,13 +76,13 @@ const InfoAdColumns = [
     );
     if (res) {
       try {
-        let infoAd = productSel.cat_prod_serv_info_ad;
+        let infoAd = ordenSel.InfoAdModel;
         const indexToDelete = idRowSel;
         infoAd.splice(indexToDelete, 1);
         const dataToUpdate = {
-          cat_prod_serv_info_ad: infoAd,
+          InfoAdModel: infoAd,
         };
-        await updateProduct(productSel.IdProdServOK, dataToUpdate);
+        await updateProduct(ordenSel.IdOrdenOK, dataToUpdate);
         showToastExito("Info Ad Eliminado");
         handleReload();
       } catch (e) {
@@ -92,10 +94,10 @@ const InfoAdColumns = [
 
   return (
     <Box>
-      <Box>
+      <Box className="box-tables">
         <MaterialReactTable
           columns={InfoAdColumns}
-          data={InfoAdData}
+          data={ordenSel.InfoAdModel}
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
           enableColumnActions={false}
@@ -143,20 +145,20 @@ const InfoAdColumns = [
       </Box>
 
           {/* M O D A L E S */}   
-          <Dialog open={InfoAdShowModal}>
+          <Dialog open={openModalAdd}>
             <InfoAdModal
-              InfoAdShowModal={InfoAdShowModal}
-              setInfoAdShowModal={setInfoAdShowModal}
-              selectedOrdenesData={selectedOrdenesData} 
-              onClose={() => {setInfoAdShowModal(false)
-              }}   //usarlos en InfoAdModal y consecuentemente en formik.
+              productSel={ordenSel}
+              openModalAdd={openModalAdd}
+              setOpenModalAdd={setOpenModalAdd}
+              handleReload={handleReload}
+              onClose={() => setOpenModalAdd(false)}
             />
           </Dialog>
           <Dialog open={openModalUpdate}>
             <UpdateInfoAd
               idRowSel={idRowSel}
               infoAdSel={infoAdSel}
-              productSel={productSel}
+              productSel={ordenSel}
               openModalUpdate={openModalUpdate}
               handleReload={handleReload}
               setOpenModalUpdate={setOpenModalUpdate}

@@ -23,9 +23,10 @@ import {
 import { LoadingButton } from "@mui/lab";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
-import { cat_prod_serv_info_ad } from "../../../../models/producto";
-import { updateProduct } from "../../../../services/update";
-import useEtiquetas from "../../../../hooks/services/useEtiquetas";
+
+import { InfoAdModel } from "../../models/InfoAdModel";
+import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
+import useEtiquetas from "../../../orders/service/remote/useEtiquetas";
 import MyAutoComplete from "../../../../components/elements/atomos/MyAutoComplete";
 
 //FIC: Formik - Yup
@@ -106,7 +107,7 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
           console.log(values);
 
             try {
-                let model = cat_prod_serv_info_ad();
+                let model = InfoAdModel();
                 const infoAd = {
                 ...model,
                 ...values,

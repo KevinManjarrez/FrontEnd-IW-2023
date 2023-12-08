@@ -15,7 +15,8 @@ const OrdenesNavTab = ({
 }) => {
   const [currenTabIndex, setCurrentTabIndex] = useState(0);
 
-  const handleChange = (e) => {
+  const handleChange = (e,newIndex) => {
+    setCurrentTabIndex((prevIndex) => newIndex);
     console.log("entro al handleChange", e.target.innerText.toUpperCase());
     //FIC: actualizar el nombre de la pestaña seleccionada.
     setCurrentTabInPrincipalTab(e.target.innerText.toUpperCase());
