@@ -178,7 +178,7 @@ const OrdenesTable = () => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Recargar">
-                    <IconButton onClick={fetchData}>
+                    <IconButton>
                       <CachedIcon/>
                     </IconButton>
                   </Tooltip>
