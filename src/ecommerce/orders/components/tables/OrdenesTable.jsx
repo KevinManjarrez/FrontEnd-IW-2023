@@ -118,13 +118,6 @@ const OrdenesTable = () => {
     rows.forEach((row, index) => {
       row.addEventListener("click", () => handleRowClick(index - 1));
     });
-
-    /*return () => {
-      rows.forEach((row, index) => {
-        row.addEventListener("click", () => handleRowClick(index - 1));
-      });
-    };*/
-    
   }, [OrdenesData]);
 
   
@@ -182,7 +175,6 @@ const OrdenesTable = () => {
           data={OrdenesData}
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
-          //
           enableColumnActions={false}
           localization={MRT_Localization_ES}
           enableStickyHeader
@@ -196,9 +188,7 @@ const OrdenesTable = () => {
             },
           }}
           positionToolbarAlertBanner="bottom"
-          //
           renderTopToolbarCustomActions={({ table }) => (
-            //<>
             <BarActionsTable
               handleBtnAdd={() => setAddOrdenesShowModal(true)}
               handleBtnUpdate={() => setPatchOrdenesShowModal(true)}
@@ -220,62 +210,8 @@ const OrdenesTable = () => {
               },
             })}
           />
-              {/* ------- BARRA DE ACCIONES ------ */}
-              {/*<Stack direction="row" sx={{ m: 1 }}>
-                <Box>
-                  <Tooltip title="Agregar">
-                    <IconButton
-                      onClick={() => {
-                        //AddOrdenesShowModal(true);
-                        setAddOrdenesShowModal(true);
-                        setIsEditMode(false); //Poner modo de edición en falso porque vamos a agregar no editar
-                        setEditData(null); //Poner la edición de data en nulo porque no tiene que haber nada en los textfield
-                        setIsDeleteMode(false);
-                      }}
-                    >
-                      <AddCircleIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Editar">
-                    <IconButton
-                      onClick={() => {
-                        setAddOrdenesShowModal(true);
-                        setIsDeleteMode(false);
-                      }}
-                    >
-                      {" "}
-                      {/*Para que se abra la modal de actualizar SOLO despues de dar clic al boton */}
-                      {/*<EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Eliminar">
-                    <IconButton
-                      onClick={() => {
-                        setIsDeleteMode(true);
-                        setIsEditMode(false);
-                        setAddOrdenesShowModal(true);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Detalles ">
-                    <IconButton>
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Recargar">
-                    <IconButton>
-                      <CachedIcon/>
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </Stack>
-              {/* ------- BARRA DE ACCIONES FIN ------ */}
-            {/*</Box></>
-          //)}
-        //>*/}
       </Box>
+
       {/* M O D A L E S */}
       <Dialog open={AddOrdenesShowModal}>
         <AddOrdenesModal
