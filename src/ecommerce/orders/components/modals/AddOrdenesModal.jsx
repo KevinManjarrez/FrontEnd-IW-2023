@@ -62,12 +62,7 @@ const AddOrdenesModal = ({
   );
   //FIC: en cuanto se abre la modal llama el metodo
   //que ejecuta la API que trae todas las etiquetas de la BD.
-  useEffect(() => {
-    //getDataSelectOrdenesType();
-    getDataSelectOrdenesType2();
-    getDataSelectOrdenesType3();
-    getDataSelectOrdenesType4();
-  }, []);
+  
 
   //FIC: Ejecutamos la API que obtiene todas las etiquetas
   //y filtramos solo la etiqueta de Tipos Giros de Institutos
@@ -93,6 +88,8 @@ const AddOrdenesModal = ({
       );
     }
   }*/
+
+
   async function getDataSelectOrdenesType2() {
     try {
       const Labels = await GetTipoOrden();
@@ -156,9 +153,18 @@ const AddOrdenesModal = ({
       );
     }
   }
+
+  useEffect(() => {
+    //getDataSelectOrdenesType();
+    getDataSelectOrdenesType2();
+    getDataSelectOrdenesType3();
+    getDataSelectOrdenesType4();
+  }, []);
   
   const handleSelectChange = (event) => {
+    console.log("Nuevo valor seleccionado:", event.target.value);
     setSelectedValue(event.target.value);
+      console.log("formik.values:", formik.values);
   };
   const handleSelectChange2 = (event) => {
     setSelectedValue2(event.target.value);
@@ -174,9 +180,10 @@ const AddOrdenesModal = ({
   const handleReload = async () => {
     const AllOrdenesData = await getAllOrdenes();
     setOrdenesData(AllOrdenesData);
-    setSelectedRowIndex(null);
     //setInfoAdSel(null);
   };
+
+  
   
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
@@ -185,11 +192,11 @@ const AddOrdenesModal = ({
       IdNegocioOK: "1101",
       IdOrdenOK: `9001-${IdGen}`,
       IdOrdenBK: "",
-      IdTipoOrdenOK: "",
+      IdTipoOrdenOK: selectedValue,
       IdRolOK: "",
       /* Matriz: "", */
       //Matriz: false,
-      IdPersonaOK: `9001-${IdGen}`,
+      IdPersonaOK: "",
     },
     validationSchema: Yup.object({
       IdOrdenOK: Yup.string()
@@ -250,6 +257,7 @@ const AddOrdenesModal = ({
     disabled: !!mensajeExitoAlert,
   };
 
+  
   return (
     <Dialog
       open={AddOrdenesShowModal}
@@ -314,21 +322,26 @@ const AddOrdenesModal = ({
           />
           <Select
             id="dynamic-select"
-            value={selectedValue}
-            onChange={handleSelectChange}
+            value={formik.values.IdTipoOrdenOK}
+            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onBlur={formik.handleBlur}
+            name="IdTipoOrdenOK"
             label="TipoOrden"
           >
-            {OrdenesValuesLabel.map((option, index) => (
+            {OrdenesValuesLabel.map((option, index) => {return(
               <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
                 {option.IdValorOK}
               </MenuItem>
-            ))}
+            );
+            })}
           </Select>
           <Select
-            id="dynamic-select2"
-            value={selectedValue2}
-            onChange={handleSelectChange2}
-            label="TipoOrden"
+            id="dynamic-select"
+            value={formik.values.IdRolOK}
+            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onBlur={formik.handleBlur}
+            name="IdRolOK"
+            label="Rol"
           >
             {RolValuesLabel.map((option, index) => (
               <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
@@ -337,9 +350,11 @@ const AddOrdenesModal = ({
             ))}
           </Select>
           <Select
-            id="dynamic-select3"
-            value={selectedValue3}
-            onChange={handleSelectChange3}
+            id="dynamic-select"
+            value={formik.values.IdPersonaOK}
+            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onBlur={formik.handleBlur}
+            name="IdPersonaOK"
             label="TipoOrden"
           >
             {PersonaValuesLabel.map((option, index) => (

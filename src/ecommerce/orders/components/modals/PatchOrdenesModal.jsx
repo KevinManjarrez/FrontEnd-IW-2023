@@ -159,7 +159,6 @@ const PatchOrdenesModal = ({
   }*/
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
-    console.log(selectedValue);
   };
   /*const handleSelectChange2 = (event) => {
     setSelectedValue2(event.target.value);
