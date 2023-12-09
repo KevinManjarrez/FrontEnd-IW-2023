@@ -192,7 +192,7 @@ const AddOrdenesModal = ({
       IdNegocioOK: "1101",
       IdOrdenOK: `9001-${IdGen}`,
       IdOrdenBK: "",
-      IdTipoOrdenOK: selectedValue,
+      IdTipoOrdenOK: "",
       IdRolOK: "",
       /* Matriz: "", */
       //Matriz: false,
