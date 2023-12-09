@@ -131,8 +131,8 @@ const OrdenesTable = () => {
 
   //Este metodo es para refrescar la tabla
   const handleReload = async () => {
-    await fetchDataOrden?.();
-    await fetchDataOrdenSelect?.(ordenSel?.IdOrdenOK);
+    const AllOrdenesData = await getAllOrdenes();
+    setOrdenesData(AllOrdenesData);
     setSelectedRowIndex(null);
     //setInfoAdSel(null);
   };
@@ -166,7 +166,7 @@ const OrdenesTable = () => {
 
         await updateProduct(productSel.IdProdServOK, dataToUpdate);*/
         showMensajeConfirm("Orden Eliminada");
-        //handleReload();
+        handleReload();
       } catch (e) {
         console.error("handleDelete", e);
         showMensajeError(`No se pudo Eliminar el Info Ad`);
@@ -204,7 +204,7 @@ const OrdenesTable = () => {
               handleBtnUpdate={() => setPatchOrdenesShowModal(true)}
               handleBtnDelete={() => handleDelete()}
               handleBtnDetails={() => console.log("clic handleBtnDetails")}
-              //handleBtnReload={() => handleReload()}
+              handleBtnReload={() => handleReload()}
               isItemSelected={!!selectedRowIndex}
             />
           )}

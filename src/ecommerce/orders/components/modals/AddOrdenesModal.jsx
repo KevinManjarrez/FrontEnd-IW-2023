@@ -278,7 +278,7 @@ const AddOrdenesModal = ({
       onClose={() => setAddOrdenesShowModal(false)}
       fullWidth
     >
-      <form onSubmit={(e) => { console.log('Form Submitted!'); formik.handleSubmit(e); }}>
+      <form onSubmit={(e) => {formik.handleSubmit(e); }}>
         {/* FIC: Aqui va el Titulo de la Modal */}
         <DialogTitle>
           <Typography>
