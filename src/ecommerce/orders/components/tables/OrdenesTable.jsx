@@ -74,6 +74,7 @@ const OrdenesTable = () => {
   const [AddOrdenesShowModal, setAddOrdenesShowModal] = useState(false);
   //Constante para patch model
   const [PatchOrdenesShowModal, setPatchOrdenesShowModal] = useState(false);
+  const [editData, setEditData] = useState(false);     //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
 
   //PARA CONTROLAR LO DE GUARDAR O ACTUALIZAR
   const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
@@ -103,6 +104,7 @@ const OrdenesTable = () => {
         console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
         setIdRowSel(clickedRow.IdOrdenOK);
         setSelectedRowIndex(index);
+        setEditData(clickedRow);
         dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
       }
     };
@@ -123,16 +125,6 @@ const OrdenesTable = () => {
     setOrdenesData(AllOrdenesData);
     setSelectedRowIndex(null);
     //setInfoAdSel(null);
-  };
-
-  //PARA LA FUNCIÓN OrdenesData en AddShippingsModal.jsx
-  const handleUpdateOrdenesData = async () => {
-    try {
-      const updatedOrdenesData = await getAllOrdenes();
-      setOrdenesData(updatedOrdenesData);
-    } catch (error) {
-      console.error("Error updating shipping data:", error);
-    }
   };
 
   //Para funcion Ordenes Delete en Tabla Ordenes
@@ -221,11 +213,12 @@ const OrdenesTable = () => {
       <Dialog open={PatchOrdenesShowModal}>
         <PatchOrdenesModal
           setPatchOrdenesShowModal={setPatchOrdenesShowModal}
-          onUpdateOrdenesData={handleUpdateOrdenesData}
+          row={editData}         //actualizar se ponga la info si es que hay
           onClose={() => {
-            AddOrdenesShowModal;
+            PatchOrdenesShowModal;
             setPatchOrdenesShowModal(false); //Cerrar la modal
           }}
+          
           />
       </Dialog>
     </Box>
