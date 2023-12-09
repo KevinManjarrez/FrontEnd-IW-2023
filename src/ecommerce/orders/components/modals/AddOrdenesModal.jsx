@@ -189,20 +189,6 @@ const AddOrdenesModal = ({
           "Solo se permiten caracteres alfanuméricos"
         ),
       IdOrdenBK: Yup.string().required("Campo requerido"),
-      IdTipoOrdenOK: Yup.string().required("Campo requerido"),
-      IdRolOK: Yup.string().required("Campo requerido"),
-      /*Matriz: Yup.string()
-          .required("Campo requerido"),
-          .max(1, 'Solo se permite una letra')
-          .matches(/^[SN]$/, 'Solo se permite un caracter S/N'), */
-      //Matriz: Yup.boolean().required("Campo requerido"),
-      /*IdTipoGiroOK: Yup.string()
-        .required("Campo requerido")
-        .matches(
-          /^[a-zA-Z0-9-]+$/,
-          'Solo se permiten caracteres alfanuméricos y el simbolo "-"'
-        ),*/
-      IdPersonaOK: Yup.string().required("Campo requerido"),
     }),
 
     onSubmit: async (values) => {
