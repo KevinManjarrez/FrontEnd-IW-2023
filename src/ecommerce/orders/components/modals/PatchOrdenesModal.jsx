@@ -44,7 +44,6 @@ import { v4 as genID } from "uuid";
 const PatchOrdenesModal = ({
   PatchOrdenesShowModal,
   setPatchOrdenesShowModal,
-  onUpdateOrdenesData,
   row,
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
@@ -64,18 +63,18 @@ const PatchOrdenesModal = ({
   );
   //FIC: en cuanto se abre la modal llama el metodo
   //que ejecuta la API que trae todas las etiquetas de la BD.
-  /*useEffect(() => {
+  useEffect(() => {
     //getDataSelectOrdenesType();
     getDataSelectOrdenesType2();
-    getDataSelectOrdenesType3();
-    getDataSelectOrdenesType4();
+  //  getDataSelectOrdenesType3();
+  //  getDataSelectOrdenesType4();
   }, []);
 
   //FIC: Ejecutamos la API que obtiene todas las etiquetas
   //y filtramos solo la etiqueta de Tipos Giros de Institutos
   //para que los ID y Nombres se agreguen como items en el
   //control <Select> del campo IdTipoGiroOK en la Modal.
-  async function getDataSelectOrdenesType() {
+  /*async function getDataSelectOrdenesType() {
     try {
       const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
@@ -94,7 +93,7 @@ const PatchOrdenesModal = ({
         e
       );
     }
-  }
+  }*/
   async function getDataSelectOrdenesType2() {
     try {
       const Labels = await GetTipoOrden();
@@ -114,7 +113,7 @@ const PatchOrdenesModal = ({
         e
       );
     }
-  }
+  }/*
   async function getDataSelectOrdenesType3() {
     try {
       const Labels = await GetRol();
@@ -157,11 +156,12 @@ const PatchOrdenesModal = ({
         e
       );
     }
-  }
+  }*/
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
+    console.log(selectedValue);
   };
-  const handleSelectChange2 = (event) => {
+  /*const handleSelectChange2 = (event) => {
     setSelectedValue2(event.target.value);
   };
   const handleSelectChange3 = (event) => {
@@ -186,8 +186,8 @@ const PatchOrdenesModal = ({
       IdOrdenOK: row.IdOrdenOK,
       IdOrdenBK: row.IdOrdenBK,
       IdTipoOrdenOK: "",
-      IdRolOK: "",
-      IdPersonaOK: row.IdPersonaOK,
+      //IdRolOK: "",
+      //IdPersonaOK: "",
     },
     validationSchema: Yup.object({
       IdOrdenOK: Yup.string()
@@ -198,12 +198,14 @@ const PatchOrdenesModal = ({
         ),
       IdOrdenBK: Yup.string().required("Campo requerido"),
       IdTipoOrdenOK: Yup.string().required("Campo requerido"),
-      IdRolOK: Yup.string().required("Campo requerido"),
-      IdPersonaOK: Yup.string().required("Campo requerido"),
+      //IdRolOK: Yup.string().required("Campo requerido"),
+      //IdPersonaOK: Yup.string().required("Campo requerido"),
     }),
 
     onSubmit: async (values) => {
       //FIC: mostramos el Loading.
+      setMensajeExitoAlert("");
+      setMensajeErrorAlert("");
       setLoading(true);
 
       //FIC: notificamos en consola que si se llamo y entro al evento.
@@ -245,7 +247,7 @@ const PatchOrdenesModal = ({
       onClose={() => setPatchOrdenesShowModal(false)}
       fullWidth
     >
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={(e) => {formik.handleSubmit(e); }}>
         {/* FIC: Aqui va el Titulo de la Modal */}
         <DialogTitle>
           <Typography>
@@ -268,8 +270,8 @@ const PatchOrdenesModal = ({
             value={formik.values.IdInstitutoOK}
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
-            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
-            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            error={formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK)}
+            helperText={formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK}
             disabled={true}
           />
           <TextField
@@ -279,8 +281,8 @@ const PatchOrdenesModal = ({
             
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
-            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
-            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            error={formik.touched.IdNegocioOK && Boolean(formik.errors.IdNegocioOK)}
+            helperText={formik.touched.IdNegocioOK && formik.errors.IdNegocioOK}
             disabled={true}
           />
           <TextField
@@ -290,7 +292,7 @@ const PatchOrdenesModal = ({
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
             error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
-            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenOK}
             disabled={true}
           />
           <TextField
@@ -301,7 +303,7 @@ const PatchOrdenesModal = ({
             error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
             helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
-          {/*<Select
+          <Select
             id="dynamic-select"
             value={selectedValue}
             onChange={handleSelectChange}
@@ -313,7 +315,7 @@ const PatchOrdenesModal = ({
               </MenuItem>
             ))}
           </Select>
-          <Select
+          {/*<Select
             id="dynamic-select2"
             value={selectedValue2}
             onChange={handleSelectChange2}
@@ -426,7 +428,7 @@ const PatchOrdenesModal = ({
             startIcon={<SaveIcon />}
             variant="contained"
             type="submit"
-            disabled={!!mensajeExitoAlert}
+            disabled={formik.isSubmitting || !!mensajeExitoAlert || Loading}
             loading={Loading}
           >
             <span>

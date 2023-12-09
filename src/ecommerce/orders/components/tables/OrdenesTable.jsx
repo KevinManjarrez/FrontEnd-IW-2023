@@ -205,17 +205,16 @@ const OrdenesTable = () => {
           AddOrdenesShowModal={AddOrdenesShowModal}
           setAddOrdenesShowModal={setAddOrdenesShowModal}
           onClose={() => {
-            AddOrdenesShowModal;
             setAddOrdenesShowModal(false);
           }}
         />
       </Dialog>
       <Dialog open={PatchOrdenesShowModal}>
         <PatchOrdenesModal
+          PatchOrdenesShowModal={PatchOrdenesShowModal}
           setPatchOrdenesShowModal={setPatchOrdenesShowModal}
           row={editData}         //actualizar se ponga la info si es que hay
           onClose={() => {
-            PatchOrdenesShowModal;
             setPatchOrdenesShowModal(false); //Cerrar la modal
           }}
           

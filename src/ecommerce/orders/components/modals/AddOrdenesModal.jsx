@@ -301,7 +301,7 @@ const AddOrdenesModal = ({
             /* onChange={formik.handleChange} */
             {...commonTextFieldProps}
             error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
-            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenBK}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenOK}
             disabled={true}
           />
           <TextField
