@@ -26,7 +26,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import { OrdenesValues } from "../../helpers/OrdenesValues";
 
 //FIC: Services
-import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
+import { UpdatePatchOneOrder } from "../../service/remote/update/UpdatePatchOneOrder";
+import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
+
 
 //FIC: Services
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
@@ -39,12 +41,10 @@ import * as Yup from "yup";
 
 import { v4 as genID } from "uuid";
 
-const AddOrdenesModal = ({
-  AddOrdenesShowModal,
-  setAddOrdenesShowModal,
+const PatchOrdenesModal = ({
+  PatchOrdenesShowModal,
+  setPatchOrdenesShowModal,
   onUpdateOrdenesData,
-  isEditMode,
-  isDeleteMode,
   row,
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
@@ -53,7 +53,7 @@ const AddOrdenesModal = ({
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
   const [RolValuesLabel, setRolValuesLabel] = useState([]);
   const [PersonaValuesLabel, setPersonaValuesLabel] = useState([]);
-
+  const [OrdenesData, setOrdenesData] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValue2, setSelectedValue2] = useState('');
   const [selectedValue3, setSelectedValue3] = useState('');
@@ -64,7 +64,7 @@ const AddOrdenesModal = ({
   );
   //FIC: en cuanto se abre la modal llama el metodo
   //que ejecuta la API que trae todas las etiquetas de la BD.
-  useEffect(() => {
+  /*useEffect(() => {
     //getDataSelectOrdenesType();
     getDataSelectOrdenesType2();
     getDataSelectOrdenesType3();
@@ -167,28 +167,27 @@ const AddOrdenesModal = ({
   const handleSelectChange3 = (event) => {
     setSelectedValue3(event.target.value);
   };
-
+*/
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
-  // Dentro del componente AddShippingModal
-  useEffect(() => {
-    // Si estamos en modo edición, deshabilita el campo
-    if (isEditMode) {
-      formik.setFieldValue("IdOrdenOK", formik.values.IdOrdenOK); // Asegúrate de establecer el valor
-      formik.setFieldTouched("IdOrdenOK", false); // También puedes desactivar el indicador de "touched" si lo deseas
-    }
-  }, [isEditMode]);
+  
+  //Este metodo es para refrescar la tabla
+  const handleReload = async () => {
+    const AllOrdenesData = await getAllOrdenes();
+    setOrdenesData(AllOrdenesData);
+    setSelectedRowIndex(null);
+    //setInfoAdSel(null);
+  };
+
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
     initialValues: {
       IdInstitutoOK: "9001",
       IdNegocioOK: "1101",
-      IdOrdenOK: row ? row.IdOrdenOK : `9001-${IdGen}`,
-      IdOrdenBK: row ? row.IdOrdenBK : "",
+      IdOrdenOK: row.IdOrdenOK,
+      IdOrdenBK: row.IdOrdenBK,
       IdTipoOrdenOK: "",
       IdRolOK: "",
-      /* Matriz: "", */
-      //Matriz: false,
-      IdPersonaOK: row ? row.IdPersonaOK : `9001-${IdGen}`,
+      IdPersonaOK: row.IdPersonaOK,
     },
     validationSchema: Yup.object({
       IdOrdenOK: Yup.string()
@@ -200,17 +199,6 @@ const AddOrdenesModal = ({
       IdOrdenBK: Yup.string().required("Campo requerido"),
       IdTipoOrdenOK: Yup.string().required("Campo requerido"),
       IdRolOK: Yup.string().required("Campo requerido"),
-      /*Matriz: Yup.string()
-          .required("Campo requerido"),
-          .max(1, 'Solo se permite una letra')
-          .matches(/^[SN]$/, 'Solo se permite un caracter S/N'), */
-      //Matriz: Yup.boolean().required("Campo requerido"),
-      /*IdTipoGiroOK: Yup.string()
-        .required("Campo requerido")
-        .matches(
-          /^[a-zA-Z0-9-]+$/,
-          'Solo se permiten caracteres alfanuméricos y el simbolo "-"'
-        ),*/
       IdPersonaOK: Yup.string().required("Campo requerido"),
     }),
 
@@ -226,58 +214,16 @@ const AddOrdenesModal = ({
       setMensajeErrorAlert(null);
       setMensajeExitoAlert(null);
       try {
-        //FIC: si fuera necesario meterle valores compuestos o no compuestos
-        //a alguns propiedades de formik por la razon que sea, se muestren o no
-        //estas propiedades en la ventana modal a travez de cualquier control.
-        //La forma de hacerlo seria:
-        //formik.values.IdInstitutoBK = `${formik.values.IdInstitutoOK}-${formik.values.IdCEDI}`;
-        //formik.values.Matriz = autoChecksSelecteds.join(",");
-
-        /*if(isEditMode) {
-            console.log("SE ESTA ACTUALIZANDO RAAAAAAAAAH");
-            const Ordenes = OrdenesValues(values);
-            console.log("<<Shipping>>", Ordenes);
-            // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
-            // Utiliza la función de actualización si estamos en modo de edición
-            await UpdateOneShipping(Ordenes, row ? row.IdEntregaOK : null); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
-            setMensajeExitoAlert("Envío actualizado Correctamente");
-            onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
-        }else if(isDeleteMode){
-            const Shipping = OrdenesValues(values);
-            console.log("<<Shipping>>", Shipping);
-            // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
-            // Utiliza la función de eliminar si estamos en modo de eliminación
-            await DeleteOneShipping(row.IdEntregaOK);
-            setMensajeExitoAlert("Envío eliminado Correctamente");
-            onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
-        }else{*/
-        //FIC: mutar los valores (true o false) de Matriz.
-
-        //values.Matriz == true ? (values.Matriz = "S") : (values.Matriz = "N");
-
-        //FIC: Extraer los datos de los campos de
-        //la ventana modal que ya tiene Formik.
-
         const Ordenes = OrdenesValues(values);
-
-        //FIC: mandamos a consola los datos extraidos
-        console.log("<<Institute>>", Ordenes);
-        //FIC: llamar el metodo que desencadena toda la logica
-        //para ejecutar la API "AddOneInstitute" y que previamente
-        //construye todo el JSON de la coleccion de Institutos para
-        //que pueda enviarse en el "body" de la API y determinar si
-        //la inserción fue o no exitosa.
-        await AddOneOrdenes(Ordenes);
-        //FIC: si no hubo error en el metodo anterior
-        //entonces lanzamos la alerta de exito.
-        setMensajeExitoAlert("Instituto fue creado y guardado Correctamente");
-        //FIC: falta actualizar el estado actual (documentos/data) para que
-        //despues de insertar el nuevo instituto se visualice en la tabla.
-        //fetchDataInstitute();
-        //}
+        console.log("<<Ordenes>>", Ordenes);
+        // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
+        // Utiliza la función de actualización si estamos en modo de edición
+        await UpdatePatchOneOrder(Ordenes, row.IdOrdenOK); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+        setMensajeExitoAlert("Envío actualizado Correctamente");
+        handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
       } catch (e) {
         setMensajeExitoAlert(null);
-        setMensajeErrorAlert("No se pudo crear el Instituto");
+        setMensajeErrorAlert("No se pudo Modificar");
       }
 
       //FIC: ocultamos el Loading.
@@ -295,8 +241,8 @@ const AddOrdenesModal = ({
 
   return (
     <Dialog
-      open={AddOrdenesShowModal}
-      onClose={() => setAddOrdenesShowModal(false)}
+      open={PatchOrdenesShowModal}
+      onClose={() => setPatchOrdenesShowModal(false)}
       fullWidth
     >
       <form onSubmit={formik.handleSubmit}>
@@ -304,11 +250,7 @@ const AddOrdenesModal = ({
         <DialogTitle>
           <Typography>
             <strong>
-              {isEditMode
-                ? "ACTUALIZAR ENVÍO"
-                : isDeleteMode
-                ? "ELIMINAR ENVÍO"
-                : "AGREGAR ENVÍO"}
+              Modificar Orden
             </strong>
           </Typography>
         </DialogTitle>
@@ -359,7 +301,7 @@ const AddOrdenesModal = ({
             error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
             helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
-          <Select
+          {/*<Select
             id="dynamic-select"
             value={selectedValue}
             onChange={handleSelectChange}
@@ -454,8 +396,6 @@ const AddOrdenesModal = ({
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
         <DialogActions sx={{ display: "flex", flexDirection: "row" }}>
           <Box m="auto">
-            {console.log("mensajeExitoAlert", mensajeExitoAlert)}
-            {console.log("mensajeErrorAlert", mensajeErrorAlert)}
             {mensajeErrorAlert && (
               <Alert severity="error">
                 <b>¡ERROR!</b> ─ {mensajeErrorAlert}
@@ -473,7 +413,7 @@ const AddOrdenesModal = ({
             loadingPosition="start"
             startIcon={<CloseIcon />}
             variant="outlined"
-            onClick={() => setAddOrdenesShowModal(false)}
+            onClick={() => setPatchOrdenesShowModal(false)}
           >
             <span>CERRAR</span>
           </LoadingButton>
@@ -490,11 +430,7 @@ const AddOrdenesModal = ({
             loading={Loading}
           >
             <span>
-              {isEditMode
-                ? "ACTUALIZAR"
-                : isDeleteMode
-                ? "ELIMINAR"
-                : "GUARDAR"}
+              Actualiar
             </span>
           </LoadingButton>
         </DialogActions>
@@ -502,4 +438,4 @@ const AddOrdenesModal = ({
     </Dialog>
   );
 };
-export default AddOrdenesModal;
+export default PatchOrdenesModal;

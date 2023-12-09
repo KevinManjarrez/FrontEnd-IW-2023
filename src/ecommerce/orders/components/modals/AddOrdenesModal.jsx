@@ -27,6 +27,7 @@ import { OrdenesValues } from "../../helpers/OrdenesValues";
 
 //FIC: Services
 import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
+import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
 
 //FIC: Services
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
@@ -46,6 +47,7 @@ const AddOrdenesModal = ({
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
   const [Loading, setLoading] = useState(false);
+  const [OrdenesData, setOrdenesData] = useState([]);
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
   const [RolValuesLabel, setRolValuesLabel] = useState([]);
   const [PersonaValuesLabel, setPersonaValuesLabel] = useState([]);
@@ -167,6 +169,14 @@ const AddOrdenesModal = ({
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
   // Dentro del componente AddShippingModal
+
+  //Este metodo es para refrescar la tabla
+  const handleReload = async () => {
+    const AllOrdenesData = await getAllOrdenes();
+    setOrdenesData(AllOrdenesData);
+    setSelectedRowIndex(null);
+    //setInfoAdSel(null);
+  };
   
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
@@ -205,42 +215,10 @@ const AddOrdenesModal = ({
       setMensajeErrorAlert(null);
       setMensajeExitoAlert(null);
       try {
-        //FIC: si fuera necesario meterle valores compuestos o no compuestos
-        //a alguns propiedades de formik por la razon que sea, se muestren o no
-        //estas propiedades en la ventana modal a travez de cualquier control.
-        //La forma de hacerlo seria:
-        //formik.values.IdInstitutoBK = `${formik.values.IdInstitutoOK}-${formik.values.IdCEDI}`;
-        //formik.values.Matriz = autoChecksSelecteds.join(",");
-
-        /*if(isEditMode) {
-            console.log("SE ESTA ACTUALIZANDO RAAAAAAAAAH");
-            const Ordenes = OrdenesValues(values);
-            console.log("<<Shipping>>", Ordenes);
-            // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
-            // Utiliza la función de actualización si estamos en modo de edición
-            await UpdateOneShipping(Ordenes, row ? row.IdEntregaOK : null); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
-            setMensajeExitoAlert("Envío actualizado Correctamente");
-            onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
-        }else if(isDeleteMode){
-            const Shipping = OrdenesValues(values);
-            console.log("<<Shipping>>", Shipping);
-            // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
-            // Utiliza la función de eliminar si estamos en modo de eliminación
-            await DeleteOneShipping(row.IdEntregaOK);
-            setMensajeExitoAlert("Envío eliminado Correctamente");
-            onUpdateShippingData(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
-        }else{*/
-        //FIC: mutar los valores (true o false) de Matriz.
-
-        //values.Matriz == true ? (values.Matriz = "S") : (values.Matriz = "N");
-
-        //FIC: Extraer los datos de los campos de
-        //la ventana modal que ya tiene Formik.
-
         const Ordenes = OrdenesValues(values);
 
         //FIC: mandamos a consola los datos extraidos
-        console.log("<<Institute>>", Ordenes);
+        console.log("<<Ordenes>>", Ordenes);
         //FIC: llamar el metodo que desencadena toda la logica
         //para ejecutar la API "AddOneInstitute" y que previamente
         //construye todo el JSON de la coleccion de Institutos para
@@ -252,7 +230,7 @@ const AddOrdenesModal = ({
         setMensajeExitoAlert("Instituto fue creado y guardado Correctamente");
         //FIC: falta actualizar el estado actual (documentos/data) para que
         //despues de insertar el nuevo instituto se visualice en la tabla.
-        //fetchDataInstitute();
+        handleReload();
         //}
       } catch (e) {
         setMensajeExitoAlert(null);

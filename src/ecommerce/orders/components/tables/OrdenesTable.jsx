@@ -76,9 +76,6 @@ const OrdenesTable = () => {
   const [PatchOrdenesShowModal, setPatchOrdenesShowModal] = useState(false);
 
   //PARA CONTROLAR LO DE GUARDAR O ACTUALIZAR
-  const [isEditMode, setIsEditMode] = useState(false); //Para determinar si la modal está en modo de edicion/agregar (true=editar || false=agregar)
-  const [editData, setEditData] = useState(false); //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
-  const [isDeleteMode, setIsDeleteMode] = useState(false); //Para saber si está en modo de eliminación o no
   const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
   const [idRowSel, setIdRowSel] = useState(null);
   //Este funciona para extraer la informacion de la orden que seleccionemos
@@ -104,8 +101,6 @@ const OrdenesTable = () => {
       const clickedRow = OrdenesData[index];
       if (clickedRow) {
         console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
-        setIsEditMode(true);
-        setEditData(clickedRow);
         setIdRowSel(clickedRow.IdOrdenOK);
         setSelectedRowIndex(index);
         dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
@@ -227,15 +222,9 @@ const OrdenesTable = () => {
         <PatchOrdenesModal
           setPatchOrdenesShowModal={setPatchOrdenesShowModal}
           onUpdateOrdenesData={handleUpdateOrdenesData}
-          isEditMode={isEditMode}
-          isDeleteMode={isDeleteMode}
-          initialData={isEditMode || isDeleteMode ? editData : null} //Para que en ambos modales de eliminar y
-          row={isEditMode || isDeleteMode ? editData : null}
           onClose={() => {
             AddOrdenesShowModal;
             setPatchOrdenesShowModal(false); //Cerrar la modal
-            setIsEditMode(false); //Resetear el modo de edición
-            setEditData(null);
           }}
           />
       </Dialog>
