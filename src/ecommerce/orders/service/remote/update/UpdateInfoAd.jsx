@@ -1,22 +1,22 @@
 import axios from "axios";
-export function updateProduct(id,dataToUpdate) {
-  console.log("[ejecución] updateProduct()",dataToUpdate)
+
+export function updateProduct(id, dataToUpdate) {
   return new Promise((resolve, reject) => {
-    axios.patch(`${`http://localhost:3020/api/pwa/orders/`}${id}`, dataToUpdate)
+    axios.patch(`http://127.0.0.1:3020/api/pwa/orders?IdInstitutoOK=9001&IdNegocioOK=1101&IdOrdenOK=${id}`, dataToUpdate)
       .then((response) => {
-        console.log("[response] updateProduct()",dataToUpdate)
         const data = response.data;
-        if (!data.success) { 
-          console.error("No se pudo realizar correctamente la petición updateProduct():", data);
+        
+        if (!data.success) {
+          console.error("No se pudo realizar correctamente la petición <<updateProduct>>", data);
           reject(data);
-        } else if (data.success) {
-          resolve(data);
+        } else {
+          console.log(`Producto con ID ${id} actualizado exitosamente`);
+          resolve(data); // Puedes resolver con algún mensaje o datos adicionales si es necesario
         }
       })
       .catch((error) => {
-        console.error("Error en updateProduct():", error);
+        console.error("Error en <<updateProduct>>", error);
         reject(error);
       });
-     
   });
 }
