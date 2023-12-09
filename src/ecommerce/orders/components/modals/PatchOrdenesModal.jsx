@@ -66,8 +66,8 @@ const PatchOrdenesModal = ({
   useEffect(() => {
     //getDataSelectOrdenesType();
     getDataSelectOrdenesType2();
-  //  getDataSelectOrdenesType3();
-  //  getDataSelectOrdenesType4();
+    getDataSelectOrdenesType3();
+    getDataSelectOrdenesType4();
   }, []);
 
   //FIC: Ejecutamos la API que obtiene todas las etiquetas
@@ -113,7 +113,7 @@ const PatchOrdenesModal = ({
         e
       );
     }
-  }/*
+  }
   async function getDataSelectOrdenesType3() {
     try {
       const Labels = await GetRol();
@@ -156,17 +156,8 @@ const PatchOrdenesModal = ({
         e
       );
     }
-  }*/
-  const handleSelectChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-  /*const handleSelectChange2 = (event) => {
-    setSelectedValue2(event.target.value);
-  };
-  const handleSelectChange3 = (event) => {
-    setSelectedValue3(event.target.value);
-  };
-*/
+  }
+
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
   
   //Este metodo es para refrescar la tabla
@@ -184,9 +175,9 @@ const PatchOrdenesModal = ({
       IdNegocioOK: "1101",
       IdOrdenOK: row.IdOrdenOK,
       IdOrdenBK: row.IdOrdenBK,
-      IdTipoOrdenOK: "",
-      //IdRolOK: "",
-      //IdPersonaOK: "",
+      IdTipoOrdenOK: row.IdTipoOrdenOK,
+      IdRolOK: row.IdRolOK,
+      IdPersonaOK: row.IdPersonaOK,
     },
     validationSchema: Yup.object({
       IdOrdenOK: Yup.string()
@@ -197,8 +188,8 @@ const PatchOrdenesModal = ({
         ),
       IdOrdenBK: Yup.string().required("Campo requerido"),
       IdTipoOrdenOK: Yup.string().required("Campo requerido"),
-      //IdRolOK: Yup.string().required("Campo requerido"),
-      //IdPersonaOK: Yup.string().required("Campo requerido"),
+      IdRolOK: Yup.string().required("Campo requerido"),
+      IdPersonaOK: Yup.string().required("Campo requerido"),
     }),
 
     onSubmit: async (values) => {
@@ -219,9 +210,9 @@ const PatchOrdenesModal = ({
         console.log("<<Ordenes>>", Ordenes);
         // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
         // Utiliza la función de actualización si estamos en modo de edición
-        await UpdatePatchOneOrder(Ordenes, row.IdOrdenOK); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+        await UpdatePatchOneOrder(row.IdOrdenOK,Ordenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
         setMensajeExitoAlert("Envío actualizado Correctamente");
-        handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+        //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
       } catch (e) {
         setMensajeExitoAlert(null);
         setMensajeErrorAlert("No se pudo Modificar");
@@ -304,8 +295,10 @@ const PatchOrdenesModal = ({
           />
           <Select
             id="dynamic-select"
-            value={selectedValue}
-            onChange={handleSelectChange}
+            value={formik.values.IdTipoOrdenOK}
+            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onBlur={formik.handleBlur}
+            name="IdTipoOrdenOK"
             label="TipoOrden"
           >
             {OrdenesValuesLabel.map((option, index) => (
@@ -314,11 +307,13 @@ const PatchOrdenesModal = ({
               </MenuItem>
             ))}
           </Select>
-          {/*<Select
-            id="dynamic-select2"
-            value={selectedValue2}
-            onChange={handleSelectChange2}
-            label="TipoOrden"
+          <Select
+            id="dynamic-select"
+            value={formik.values.IdRolOK}
+            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onBlur={formik.handleBlur}
+            name="IdRolOK"
+            label="Rol"
           >
             {RolValuesLabel.map((option, index) => (
               <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
@@ -327,10 +322,12 @@ const PatchOrdenesModal = ({
             ))}
           </Select>
           <Select
-            id="dynamic-select3"
-            value={selectedValue3}
-            onChange={handleSelectChange3}
-            label="TipoOrden"
+            id="dynamic-select"
+            value={formik.values.IdPersonaOK}
+            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onBlur={formik.handleBlur}
+            name="IdPersonaOK"
+            label="Persona"
           >
             {PersonaValuesLabel.map((option, index) => (
               <MenuItem key={option.IdValorOK} value={option.IdValorOK}>

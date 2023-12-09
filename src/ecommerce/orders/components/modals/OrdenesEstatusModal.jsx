@@ -11,14 +11,15 @@ import * as Yup from "yup";
 
 //HELPERS
 import { OrdenesEstatusValues } from "../../helpers/OrdenesEstatusValues";
+import { UpdatePatchOneOrder } from "../../service/remote/post/AddOrdenesEstatus";
 
 
-
-const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal, selectedOrdenesData }) => {
+const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal,row }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
+    const [Loading, setLoading] = useState(false);
+
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
-    console.log("DATA YA PASADA EN INFOADMODAL AAAAAAA",selectedOrdenesData); 
     
     //FIC: Definition Formik y Yup.
     const formik = useFormik({
@@ -33,31 +34,34 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
             Observacion: Yup.string().required("Campo requerido"),
         }),
         onSubmit: async (values) => {
-            console.log("FIC: entro al onSubmit despues de hacer click en boton Guardar");
+            //FIC: mostramos el Loading.
+      setMensajeExitoAlert("");
+      setMensajeErrorAlert("");
+      setLoading(true);
 
-            //FIC: reiniciamos los estados de las alertas de exito y error.
-            setMensajeErrorAlert(null);
-            setMensajeExitoAlert(null);
-
-            /*try {
-                //Usar InfoAdValues para obtener los valores definidos del subdocumento en el archivo del mismo nombre
-                const ordenEstatusSubdocument = OrdenesEstatusValues(values);
-                
-                //Poner el Id del documento existente para pasar al servicio POST
-                const existingOrdenesId = selectedOrdenesData.IdEntregaOK;
-
-                //Pasar los parametros al servicio de POST del archivo AddOneInfoAd.jsx
-                //En el mismo orden se pasa: Id del documento existente || Los valores que el usuario pone en el form y que se sacan
-                //de formik || El objeto con los valores predefinidos (IdEtiquetaOK, IdEtiqueta, Etiqueta,...etc...)
-                await AddOneOrdenes(existingOrdenesId, values, ordenEstatusSubdocument);
-
-                setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-            } catch (e) {
-                setMensajeExitoAlert(null);
-                setMensajeErrorAlert("No se pudo crear la Info Adicional");
-            }*/
-        },
-    });
+      //FIC: notificamos en consola que si se llamo y entro al evento.
+      console.log(
+        "FIC: entro al onSubmit despues de hacer click en boton Guardar"
+      );
+      //FIC: reiniciamos los estados de las alertas de exito y error.
+      setMensajeErrorAlert(null);
+      setMensajeExitoAlert(null);
+      try {
+        const EstatusOrdenes = OrdenesEstatusValues(values);
+        console.log("<<Ordenes>>", EstatusOrdenes);
+        // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
+        // Utiliza la función de actualización si estamos en modo de edición
+        await AddOrdenesEstatus(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+        setMensajeExitoAlert("Envío actualizado Correctamente");
+        //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+      } catch (e) {
+        setMensajeExitoAlert(null);
+        setMensajeErrorAlert("No se pudo Registrar");
+      }
+      //FIC: ocultamos el Loading.
+      setLoading(false);
+    },
+});
 
     //FIC: props structure for TextField Control.
     const commonTextFieldProps = {
@@ -74,7 +78,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
             onClose={() => setOrdenesEstatusShowModal(false)}
             fullWidth
         >
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={(e) => {formik.handleSubmit(e); }}>
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
                     <Typography >
@@ -117,8 +121,6 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
                     sx={{ display: 'flex', flexDirection: 'row' }}
                 >
                     <Box m="auto">
-                        {console.log("mensajeExitoAlert", mensajeExitoAlert)}
-                        {console.log("mensajeErrorAlert", mensajeErrorAlert)}
                         {mensajeErrorAlert && (
                         <Alert severity="error">
                             <b>¡ERROR!</b> ─ {mensajeErrorAlert}
@@ -147,7 +149,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
                         startIcon={<SaveIcon />}
                         variant="contained"
                         type="submit"
-                        disabled={!!mensajeExitoAlert}
+                        disabled={formik.isSubmitting || !!mensajeExitoAlert || Loading}
                     >
                         <span>GUARDAR</span>
                     </LoadingButton>
