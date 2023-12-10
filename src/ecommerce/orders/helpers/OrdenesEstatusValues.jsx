@@ -7,5 +7,5 @@ export const OrdenesEstatusValues = (values)=>{
   OrdenesEstatus.IdTipoEstatusOK=values.IdTipoEstatusOK,
   OrdenesEstatus.Actual=values.Actual,
   OrdenesEstatus.Observacion=values.Observacion
-  return Ordenes
+  return OrdenesEstatus
 }

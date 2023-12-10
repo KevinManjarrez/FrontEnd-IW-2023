@@ -95,7 +95,7 @@ const OrdenesEstatusColumn = [
             <OrdenesEstatusModal
               OrdenesEstatusShowModal={OrdenesEstatusShowModal}
               setOrdenesEstatusShowModal={setOrdenesEstatusShowModal}
-              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
+              row={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
               onClose={() => setOrdenesEstatusShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>
