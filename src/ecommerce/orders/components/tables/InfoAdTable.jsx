@@ -12,6 +12,7 @@ import {
   showMensajeError,
 } from "../../../../components/elements/messages/MySwalAlerts";
 import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
+import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
 
 import { useSelector } from "react-redux";
 
@@ -58,10 +59,10 @@ const InfoAdTable = ({
   }, []);
 
   const handleReload = async () => {
-    await fetchDataOrden?.();
-    await fetchDataOrdenSelect?.(ordenSel?.IdOrdenOK);
-    setIdRowSel(null);
-    setInfoAdSel(null);
+    const AllOrdenesData = await getAllOrdenes();
+    setOrdenesData(AllOrdenesData);
+    setSelectedRowIndex(null);
+    //setInfoAdSel(null);
   };
 
   const handleDelete = async () => {
@@ -203,17 +204,17 @@ const InfoAdTable = ({
         />
       </Dialog>
 
-      {/*<Dialog open={openModalUpdate}>
+      <Dialog open={openModalUpdate}>
         <UpdateInfoAd
           idRowSel={idRowSel}
           infoAdSel={infoAdSel}
           productSel={editData}
           openModalUpdate={openModalUpdate}
-          handleReload={handleReload}
+          //handleReload={handleReload}
           setOpenModalUpdate={setOpenModalUpdate}
           onClose={() => setOpenModalUpdate(false)}
         />
-        </Dialog>*/}
+        </Dialog>
     </Box>
   );
 };
