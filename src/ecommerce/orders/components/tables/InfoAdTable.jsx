@@ -31,13 +31,12 @@ const InfoAdTable = ({
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [infoAdSel, setInfoAdSel] = useState(null);
   const [infoAdData, setinfoAdEstatusData] = useState([]);
-  const [OrdenesEstatusData, setOrdenesEstatusData] = useState([]);
   const [idRowSel, setIdRowSel] = useState(null);
   const [loadingTable, setLoadingTable] = useState(true);
+  const [editData, setEditData] = useState(false);     //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
+
 
   const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
-  console.log(selectedOrdenesData)
-
 /*
   useEffect(() => {
     if (!ordenSel) {
@@ -48,7 +47,7 @@ const InfoAdTable = ({
   useEffect(() => {
     async function fetchData() {
       try {
-        setOrdenesEstatusData(selectedOrdenesData.ordenes_info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
+        setinfoAdEstatusData(selectedOrdenesData.ordenes_info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
         setLoadingTable(false);
       } catch (error) {
         console.error("Error al obtener ordenes_info_ad:", error);
@@ -127,11 +126,11 @@ const InfoAdTable = ({
   //Este es el metodo para seleccionar la orden de la tabla 
   useEffect(() => {
     const handleRowClick = (index) => {
-      const clickedRow = selectedOrdenesData[index];
+      const clickedRow = selectedOrdenesData.ordenes_info_ad[index];
       if (clickedRow) {
-        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdEtiquetaOK);
+        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdEtiqueta);
         setIdRowSel(clickedRow.IdEtiquetaOK);
-        setSelectedRowIndex(index);
+        //setSelectedRowIndex(index);
         setEditData(clickedRow);
         //dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
       }
@@ -143,7 +142,7 @@ const InfoAdTable = ({
     rows.forEach((row, index) => {
       row.addEventListener("click", () => handleRowClick(index - 1));
     });
-  }, [selectedOrdenesData]);
+  }, [selectedOrdenesData.ordenes_info_ad]);
 
 
   return (
@@ -152,7 +151,7 @@ const InfoAdTable = ({
         <MaterialReactTable
           columns={InfoAdColumns}
           data={//ordenSel?.InfoAdModel || []
-            OrdenesEstatusData
+            infoAdData
           }
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
@@ -203,17 +202,17 @@ const InfoAdTable = ({
         />
       </Dialog>
 
-      <Dialog open={openModalUpdate}>
+      {/*<Dialog open={openModalUpdate}>
         <UpdateInfoAd
           idRowSel={idRowSel}
           infoAdSel={infoAdSel}
-          productSel={ordenSel}
+          productSel={editData}
           openModalUpdate={openModalUpdate}
           handleReload={handleReload}
           setOpenModalUpdate={setOpenModalUpdate}
           onClose={() => setOpenModalUpdate(false)}
         />
-      </Dialog>
+        </Dialog>*/}
     </Box>
   );
 };

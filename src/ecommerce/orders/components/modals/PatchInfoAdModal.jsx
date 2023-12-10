@@ -41,29 +41,22 @@ import { AddOneInfoAd } from "../../service/remote/post/AddOneInfoAd";
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 
-const InfoAdModal = ({ 
-    productSel, 
-    InfoAdShowModal, 
-    setInfoAdShowModal, 
-    selectedOrdenesData,  
-    handleReload
-}) => {
+const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData,  handleReload}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
     const [isNuevaEtiqueta, setINuevaEtiqueta] = React.useState(false);
-    /*const { etiquetas, etiquetaEspecifica } = useEtiquetas({
-      IdInstitutoOK: productSel,
+    const { etiquetas, etiquetaEspecifica } = useEtiquetas({
+      IdInstitutoOK: productSel.IdInstitutoOK,
       IdEtiquetaOK: "IdSeccionesInfoAdCatProdServ",
-    });*/
+    });
 
-    /*useEffect(() => {
+    useEffect(() => {
         console.log("Todas las Etiquetas", etiquetas);
         console.log(" etiquetaEspecifica", etiquetaEspecifica);
       }, [etiquetas, etiquetaEspecifica]);
-*/
       useEffect(() => {
         console.log("isNuevaEtiqueta", isNuevaEtiqueta);
       }, [isNuevaEtiqueta]);
@@ -173,7 +166,7 @@ const InfoAdModal = ({
                     <MyAutoComplete
                     disabled={!!mensajeExitoAlert || isNuevaEtiqueta}
                     label={"Selecciona una Etiqueta"}
-                    //options={etiquetas} //Arreglo de objetos
+                    options={etiquetas} //Arreglo de objetos
                     displayProp="Etiqueta" // Propiedad a mostrar
                     idProp="IdEtiquetaOK" // Propiedad a guardar al dar clic
                     onSelectValue={(selectedValue) => {
@@ -237,7 +230,7 @@ const InfoAdModal = ({
                     />
                     <FormControl fullWidth margin="normal">
                     <InputLabel>Selecciona una opción</InputLabel>
-                    {/*<Select
+                    <Select
                     value={formik.values.IdTipoSeccionOK}
                     label="Selecciona una opción"
                     onChange={formik.handleChange}
@@ -256,7 +249,7 @@ const InfoAdModal = ({
                         </MenuItem>
                         );
                     })}
-                </Select>*/}
+                    </Select>
                     <FormHelperText>
                     {formik.touched.IdTipoEstatusOK && formik.errors.IdTipoEstatusOK}
                     </FormHelperText>

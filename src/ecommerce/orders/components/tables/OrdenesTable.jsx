@@ -154,7 +154,6 @@ const OrdenesTable = () => {
     }
   };
 
-  
   return (
     <Box>
       <Box>
@@ -201,7 +200,7 @@ const OrdenesTable = () => {
       </Box>
 
       {/* M O D A L E S */}
-      <Dialog open={AddOrdenesShowModal}>
+      <Dialog open={AddOrdenesShowModal} onClose={() => AddOrdenesShowModal(false)}>
         <AddOrdenesModal
           AddOrdenesShowModal={AddOrdenesShowModal}
           setAddOrdenesShowModal={setAddOrdenesShowModal}
@@ -210,12 +209,11 @@ const OrdenesTable = () => {
           }}
         />
       </Dialog>
-      <Dialog open={PatchOrdenesShowModal}>
+      <Dialog open={PatchOrdenesShowModal} onClose={() => PatchOrdenesShowModal(false)}>
         <PatchOrdenesModal
           PatchOrdenesShowModal={PatchOrdenesShowModal}
           setPatchOrdenesShowModal={setPatchOrdenesShowModal}
-          row={editData}
-                   //actualizar se ponga la info si es que hay
+          row={editData}         //actualizar se ponga la info si es que hay
           onClose={() => {
             setPatchOrdenesShowModal(false); //Cerrar la modal
           }}
