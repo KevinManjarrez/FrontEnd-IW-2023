@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from "react";
 import { MaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { Box, darken, Dialog } from "@mui/material";
+
 import InfoAdModal from "../modals/InfoAdModal";
 import { useOrdenesContext } from "../../pages/ProductsProvider";
 import BarActionsTable from "../../../../components/elements/bars/BarActionsTable";
@@ -192,12 +193,12 @@ const InfoAdTable = ({
         />
       </Box>
 
-      <Dialog open={openModalAdd}>
+      <Dialog open={openModalAdd} onClose={() => openModalAdd(false)}>
         <InfoAdModal
-          //productSel={ordenSel}
+          productSel={editData}
           openModalAdd={openModalAdd}
           setOpenModalAdd={setOpenModalAdd}
-          handleReload={handleReload}
+          //handleReload={handleReload}
           onClose={() => setOpenModalAdd(false)}
         />
       </Dialog>

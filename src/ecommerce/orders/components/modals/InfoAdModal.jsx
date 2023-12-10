@@ -42,9 +42,9 @@ import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 
 const InfoAdModal = ({ 
+    openModalAdd,
+    setOpenModalAdd,
     productSel, 
-    InfoAdShowModal, 
-    setInfoAdShowModal, 
     selectedOrdenesData,  
     handleReload
 }) => {
@@ -54,16 +54,16 @@ const InfoAdModal = ({
     const [refresh, setRefresh] = useState(false);
     const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
     const [isNuevaEtiqueta, setINuevaEtiqueta] = React.useState(false);
-    /*const { etiquetas, etiquetaEspecifica } = useEtiquetas({
+    const { etiquetas, etiquetaEspecifica } = useEtiquetas({
       IdInstitutoOK: productSel,
       IdEtiquetaOK: "IdSeccionesInfoAdCatProdServ",
-    });*/
+    });
 
-    /*useEffect(() => {
+    useEffect(() => {
         console.log("Todas las Etiquetas", etiquetas);
         console.log(" etiquetaEspecifica", etiquetaEspecifica);
       }, [etiquetas, etiquetaEspecifica]);
-*/
+
       useEffect(() => {
         console.log("isNuevaEtiqueta", isNuevaEtiqueta);
       }, [isNuevaEtiqueta]);
@@ -114,7 +114,7 @@ const InfoAdModal = ({
           console.log(values);
 
             try {
-                let model = InfoAdModel();
+                /*let model = InfoAdModel();
                 const infoAd = {
                 ...model,
                 ...values,
@@ -133,7 +133,7 @@ const InfoAdModal = ({
                 await updateProduct(product.IdProdServOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-                handleReload();
+                handleReload();*/
             } catch (e) {
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
@@ -153,8 +153,8 @@ const InfoAdModal = ({
 
     return(
         <Dialog
-            open={InfoAdShowModal}
-            onClose={() => setInfoAdShowModal(false)}
+            open={openModalAdd}
+            onClose={() => setOpenModalAdd(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
@@ -173,7 +173,7 @@ const InfoAdModal = ({
                     <MyAutoComplete
                     disabled={!!mensajeExitoAlert || isNuevaEtiqueta}
                     label={"Selecciona una Etiqueta"}
-                    //options={etiquetas} //Arreglo de objetos
+                    options={etiquetas} //Arreglo de objetos
                     displayProp="Etiqueta" // Propiedad a mostrar
                     idProp="IdEtiquetaOK" // Propiedad a guardar al dar clic
                     onSelectValue={(selectedValue) => {
@@ -237,7 +237,7 @@ const InfoAdModal = ({
                     />
                     <FormControl fullWidth margin="normal">
                     <InputLabel>Selecciona una opción</InputLabel>
-                    {/*<Select
+                    <Select
                     value={formik.values.IdTipoSeccionOK}
                     label="Selecciona una opción"
                     onChange={formik.handleChange}
@@ -256,7 +256,7 @@ const InfoAdModal = ({
                         </MenuItem>
                         );
                     })}
-                </Select>*/}
+                </Select>
                     <FormHelperText>
                     {formik.touched.IdTipoEstatusOK && formik.errors.IdTipoEstatusOK}
                     </FormHelperText>
@@ -307,7 +307,7 @@ const InfoAdModal = ({
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setInfoAdShowModal(false)}
+                        onClick={() => setOpenModalAdd(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
