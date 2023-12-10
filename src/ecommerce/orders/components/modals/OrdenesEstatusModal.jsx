@@ -20,7 +20,6 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
     const [Loading, setLoading] = useState(false);
 
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
-    
     //FIC: Definition Formik y Yup.
     const formik = useFormik({
         initialValues: {

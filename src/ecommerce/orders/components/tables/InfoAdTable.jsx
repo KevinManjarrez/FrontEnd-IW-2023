@@ -12,7 +12,12 @@ import {
 } from "../../../../components/elements/messages/MySwalAlerts";
 import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
 
-const InfoAdTable = () => {
+import { useSelector } from "react-redux";
+
+const InfoAdTable = ({
+  showToastExito,ordenSel
+}) => {
+  /*
   const contextData = useOrdenesContext() || {};
   const {
     ordenSel,
@@ -21,17 +26,36 @@ const InfoAdTable = () => {
     fetchDataOrdenSelect,
     fetchDataOrden,
   } = contextData;
-
+*/
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [infoAdSel, setInfoAdSel] = useState(null);
+  const [infoAdData, setinfoAdEstatusData] = useState([]);
+  const [OrdenesEstatusData, setOrdenesEstatusData] = useState([]);
   const [idRowSel, setIdRowSel] = useState(null);
+  const [loadingTable, setLoadingTable] = useState(true);
 
+  const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
+  console.log(selectedOrdenesData)
+
+/*
   useEffect(() => {
     if (!ordenSel) {
       console.error("ordenSel es undefined");
     }
   }, [ordenSel]);
+*/
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setOrdenesEstatusData(selectedOrdenesData.ordenes_info_ad); //Se ponen los datos en el useState pero solo los del subdocumento info_ad
+        setLoadingTable(false);
+      } catch (error) {
+        console.error("Error al obtener ordenes_info_ad:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleReload = async () => {
     await fetchDataOrden?.();
@@ -100,12 +124,36 @@ const InfoAdTable = () => {
     },
   ];
 
+  //Este es el metodo para seleccionar la orden de la tabla 
+  useEffect(() => {
+    const handleRowClick = (index) => {
+      const clickedRow = selectedOrdenesData[index];
+      if (clickedRow) {
+        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdEtiquetaOK);
+        setIdRowSel(clickedRow.IdEtiquetaOK);
+        setSelectedRowIndex(index);
+        setEditData(clickedRow);
+        //dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
+      }
+    };
+
+    //Delimita el rango de selecion en la tabla
+    const rows = document.querySelectorAll(".MuiTableRow-root");
+
+    rows.forEach((row, index) => {
+      row.addEventListener("click", () => handleRowClick(index - 1));
+    });
+  }, [selectedOrdenesData]);
+
+
   return (
     <Box>
       <Box className="box-tables">
         <MaterialReactTable
           columns={InfoAdColumns}
-          data={ordenSel?.InfoAdModel || []}
+          data={//ordenSel?.InfoAdModel || []
+            OrdenesEstatusData
+          }
           state={{ isLoading: loadingTable }}
           initialState={{ density: "compact", showGlobalFilter: true }}
           enableColumnActions={false}
@@ -147,7 +195,7 @@ const InfoAdTable = () => {
 
       <Dialog open={openModalAdd}>
         <InfoAdModal
-          productSel={ordenSel}
+          //productSel={ordenSel}
           openModalAdd={openModalAdd}
           setOpenModalAdd={setOpenModalAdd}
           handleReload={handleReload}

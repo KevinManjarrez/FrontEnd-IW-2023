@@ -57,6 +57,7 @@ const PatchOrdenesModal = ({
   const [selectedValue2, setSelectedValue2] = useState('');
   const [selectedValue3, setSelectedValue3] = useState('');
   
+  console.log(row)
 
   const [IdGen, setIdGen] = useState(
     genID().replace(/-/g, "").substring(0, 12)

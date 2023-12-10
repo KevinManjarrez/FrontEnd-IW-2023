@@ -154,6 +154,7 @@ const OrdenesTable = () => {
     }
   };
 
+  
   return (
     <Box>
       <Box>
@@ -213,7 +214,8 @@ const OrdenesTable = () => {
         <PatchOrdenesModal
           PatchOrdenesShowModal={PatchOrdenesShowModal}
           setPatchOrdenesShowModal={setPatchOrdenesShowModal}
-          row={editData}         //actualizar se ponga la info si es que hay
+          row={editData}
+                   //actualizar se ponga la info si es que hay
           onClose={() => {
             setPatchOrdenesShowModal(false); //Cerrar la modal
           }}
