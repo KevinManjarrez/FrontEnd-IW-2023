@@ -3,7 +3,7 @@ import { useState } from "react";
 import OrdenesNavTab from "../components/tabs/OrdenesNavTab";
 import OrdenesTab from "../components/tabs/OrdenesTab";
 //import OrdenesDetalleNavTap from "../components/tabs/OrdenesDetalleNavTab"
-import OrdenesDetalleTap from "../components/tabs/OrdenesDetalleTab";
+import OrdenesDetalleTab from "../components/tabs/OrdenesDetalleTab";
 import OrdenesStatusTab from "../components/tabs/OrdenesStatusTab";
 import InfoAdModal from "../components/tabs/InfoAdTab";
 import { useSelector } from "react-redux";
@@ -31,7 +31,7 @@ const Ordenes = () => {
 
             {currentTabInPrincipalTab === "ORDENES_INFO" && <InfoAdModal/>}
 
-            {currentTabInPrincipalTab == "ORDENES_DETALLES" && <OrdenesDetalleTap/>} 
+            {currentTabInPrincipalTab == "ORDENES_DETALLES" && <OrdenesDetalleTab/>} 
 
         </Box>
     );

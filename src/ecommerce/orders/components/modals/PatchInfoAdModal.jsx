@@ -41,7 +41,13 @@ import { AddOneInfoAd } from "../../service/remote/post/AddOneInfoAd";
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 
-const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selectedOrdenesData,  handleReload}) => {
+const PatchInfoAdModal = ({ 
+    openModalUpdate,
+    setOpenModalUpdate,
+    productSel, 
+    selectedOrdenesData,  
+    handleReload
+}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
@@ -49,7 +55,7 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
     const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
     const [isNuevaEtiqueta, setINuevaEtiqueta] = React.useState(false);
     const { etiquetas, etiquetaEspecifica } = useEtiquetas({
-      IdInstitutoOK: productSel.IdInstitutoOK,
+      IdInstitutoOK: productSel,
       IdEtiquetaOK: "IdSeccionesInfoAdCatProdServ",
     });
 
@@ -107,7 +113,7 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
           console.log(values);
 
             try {
-                let model = InfoAdModel();
+                /*let model = InfoAdModel();
                 const infoAd = {
                 ...model,
                 ...values,
@@ -126,7 +132,7 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
                 await updateProduct(product.IdProdServOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-                handleReload();
+                handleReload();*/
             } catch (e) {
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
@@ -146,15 +152,15 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
 
     return(
         <Dialog
-            open={InfoAdShowModal}
-            onClose={() => setInfoAdShowModal(false)}
+            open={openModalUpdate}
+            onClose={() => setOpenModalUpdate(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
                     <Typography >
-                        <strong>Agregar Nueva Info Adicional</strong>
+                        <strong>Actualizar Info Adicional</strong>
                     </Typography>
                 </DialogTitle>
                 {/* FIC: Aqui va un tipo de control por cada Propiedad de Institutos */}
@@ -300,7 +306,7 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setInfoAdShowModal(false)}
+                        onClick={() => setOpenModalUpdate(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
@@ -313,11 +319,11 @@ const InfoAdModal = ({ productSel, InfoAdShowModal, setInfoAdShowModal, selected
                         type="submit"
                         disabled={!formik.isValid || !!mensajeExitoAlert}
                         >
-                        <span>GUARDAR</span>
+                        <span>Actualizar</span>
                     </LoadingButton>
                 </DialogActions>{" "}
             </form>
         </Dialog>
     );
 };
-export default InfoAdModal;
+export default PatchInfoAdModal;
