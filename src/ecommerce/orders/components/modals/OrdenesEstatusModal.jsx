@@ -50,7 +50,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
         console.log("<<Ordenes>>", EstatusOrdenes);
         // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
         // Utiliza la función de actualización si estamos en modo de edición
-        await AddOrdenesEstatus(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+        await UpdatePatchOneOrder(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
         setMensajeExitoAlert("Envío actualizado Correctamente");
         //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
       } catch (e) {
