@@ -12,6 +12,7 @@ import * as Yup from "yup";
 //HELPERS
 import { OrdenesEstatusValues } from "../../helpers/OrdenesEstatusValues";
 import { UpdatePatchOneOrder } from "../../service/remote/post/AddOrdenesEstatus";
+import { GetOneOrderByID } from "../../service/remote/get/GetOneOrderByID";
 
 
 const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal,row }) => {
@@ -24,7 +25,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
     const formik = useFormik({
         initialValues: {
             IdTipoEstatusOK: "",
-            Actual: "",
+            Actual: "S",
             Observacion: ""
         },
         validationSchema: Yup.object({
@@ -46,10 +47,13 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
             setMensajeErrorAlert(null);
             setMensajeExitoAlert(null);
             try {
-                const EstatusOrdenes = OrdenesEstatusValues(values);
+                const ordenExistente = await GetOneOrderByID(row.IdOrdenOK)
+                const EstatusOrdenes = OrdenesEstatusValues(values, ordenExistente);
+                //const EstatusOrdenes = OrdenesEstatusValues(values);
                 console.log("<<Ordenes>>", EstatusOrdenes);
                 // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
                 // Utiliza la función de actualización si estamos en modo de edición
+                
                 await UpdatePatchOneOrder(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
                 setMensajeExitoAlert("Envío actualizado Correctamente");
                 //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
@@ -105,6 +109,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
                         {...commonTextFieldProps}
                         error={ formik.touched.Actual && Boolean(formik.errors.Actual) }
                         helperText={ formik.touched.Actual && formik.errors.Actual }
+                        disabled
                     />
                     <TextField
                         id="Observacion"
