@@ -34,32 +34,32 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
         }),
         onSubmit: async (values) => {
             //FIC: mostramos el Loading.
-      setMensajeExitoAlert("");
-      setMensajeErrorAlert("");
-      setLoading(true);
+            setMensajeExitoAlert("");
+            setMensajeErrorAlert("");
+            setLoading(true);
 
-      //FIC: notificamos en consola que si se llamo y entro al evento.
-      console.log(
-        "FIC: entro al onSubmit despues de hacer click en boton Guardar"
-      );
-      //FIC: reiniciamos los estados de las alertas de exito y error.
-      setMensajeErrorAlert(null);
-      setMensajeExitoAlert(null);
-      try {
-        const EstatusOrdenes = OrdenesEstatusValues(values);
-        console.log("<<Ordenes>>", EstatusOrdenes);
-        // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
-        // Utiliza la función de actualización si estamos en modo de edición
-        await UpdatePatchOneOrder(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
-        setMensajeExitoAlert("Envío actualizado Correctamente");
-        //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
-      } catch (e) {
-        setMensajeExitoAlert(null);
-        setMensajeErrorAlert("No se pudo Registrar");
-      }
-      //FIC: ocultamos el Loading.
-      setLoading(false);
-    },
+            //FIC: notificamos en consola que si se llamo y entro al evento.
+            console.log(
+                "FIC: entro al onSubmit despues de hacer click en boton Guardar"
+            );
+            //FIC: reiniciamos los estados de las alertas de exito y error.
+            setMensajeErrorAlert(null);
+            setMensajeExitoAlert(null);
+            try {
+                const EstatusOrdenes = OrdenesEstatusValues(values);
+                console.log("<<Ordenes>>", EstatusOrdenes);
+                // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
+                // Utiliza la función de actualización si estamos en modo de edición
+                await UpdatePatchOneOrder(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+                setMensajeExitoAlert("Envío actualizado Correctamente");
+                //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+            } catch (e) {
+                setMensajeExitoAlert(null);
+                setMensajeErrorAlert("No se pudo Registrar");
+            }
+            //FIC: ocultamos el Loading.
+            setLoading(false);
+            },
 });
 
     //FIC: props structure for TextField Control.
