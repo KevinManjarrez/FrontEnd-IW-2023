@@ -98,8 +98,8 @@ const AddOrdenesModal = ({
       );
       const valores = OrdenesTypes.valores; // Obtenemos el array de valores
       const IdValoresOK = valores.map((valor, index) => ({
-        IdValorOK: valor.IdValorOK,
-        key: index, // Asignar el índice como clave temporal
+        IdValorOK: valor.Valor,
+        key: valor.IdValorOK, // Asignar el índice como clave temporal
       }));
       setOrdenesValuesLabel(IdValoresOK);
       console.log(OrdenesValuesLabel)
@@ -118,8 +118,8 @@ const AddOrdenesModal = ({
       );
       const valores = OrdenesTypes.valores; // Obtenemos el array de valores
       const IdValoresOK = valores.map((valor, index) => ({
-        IdValorOK: valor.IdValorOK,
-        key: index, // Asignar el índice como clave temporal
+        IdValorOK: valor.Valor,
+        key: valor.IdValorOK, // Asignar el índice como clave temporal
       }));
       setRolValuesLabel(IdValoresOK);
       console.log(RolValuesLabel)
@@ -137,8 +137,8 @@ const AddOrdenesModal = ({
       // Comprueba si Labels es un array y si tiene datos
       if (Array.isArray(Labels) && Labels.length > 0) {
         const IdValoresOK = Labels.map((valor, index) => ({
-          IdValorOK: valor.IdPersonaOK,
-          key: index,
+          IdValorOK: valor.IdPersonaBK,
+          key: valor.IdPersonaOK,
         }));
         
         setPersonaValuesLabel(IdValoresOK);
@@ -329,7 +329,7 @@ const AddOrdenesModal = ({
             label="TipoOrden"
           >
             {OrdenesValuesLabel.map((option, index) => {return(
-              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+              <MenuItem key={option.IdValorOK} value={option.key}>
                 {option.IdValorOK}
               </MenuItem>
             );
@@ -344,7 +344,7 @@ const AddOrdenesModal = ({
             label="Rol"
           >
             {RolValuesLabel.map((option, index) => (
-              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+              <MenuItem key={option.IdValorOK} value={option.key}>
                 {option.IdValorOK}
               </MenuItem>
             ))}
@@ -358,66 +358,11 @@ const AddOrdenesModal = ({
             label="TipoOrden"
           >
             {PersonaValuesLabel.map((option, index) => (
-              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+              <MenuItem key={option.IdValorOK} value={option.key}>
                 {option.IdValorOK}
               </MenuItem>
             ))}
           </Select>
-          {/*
-          <TextField
-            id="Matriz"
-            label="Matriz*"
-            value={formik.values.Matriz}
-            {...commonTextFieldProps}
-            error={formik.touched.Matriz && Boolean(formik.errors.Matriz)}
-            helperText={formik.touched.Matriz && formik.errors.Matriz}
-          />*/}
-          {/*<FormControlLabel
-            control={
-              <Checkbox
-                checked={formik.values.Matriz}
-                onChange={(event) => {
-                  formik.setFieldValue("Matriz", event.target.checked);
-                }}
-                name="Matriz"
-                color="primary"
-                disabled={!!mensajeExitoAlert}
-              />
-            }
-            label="Matriz"
-          />*/}
-
-          {/* <TextField
-            id="IdTipoGiroOK"
-            label="IdTipoGiroOK*"
-            value={formik.values.IdTipoGiroOK}
-            {...commonTextFieldProps}
-            error={
-              formik.touched.IdTipoGiroOK && Boolean(formik.errors.IdTipoGiroOK)
-            }
-            helperText={
-              formik.touched.IdTipoGiroOK && formik.errors.IdTipoGiroOK
-            }
-          /> */}
-          {/*<Select
-            value={formik.values.IdTipoGiroOK}
-            label="Selecciona una opción"
-            onChange={formik.handleChange}
-            name="IdTipoGiroOK" //FIC: Asegúrate que coincida con el nombre del campo
-            onBlur={formik.handleBlur}
-            disabled={!!mensajeExitoAlert}
-          >
-            {OrdenesValuesLabel.map((tipoGiro) => {
-              return (
-                <MenuItem
-                  value={`IdTipoGiros-${tipoGiro.IdValorOK}`}
-                  key={tipoGiro.Valor}
-                >
-                  {tipoGiro.Valor}
-                </MenuItem>
-              );
-            })}
-          </Select>*/}
         </DialogContent>
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
         <DialogActions sx={{ display: "flex", flexDirection: "row" }}>
