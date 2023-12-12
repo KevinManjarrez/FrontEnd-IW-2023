@@ -47,7 +47,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
             setMensajeErrorAlert(null);
             setMensajeExitoAlert(null);
             try {
-                const ordenExistente = await GetOneOrderByID(row.IdOrdenOK)
+                const ordenExistente = await GetOneOrderByID(row.IdInstitutoOK,row.IdNegocioOK,row.IdOrdenOK);
                 const EstatusOrdenes = OrdenesEstatusValues(values, ordenExistente);
                 //const EstatusOrdenes = OrdenesEstatusValues(values);
                 console.log("<<Ordenes>>", EstatusOrdenes);
