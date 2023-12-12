@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import "../../../App.css";
+import "../../../../App.css";
 const BarActionsTable = ({
   handleBtnAdd,
   handleBtnUpdate,

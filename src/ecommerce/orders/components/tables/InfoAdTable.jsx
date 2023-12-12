@@ -5,12 +5,13 @@ import { Box, darken, Dialog } from "@mui/material";
 
 import InfoAdModal from "../modals/InfoAdModal";
 import { useOrdenesContext } from "../../pages/ProductsProvider";
-import BarActionsTable from "../../../../components/elements/bars/BarActionsTable";
+import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
 import UpdateInfoAd from "../modals/UpdateInfoAd";
 import {
   showMensajeConfirm,
   showMensajeError,
-} from "../../../../components/elements/messages/MySwalAlerts";
+} from "../../../../share/components/elements/messages/MySwalAlerts";
+
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
 
 import { useSelector } from "react-redux";

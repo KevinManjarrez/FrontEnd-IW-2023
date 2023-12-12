@@ -5,7 +5,7 @@ import { MaterialReactTable } from "material-react-table";
 import { Box, Stack, Tooltip, Button, IconButton, Dialog, darken } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
-import BarActionsTable from "../../../../components/elements/bars/BarActionsTable";
+import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,7 +23,7 @@ import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
 import {
   showMensajeConfirm,
   showMensajeError,
-} from "../../../../components/elements/messages/MySwalAlerts";
+} from "../../../../share/components/elements/messages/MySwalAlerts";
 
 //FIC: Columns Table Definition.
 const OdenesColumns = [
