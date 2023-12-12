@@ -3,6 +3,11 @@ import OrdenesDetalleTable from "../tables/OrdenesDetalleTable";
 import OrdenesDetalleNavTab from "./OrdenesDetalleNavTab";
 import React, { useState } from 'react';
 import OrdenesDetalleF from "./OrdenesDetalleF";
+import OrdenesDetalleV from "./OrdenesDetalleV";
+import OrdenesDetalleU from "./OrdenesDetalleU";
+import OrdenesDetalleAD from "./OrdenesDetalleAD";
+import OrdenesDetallePAQ from "./OrdenesDetallePAQ";
+import OrdenesDetalleP from "./OrdenesDetalleP";
 
 export default function OrdenesTab() {
   const [currentRowDetalleInOrdenesDetalleTab, setCurrentRowInOrdenesDetalleTab] = useState(0);
@@ -18,11 +23,11 @@ export default function OrdenesTab() {
       {console.log(currentNameTabInOrdenesDetalleTab)}
 
       {currentNameTabInOrdenesDetalleTab == "DETALLE F" && <OrdenesDetalleF/>}
-      {currentNameTabInOrdenesDetalleTab == "DETALLE V" /*&& <FilesTab />*/}
-      {currentNameTabInOrdenesDetalleTab == "DETALLE U" /*&& <PhonsTab />*/}
-      {currentNameTabInOrdenesDetalleTab == "DETALLE P" /*&& <WebAddressesTab />*/}
-      {currentNameTabInOrdenesDetalleTab == "DETALLE INFO AD" /*&& <AddressesTab />*/}
-      {currentNameTabInOrdenesDetalleTab == "DETALLE PS PAQ" /*&& <AddressesTab />*/}
+      {currentNameTabInOrdenesDetalleTab == "DETALLE V" && <OrdenesDetalleV/>}
+      {currentNameTabInOrdenesDetalleTab == "DETALLE U" && <OrdenesDetalleU/>}
+      {currentNameTabInOrdenesDetalleTab == "DETALLE P" && <OrdenesDetalleP/>}
+      {currentNameTabInOrdenesDetalleTab == "DETALLE INFO AD" && <OrdenesDetalleAD/>}
+      {currentNameTabInOrdenesDetalleTab == "DETALLE PS PAQ" && <OrdenesDetallePAQ/>}
       
       {currentNameTabInOrdenesDetalleTab === "ORDEN DETALLE" && <OrdenesDetalleTable />}
     </Box>

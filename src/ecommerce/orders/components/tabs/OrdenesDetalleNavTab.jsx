@@ -21,25 +21,25 @@ const OrdenesDetalleNavTab = ({
   const handleChange = (e) => {
     setCurrentNameTabInOrdenesDetalleTab(e.target.innerText.toUpperCase());
     switch (e.target.innerText.toUpperCase()) {
-      case "ORDEN DETALLE":
+      case "Orden Detalle":
         setCurrentTabIndex(0);
         break;
-      case "DETALLE F":
+      case "Detalle F":
         setCurrentTabIndex(1);
         break;
-      case "DETALLE V":
+      case "Detalle V":
         setCurrentTabIndex(2);
         break;
-      case "DETALLE U":
+      case "Detalle U":
         setCurrentTabIndex(3);
         break;
-      case "DETALLE P":
+      case "Detalle P":
         setCurrentTabIndex(4);
         break;
-      case "DETALLE INFO AD":
+      case "Detalle INFO AD":
         setCurrentTabIndex(5);
         break;
-      case "DETALLE PS PAQ":
+      case "Detalle PS PAQ":
         setCurrentTabIndex(6);
         break;
     }
