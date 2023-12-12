@@ -4,7 +4,7 @@ import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { Box, darken, Dialog } from "@mui/material";
 
 import InfoAdModal from "../modals/InfoAdModal";
-import { useOrdenesContext } from "../../pages/ProductsProvider";
+import { useOrdenesContext } from "../../pages/OrdersProvider";
 import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
 import UpdateInfoAd from "../modals/UpdateInfoAd";
 import {
