@@ -3,23 +3,23 @@ import React, { useState } from "react";
 
 const OrdenesDetalleTabs = [
   "Orden Detalle",
-  "Detalle_ps_estatus_f",
-  "Detalle_ps_estatus_v",
-  "Detalle_ps_estatus_u",
-  "Detalle_ps_estatus_p",
-  "Detalle_ps_info_ad",
-  "Detalle_ps_paq",
+  "Detalle F",
+  "Detalle V",
+  "Detalle U",
+  "Detalle P",
+  "Detalle INFO AD",
+  "Detalle PS PAQ",
 ];
 
 const OrdenesDetalleNavTab = ({
-  currentRowDetalleInBusinessTab,
-  setCurrentDetalleTabInBusinessTab,
+  currentRowDetalleInOrdenesDetalleTab,
+  setCurrentDetalleTabInOrdenesDetalleTab,
 }) => {
   const [currenTabIndex, setCurrentTabIndex] = useState(0);
 
   //FIC: Evento Change
   const handleChange = (e) => {
-    setCurrentDetalleTabInBusinessTab(e.target.innerText.toUpperCase());
+    setCurrentDetalleTabInOrdenesDetalleTab(e.target.innerText.toUpperCase());
     switch (e.target.innerText.toUpperCase()) {
       case "Orden Detalle":
         setCurrentTabIndex(0);
@@ -64,7 +64,7 @@ const OrdenesDetalleNavTab = ({
             <Tab
               key={tab}
               label={tab}
-              disabled={currentRowDetalleInBusinessTab === null}
+              disabled={currentRowDetalleInOrdenesDetalleTab === null}
             />
           );
         })}

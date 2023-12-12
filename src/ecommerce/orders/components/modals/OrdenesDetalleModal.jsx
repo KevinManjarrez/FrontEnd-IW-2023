@@ -77,7 +77,7 @@ const OrdenesDetalleModal = ({
   return (
     <Dialog
       open={OrdenesDetalleShowModal}
-      onClose={() => setOrdenesDetallesShowModal(false)}
+      onClose={() => setOrdenesDetalleShowModal(false)}
       fullWidth
     >
       <form onSubmit={(e) => formik.handleSubmit(e)}>

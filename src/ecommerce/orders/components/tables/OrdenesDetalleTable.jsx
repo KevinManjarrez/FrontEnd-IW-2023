@@ -30,36 +30,6 @@ const OrdenesDetalleColumn = [
       size: 150,
     },
     {
-      accessorKey: "Cantidad",
-      header: "Cantidad",
-      size: 30,
-    },
-    {
-      accessorKey: "PrecioUniSinIVA",
-      header: "Precio Unitario sin IVA",
-      size: 50,
-    },
-    {
-      accessorKey: "PrecioUniConIVA",
-      header: "Precio Unitario con IVA",
-      size: 50,
-    },
-    {
-      accessorKey: "PorcentajeIVA",
-      header: "Porcentaje IVA",
-      size: 30,
-    },
-    {
-      accessorKey: "MontoUniIVA",
-      header: "Monto Unitario IVA",
-      size: 40,
-    },
-    {
-      accessorKey: "SubTotalSinIVA",
-      header: "Subtotal sin IVA",
-      size: 50,
-    },
-    {
       accessorKey: "SubTotalConIVA",
       header: "Subtotal con IVA",
       size: 50,
