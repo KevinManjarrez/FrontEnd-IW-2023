@@ -3,7 +3,7 @@ import axios from "axios";
 export function GetOneOrderByID(id) {
   return new Promise((resolve, reject) => {
     // Puedes ajustar la URL según tu API
-    axios.get(`http://localhost:3020/api/pwa/orders/one?IdInstitutoOK=9001&IdNegocioOK=1101&IdOrdenOK=${id}`)
+    axios.get(`${import.meta.env.VITE_ORDERS_URL}one?IdInstitutoOK=9001&IdNegocioOK=1101&IdOrdenOK=${id}`)
       .then((response) => {
         const data = response.data;
         

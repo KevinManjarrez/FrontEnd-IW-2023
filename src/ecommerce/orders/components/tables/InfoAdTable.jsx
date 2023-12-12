@@ -103,11 +103,6 @@ const InfoAdTable = ({
       size: 30,
     },
     {
-      accessorKey: "Etiqueta",
-      header: "Etiqueta",
-      size: 150,
-    },
-    {
       accessorKey: "Valor",
       header: "Valor",
       size: 50,

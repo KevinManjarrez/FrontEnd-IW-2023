@@ -3,7 +3,7 @@ export function getAllOrdenes() {
     return new Promise((resolve, reject) => {
       //FIC: http://localhost:8080/api/pwa/institutes 
       //axios.get(import.meta.env.VITE_GET_ALL_INSTITUTES_URL)
-      axios.get("http://localhost:3020/api/pwa/orders/")
+      axios.get(import.meta.env.VITE_ORDERS_URL)
         .then((response) => {
           const data = response.data;
         // console.log("getProducts()", data);

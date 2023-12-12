@@ -96,11 +96,11 @@ const InfoAdModal = ({
                 let ordenInfoAd = JSON.parse(JSON.stringify(productSel));
                 //console.log("Ordenes", ordenInfoAd);
                 ordenInfoAd.InfoAdModel.push(infoAd);
-                const dataToUpdate = {
+                /*const dataToUpdate = {
                     InfoAdModel: ordenInfoAd.InfoAdModel,
                 };
                 console.log(" ks",ordenInfoAd.InfoAdModel);
-                await PatchInfoAd(ordenInfoAd.IdOrdenOK, dataToUpdate);
+                await PatchInfoAd(ordenInfoAd.IdOrdenOK, dataToUpdate);*/
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
                 //handleReload();
