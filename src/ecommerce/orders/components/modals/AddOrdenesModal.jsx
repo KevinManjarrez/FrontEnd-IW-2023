@@ -92,7 +92,7 @@ const AddOrdenesModal = ({
 
   async function getDataSelectOrdenesType2() {
     try {
-      const Labels = await GetTipoOrden();
+      const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
         (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
       );
@@ -112,7 +112,7 @@ const AddOrdenesModal = ({
   }
   async function getDataSelectOrdenesType3() {
     try {
-      const Labels = await GetRol();
+      const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
         (label) => label.IdEtiquetaOK === "IdTiposRolesUsuarios"
       );
@@ -137,7 +137,7 @@ const AddOrdenesModal = ({
       // Comprueba si Labels es un array y si tiene datos
       if (Array.isArray(Labels) && Labels.length > 0) {
         const IdValoresOK = Labels.map((valor, index) => ({
-          IdValorOK: valor.IdPersonaBK,
+          IdValorOK: valor.Nombre,
           key: valor.IdPersonaOK,
         }));
         
@@ -161,17 +161,6 @@ const AddOrdenesModal = ({
     getDataSelectOrdenesType4();
   }, []);
   
-  const handleSelectChange = (event) => {
-    console.log("Nuevo valor seleccionado:", event.target.value);
-    setSelectedValue(event.target.value);
-      console.log("formik.values:", formik.values);
-  };
-  const handleSelectChange2 = (event) => {
-    setSelectedValue2(event.target.value);
-  };
-  const handleSelectChange3 = (event) => {
-    setSelectedValue3(event.target.value);
-  };
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
   // Dentro del componente AddShippingModal

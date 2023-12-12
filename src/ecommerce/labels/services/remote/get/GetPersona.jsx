@@ -3,7 +3,7 @@ export function GetPersona() {
     return new Promise((resolve, reject) => {
       //FIC: URL = http://localhost:8080/api/pwa/labels 
       //axios.get("http://localhost:8080/api/pwa/labels") 
-      axios.get("http://127.0.0.1:3020/api/pwa/orders/persona")
+      axios.get(import.meta.env.VITE_CAT_PERSONS_URL)
         .then((response) => {
           const data = response.data;
         //console.log("getAllLabels()", data);

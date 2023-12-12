@@ -18,7 +18,7 @@ import { DeleteOneOrder } from "../../service/remote/delete/DeleteOneOrder";
 import { useDispatch } from "react-redux";
 import AddOrdenesModal from "../modals/AddOrdenesModal";
 import PatchOrdenesModal from "../modals/PatchOrdenesModal";
-import { SET_SELECTED_ORDENES_DATA } from "../../redux/silices/ordenesSlice";
+import { SET_SELECTED_ORDENES_DATA } from "../../redux/slices/OrdenesSlice";
 //REutilizables
 import {
   showMensajeConfirm,
