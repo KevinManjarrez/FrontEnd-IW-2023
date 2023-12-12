@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GetAllLabels } from '../../../labels/services/remote/get/GetAllLabels';
-function useEtiquetas({IdEtiquetaOK,IdInstitutoOK: IdOrdenOK }) {
+function useEtiquetas({IdEtiquetaOK, IdInstitutoOK }) {
   const [etiquetas, setEtiquetas] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -14,10 +14,11 @@ function useEtiquetas({IdEtiquetaOK,IdInstitutoOK: IdOrdenOK }) {
     }
     fetchData();
   }, []);
+  
 let etiquetaEspecifica = null
-  if(IdEtiquetaOK && IdOrdenOK){ //Si recibe IdInstitutoOK
-  etiquetaEspecifica= etiquetas.find(etiqueta => etiqueta.IdEtiquetaOK === IdEtiquetaOK && etiqueta.IdOrdenOK === IdOrdenOK) ;
-}else if(IdEtiquetaOK && !IdOrdenOK){//Si NO recibe IdInstitutoOK
+  if(IdEtiquetaOK && IdInstitutoOK){ //Si recibe IdInstitutoOK
+  etiquetaEspecifica= etiquetas.find(etiqueta => etiqueta.IdEtiquetaOK === IdEtiquetaOK && etiqueta.IdInstitutoOK === IdInstitutoOK) ;
+}else if(IdEtiquetaOK && !IdInstitutoOK){//Si NO recibe IdInstitutoOK
   etiquetaEspecifica= etiquetas.find(etiqueta => etiqueta.IdEtiquetaOK === IdEtiquetaOK)
 }
  

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function updateProduct(id, dataToUpdate) {
+export function PatchInfoAd(id, dataToUpdate) {
   return new Promise((resolve, reject) => {
     axios.patch(`http://127.0.0.1:3020/api/pwa/orders?IdInstitutoOK=9001&IdNegocioOK=1101&IdOrdenOK=${id}`, dataToUpdate)
       .then((response) => {

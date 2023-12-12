@@ -25,19 +25,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 
 import { InfoAdModel } from "../../models/InfoAdModel";
-import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
 import useEtiquetas from "../../../orders/service/remote/useEtiquetas";
 import MyAutoComplete from "../../../../components/elements/atomos/MyAutoComplete";
 
 //FIC: Formik - Yup
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-//HELPERS
-import { InfoAdValues } from "../../helpers/InfoAdValues";
-
 //SERVICES
-import { AddOneInfoAd } from "../../service/remote/post/AddOneInfoAd";
+import { PatchInfoAd } from "../../service/remote/update/PatchInfoAd";
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 
@@ -52,45 +47,22 @@ const InfoAdModal = ({
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
     const [isNuevaEtiqueta, setINuevaEtiqueta] = React.useState(false);
     const { etiquetas, etiquetaEspecifica } = useEtiquetas({
-      IdInstitutoOK: productSel,
-      IdEtiquetaOK: "IdSeccionesInfoAdCatProdServ",
+      IdInstitutoOK: productSel.IdInstitutoOK,
+      IdEtiquetaOK: "IdTipoOrdenes",
     });
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log("Todas las Etiquetas", etiquetas);
         console.log(" etiquetaEspecifica", etiquetaEspecifica);
       }, [etiquetas, etiquetaEspecifica]);
-
+*/
       useEffect(() => {
         console.log("isNuevaEtiqueta", isNuevaEtiqueta);
       }, [isNuevaEtiqueta]);
 
-      async function getDataSelectOrdenesType() {
-        try {
-          const Labels = await GetAllLabels();
-          const OrdenesTypes = Labels.find(
-            (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
-          );
-          const valores = OrdenesTypes.valores; // Obtenemos el array de valores
-          const IdValoresOK = valores.map((valor, index) => ({
-            IdValorOK: valor.IdValorOK,
-            key: index, // Asignar el índice como clave temporal
-          }));
-          setOrdenesValuesLabel(IdValoresOK);
-          console.log(OrdenesValuesLabel)
-        } catch (e) {
-          console.error(
-            "Error al obtener Etiquetas para Tipos Giros de Institutos:",
-            e
-          );
-        }
-      }
-      const handleSelectChange = (event) => {
-        setSelectedValue(event.target.value);
-      };
+
     //FIC: Definition Formik y Yup.
     const formik = useFormik({
         initialValues: {
@@ -111,31 +83,28 @@ const InfoAdModal = ({
           setMensajeExitoAlert("");
           setMensajeErrorAlert("");
           setLoading(true);
-          console.log(values);
+          //console.log(values);
 
             try {
-                /*let model = InfoAdModel();
+                let model = InfoAdModel();
                 const infoAd = {
                 ...model,
                 ...values,
                 };
                 infoAd.Secuencia = Number(infoAd.Secuencia);
-                let product = JSON.parse(JSON.stringify(productSel));
-                console.log("product", product);
-                product.cat_prod_serv_info_ad.push(infoAd);
+                //Trae la coleccion ordenes_info_ad de la orden seleccionada
+                let ordenInfoAd = JSON.parse(JSON.stringify(productSel));
+                //console.log("Ordenes", ordenInfoAd);
+                ordenInfoAd.InfoAdModel.push(infoAd);
                 const dataToUpdate = {
-                cat_prod_serv_info_ad: product.cat_prod_serv_info_ad,
+                    InfoAdModel: ordenInfoAd.InfoAdModel,
                 };
-                console.log(
-                " product.cat_prod_serv_info_ad",
-                product.cat_prod_serv_info_ad
-                );
-                await updateProduct(product.IdProdServOK, dataToUpdate);
+                console.log(" ks",ordenInfoAd.InfoAdModel);
+                await PatchInfoAd(ordenInfoAd.IdOrdenOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-                handleReload();*/
+                //handleReload();
             } catch (e) {
-                setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
             }
             setLoading(false);
@@ -177,7 +146,7 @@ const InfoAdModal = ({
                     displayProp="Etiqueta" // Propiedad a mostrar
                     idProp="IdEtiquetaOK" // Propiedad a guardar al dar clic
                     onSelectValue={(selectedValue) => {
-                        console.log("Selección:", selectedValue);
+                        //console.log("Selección:", selectedValue);
                         formik.values.IdEtiqueta = selectedValue
                         ? selectedValue?.IdEtiquetaOK
                         : "";
@@ -211,7 +180,7 @@ const InfoAdModal = ({
                         error={ formik.touched.IdEtiqueta && Boolean(formik.errors.IdEtiqueta) }
                         helperText={ formik.touched.IdEtiqueta && formik.errors.IdEtiqueta }
                     />
-                    <TextField
+                    {/*<TextField
                         id="Etiqueta"
                         label="Etiqueta*"
                         value={formik.values.Etiqueta}
@@ -234,7 +203,7 @@ const InfoAdModal = ({
                         {...commonTextFieldProps}
                         error={ formik.touched.IdTipoSeccionOK && Boolean(formik.errors.IdTipoSeccionOK) }
                         helperText={ formik.touched.IdTipoSeccionOK && formik.errors.IdTipoSeccionOK }
-                    />
+                    />*/}
                     <FormControl fullWidth margin="normal">
                     <InputLabel>Selecciona una opción</InputLabel>
                     <Select
@@ -245,7 +214,6 @@ const InfoAdModal = ({
                     onBlur={formik.handleBlur}
                     disabled={!!mensajeExitoAlert}
                     >
-                    {console.log("etiquetaEspecifica", etiquetaEspecifica)}
                     {etiquetaEspecifica?.valores.map((seccion) => {
                         return (
                         <MenuItem
@@ -258,7 +226,7 @@ const InfoAdModal = ({
                     })}
                 </Select>
                     <FormHelperText>
-                    {formik.touched.IdTipoEstatusOK && formik.errors.IdTipoEstatusOK}
+                    {formik.touched.IdTipoSeccionOK && formik.errors.IdTipoSeccionOK}
                     </FormHelperText>
                 </FormControl>
                 <TextField

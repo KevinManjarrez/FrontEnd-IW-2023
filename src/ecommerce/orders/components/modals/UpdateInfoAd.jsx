@@ -14,7 +14,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
+//import {  PatchInfoAd } from "../../service/remote/update/UpdateInfoAd";
 const UpdateInfoAd = ({
   infoAdSel,
   productSel,
@@ -62,7 +62,7 @@ const UpdateInfoAd = ({
         const dataToUpdate = {
           cat_prod_serv_info_ad: product.cat_prod_serv_info_ad,
         };
-        await updateProduct(product.IdProdServOK, dataToUpdate);
+        await PatchInfoAd(product.IdProdServOK, dataToUpdate);
         setMensajeExitoAlert("InfoAd modificada Correctamente");
         handleReload();
       } catch (e) {

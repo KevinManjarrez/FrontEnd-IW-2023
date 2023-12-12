@@ -11,7 +11,6 @@ import {
   showMensajeConfirm,
   showMensajeError,
 } from "../../../../components/elements/messages/MySwalAlerts";
-import { updateProduct } from "../../service/remote/update/UpdateInfoAd";
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
 
 import { useSelector } from "react-redux";
@@ -82,7 +81,7 @@ const InfoAdTable = ({
         const dataToUpdate = {
           InfoAdModel: infoAd,
         };
-        await updateProduct?.(ordenSel.IdOrdenOK, dataToUpdate);
+        await UpdateInfoAd?.(ordenSel.IdOrdenOK, dataToUpdate);
         showToastExito("Info Ad Eliminado");
         handleReload();
       } catch (e) {
