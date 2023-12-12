@@ -1,9 +1,9 @@
 import axios from "axios";
-export function GetOneLabels(IdInstitutoOK,IdNegocioOK) {
+export function GetOneLabels(IdInstitutoOK,IdEtiquetaOK) {
     return new Promise((resolve, reject) => {
       //FIC: URL = http://localhost:8080/api/pwa/labels 
       //axios.get("http://localhost:8080/api/pwa/labels") 
-      axios.get(`${import.meta.env.VITE_CAT_LABELS_URL}one?IdInstitutoOK=${IdInstitutoOK}&IdNegocioOK=${IdNegocioOK}`)
+      axios.get(`${import.meta.env.VITE_CAT_LABELS_URL}one?IdInstitutoOK=${IdInstitutoOK}&IdNegocioOK=${IdEtiquetaOK}`)
         .then((response) => {
           const data = response.data;
         //console.log("getAllLabels()", data);
