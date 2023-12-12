@@ -1,5 +1,5 @@
 import { Outlet} from "react-router-dom";
-import AppBar from "../../../share/components/AppBarEcommerce";
+import AppBar from "../../../share/components/elements/bars/CommerceAppBar";
 export default function Home() {
     return (
         <div id='div-home'>
