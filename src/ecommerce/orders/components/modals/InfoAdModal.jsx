@@ -26,7 +26,7 @@ import SaveIcon from "@mui/icons-material/Save";
 
 import { InfoAdModel } from "../../models/InfoAdModel";
 import useEtiquetas from "../../../orders/service/remote/useEtiquetas";
-import MyAutoComplete from "../../../../components/elements/atomos/MyAutoComplete";
+import MyAutoComplete from "../../../../share/components/elements/atomos/MyAutoComplete";
 
 //FIC: Formik - Yup
 import { useFormik } from "formik";
