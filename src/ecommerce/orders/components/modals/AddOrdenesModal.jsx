@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 //FIC: Material
 import {
   Dialog,
+  Autocomplete,
   DialogContent,
   DialogTitle,
   Typography,
@@ -52,9 +53,6 @@ const AddOrdenesModal = ({
   const [RolValuesLabel, setRolValuesLabel] = useState([]);
   const [PersonaValuesLabel, setPersonaValuesLabel] = useState([]);
 
-  const [selectedValue, setSelectedValue] = useState('');
-  const [selectedValue2, setSelectedValue2] = useState('');
-  const [selectedValue3, setSelectedValue3] = useState('');
   
 
   const [IdGen, setIdGen] = useState(
@@ -338,20 +336,24 @@ const AddOrdenesModal = ({
               </MenuItem>
             ))}
           </Select>
-          <Select
-            id="dynamic-select"
-            value={formik.values.IdPersonaOK}
-            onChange={formik.handleChange}  // Usa la función de Formik directamente
-            onBlur={formik.handleBlur}
-            name="IdPersonaOK"
-            label="TipoOrden"
-          >
-            {PersonaValuesLabel.map((option, index) => (
-              <MenuItem key={option.IdValorOK} value={option.key}>
-                {option.IdValorOK}
-              </MenuItem>
-            ))}
-          </Select>
+          <Autocomplete
+            id="dynamic-autocomplete-persona"
+            options={PersonaValuesLabel}
+            getOptionLabel={(option) => option.IdValorOK}
+            value={PersonaValuesLabel.find((option) => option.key === formik.values.IdPersonaOK) || null}
+            onChange={(e, newValue) => {
+              formik.setFieldValue("IdPersonaOK", newValue ? newValue.key : "");
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="TipoOrden"
+                error={formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)}
+                helperText={formik.touched.IdPersonaOK && formik.errors.IdPersonaOK}
+              />
+            )}
+          />
+
         </DialogContent>
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
         <DialogActions sx={{ display: "flex", flexDirection: "row" }}>
