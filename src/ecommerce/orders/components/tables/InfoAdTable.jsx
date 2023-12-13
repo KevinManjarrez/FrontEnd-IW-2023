@@ -12,7 +12,7 @@ import {
   showMensajeError,
 } from "../../../../share/components/elements/messages/MySwalAlerts";
 
-import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
+import { GetOneOrderByID } from "../../service/remote/get/GetOneOrderByID";
 import { PatchInfoAd } from "../../service/remote/update/PatchInfoAd";
 import { useSelector } from "react-redux";
 
@@ -57,10 +57,10 @@ const InfoAdTable = ({
   }, []);
 
   const handleReload = async () => {
-    const AllOrdenesData = await getAllOrdenes();
-    setOrdenesData(AllOrdenesData);
-    setSelectedRowIndex(null);
-    //setInfoAdSel(null);
+    const OneOrdenesData = await GetOneOrderByID(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK);
+    setinfoAdEstatusData(OneOrdenesData.ordenes_info_ad);
+    setIdRowSel(null);
+    setInfoAdSel(null);
   };
 
   const handleDelete = async () => {
@@ -84,7 +84,7 @@ const InfoAdTable = ({
         console.log("se",selectedOrdenesData.IdInstitutoOK)
         await PatchInfoAd?.(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK, dataToUpdate);
         showToastExito("Info Ad Eliminado");
-        //handleReload();
+        handleReload();
       } catch (e) {
         console.error("handleDelete", e);
         showMensajeError(`No se pudo Eliminar el Info Ad`);
@@ -173,7 +173,7 @@ const InfoAdTable = ({
           openModalAdd={openModalAdd}
           setOpenModalAdd={setOpenModalAdd}
           productSel={selectedOrdenesData}
-          //handleReload={handleReload}
+          handleReload={handleReload}
           onClose={() => setOpenModalAdd(false)}
         />
       </Dialog>
@@ -182,8 +182,9 @@ const InfoAdTable = ({
         <UpdateInfoAd
           idRowSel={idRowSel}
           infoAdSel={infoAdSel}
+          productSel={selectedOrdenesData}
           openModalUpdate={openModalUpdate}
-          //handleReload={handleReload}
+          handleReload={handleReload}
           setOpenModalUpdate={setOpenModalUpdate}
           onClose={() => setOpenModalUpdate(false)}
         />
