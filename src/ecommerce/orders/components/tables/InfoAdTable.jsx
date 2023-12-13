@@ -13,7 +13,7 @@ import {
 } from "../../../../share/components/elements/messages/MySwalAlerts";
 
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
-
+import { PatchInfoAd } from "../../service/remote/update/PatchInfoAd";
 import { useSelector } from "react-redux";
 
 const InfoAdTable = ({
@@ -64,7 +64,7 @@ const InfoAdTable = ({
   };
 
   const handleDelete = async () => {
-    if (!ordenSel || idRowSel === null) {
+    if (!selectedOrdenesData || idRowSel === null) {
       console.error("ordenSel es undefined o idRowSel es null");
       return;
     }
@@ -75,14 +75,16 @@ const InfoAdTable = ({
 
     if (res) {
       try {
-        const infoAd = [...ordenSel.InfoAdModel];
+        const infoAd = [...selectedOrdenesData.ordenes_info_ad];
         infoAd.splice(idRowSel, 1);
         const dataToUpdate = {
-          InfoAdModel: infoAd,
+          ordenes_info_ad: infoAd,
         };
-        await UpdateInfoAd?.(ordenSel.IdOrdenOK, dataToUpdate);
+
+        console.log("se",selectedOrdenesData.IdInstitutoOK)
+        await PatchInfoAd?.(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK, dataToUpdate);
         showToastExito("Info Ad Eliminado");
-        handleReload();
+        //handleReload();
       } catch (e) {
         console.error("handleDelete", e);
         showMensajeError(`No se pudo Eliminar el Info Ad`);
@@ -155,6 +157,7 @@ const InfoAdTable = ({
             onClick: () => {
               setInfoAdSel(row.original);
               setIdRowSel(row.id);
+              console.log("selecciono:",idRowSel)
             },
             sx: {
               cursor: loadingTable ? "not-allowed" : "pointer",
