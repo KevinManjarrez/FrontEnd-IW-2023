@@ -3,10 +3,9 @@ import React, { useEffect, useMemo, useState } from "react";
 //FIC: Material UI
 import { MaterialReactTable } from "material-react-table";
 import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import EditIcon from "@mui/icons-material/Edit";
-import InfoIcon from "@mui/icons-material/Info";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { MRT_Localization_ES } from "material-react-table/locales/es";
+import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
+
 //FIC: Modals
 import OrdenesDetalleModal from "../modals/OrdenesDetalleModal";
 //REDUX
@@ -70,28 +69,32 @@ const OrdenesDetalleColumn = [
               data={OrdenesDetalleData}
               state={{isLoading: loadingTable}}
               initialState={{ density: "compact", showGlobalFilter: true }}
+              enableColumnActions={false}
+              localization={MRT_Localization_ES}
+              enableStickyHeader
+              muiTableContainerProps={{
+                sx: {
+                  "&::-webkit-scrollbar": { display: "none" },
+                  msOverflowStyle: "none",
+                  scrollbarWidth: "none",
+                  overflow: "auto",
+                  width: "parent",
+                },
+              }}
+              positionToolbarAlertBanner="bottom"
               renderTopToolbarCustomActions={({ table }) => (
-                  <>
-                    {/* ------- ACTIONS TOOLBAR INIT ------ */}
-                    <Stack direction="row" sx={{ m: 1 }}>
-                      <Box>
-                        <Tooltip title="Agregar">
-                          <IconButton 
-                          onClick={() => setOrdenesDetalleShowModal(true)}
-                          >
-                            <AddCircleIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Detalles ">
-                          <IconButton>
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
-                    </Stack>
-                    {/* ------- ACTIONS TOOLBAR END ------ */}
-                  </>
-                )}
+                <BarActionsTable
+                handleBtnAdd={() => setOrdenesDetalleShowModal(true)}
+                handleBtnDetails={() => console.log("clic handleBtnDetails")}
+                handleBtnReload={() => handleReload()}
+              />
+              )}
+              muiTableBodyRowProps={({ row }) => ({
+                onClick: () => {
+                  setSelectedRowIndex(row.original);
+                  setSelectedRowIndex(row.id);
+                },
+              })}
             />
           </Box>
 
