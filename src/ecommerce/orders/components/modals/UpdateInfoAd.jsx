@@ -49,10 +49,10 @@ const UpdateInfoAd = ({
       setLoading(true);
       try {
         //Modificar el producto con el Formulario
-        console.log(infoAdSel)
-        let product = infoAdSel;
+        console.log(productSel)
+        let product = productSel;
         console.log("algo",product)
-        product.cat_prod_serv_info_ad[idRowSel].IdEtiquetaOK =
+        /*product.cat_prod_serv_info_ad[idRowSel].IdEtiquetaOK =
           values.IdEtiquetaOK;
         product.cat_prod_serv_info_ad[idRowSel].IdEtiqueta = values.IdEtiqueta;
         product.cat_prod_serv_info_ad[idRowSel].IdTipoSeccionOK =
@@ -67,7 +67,7 @@ const UpdateInfoAd = ({
         };
         await PatchInfoAd(product.IdProdServOK, dataToUpdate);
         setMensajeExitoAlert("InfoAd modificada Correctamente");
-        handleReload();
+        handleReload();*/
       } catch (e) {
         setMensajeErrorAlert("No se pudo Modificar InfoAd");
       }
