@@ -15,6 +15,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {  PatchInfoAd } from "../../service/remote/update/PatchInfoAd";
+import {cloneDeep} from 'lodash/cloneDeep';
+
+
 const UpdateInfoAd = ({
   infoAdSel,
   productSel,
@@ -26,6 +29,7 @@ const UpdateInfoAd = ({
   const [loading, setLoading] = useState(false);
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
+  
   const formik = useFormik({
     initialValues: {
       IdEtiquetaOK: infoAdSel.IdEtiquetaOK,
@@ -49,25 +53,32 @@ const UpdateInfoAd = ({
       setLoading(true);
       try {
         //Modificar el producto con el Formulario
-        console.log(productSel)
-        let product = productSel;
-        console.log("algo",product)
-        /*product.cat_prod_serv_info_ad[idRowSel].IdEtiquetaOK =
-          values.IdEtiquetaOK;
-        product.cat_prod_serv_info_ad[idRowSel].IdEtiqueta = values.IdEtiqueta;
-        product.cat_prod_serv_info_ad[idRowSel].IdTipoSeccionOK =
-          values.IdTipoSeccionOK;
-        product.cat_prod_serv_info_ad[idRowSel].Valor = values.Valor;
-        product.cat_prod_serv_info_ad[idRowSel].Secuencia = Number(
-          values.Secuencia
-        );
-        console.log(product)
+        let product = JSON.parse(JSON.stringify(productSel));
+        console.log("antes:",product)
+        
+        if (idRowSel >= 0) {
+          // Crea una copia del objeto en idRowSel y modifica la propiedad IdEtiquetaOK
+          product.ordenes_info_ad[idRowSel]= {
+            //...product.ordenes_info_ad[idRowSel],
+              IdEtiquetaOK: values.IdEtiquetaOK,
+              IdEtiqueta: values.IdEtiqueta,
+              IdTipoSeccionOK:values.IdTipoSeccionOK,
+              Valor: values.Valor,
+              Secuencia:Number(values.Secuencia)
+          };
+          
+        }
+        
+        console.log("temp:",product)
         const dataToUpdate = {
-          ordenes_info_ad: product.cat_prod_serv_info_ad,
+          ordenes_info_ad: product.ordenes_info_ad,
         };
-        await PatchInfoAd(product.IdProdServOK, dataToUpdate);
+        console.log("data",dataToUpdate);
+        await PatchInfoAd(product.IdInstitutoOK,product.IdNegocioOK,product.IdOrdenOK, dataToUpdate);
+        
         setMensajeExitoAlert("InfoAd modificada Correctamente");
-        handleReload();*/
+        //handleReload();
+        console.log("Se modifico")
       } catch (e) {
         setMensajeErrorAlert("No se pudo Modificar InfoAd");
       }
@@ -80,6 +91,8 @@ const UpdateInfoAd = ({
     fullWidth: true,
     margin: "dense",
   };
+
+
   return (
     <Dialog
       open={openModalUpdate}
