@@ -46,6 +46,7 @@ const PatchOrdenesModal = ({
   PatchOrdenesShowModal,
   setPatchOrdenesShowModal,
   row,
+  handleReload
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
@@ -140,14 +141,6 @@ const PatchOrdenesModal = ({
   }, []);
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
-  
-  //Este metodo es para refrescar la tabla
-  const handleReload = async () => {
-    const AllOrdenesData = await getAllOrdenes();
-    setOrdenesData(AllOrdenesData);
-    setSelectedRowIndex(null);
-    //setInfoAdSel(null);
-  };
 
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
@@ -193,7 +186,7 @@ const PatchOrdenesModal = ({
         // Utiliza la función de actualización si estamos en modo de edición
         await UpdatePatchOneOrder(row.IdOrdenOK,Ordenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
         setMensajeExitoAlert("Envío actualizado Correctamente");
-        //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+        handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
       } catch (e) {
         setMensajeExitoAlert(null);
         setMensajeErrorAlert("No se pudo Modificar");
