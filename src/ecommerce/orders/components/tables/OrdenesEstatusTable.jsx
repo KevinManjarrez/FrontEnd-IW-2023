@@ -89,7 +89,7 @@ const OrdenesEstatusColumn = [
                   setSelectedRowIndex(row.original);
                   setSelectedRowIndex(row.id);
                   <OrdenesEstatusModal
-                  row={editData}
+                    //row={editData}
                   /> 
                 },
               })}

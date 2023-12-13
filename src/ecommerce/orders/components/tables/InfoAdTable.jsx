@@ -35,8 +35,6 @@ const InfoAdTable = ({
   const [infoAdData, setinfoAdEstatusData] = useState([]);
   const [idRowSel, setIdRowSel] = useState(null);
   const [loadingTable, setLoadingTable] = useState(true);
-  const [editData, setEditData] = useState(false);     //Para saber si hay que rellenar los textfield con datos en caso de estar en modo de edición
-
 
   const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
 /*
@@ -120,28 +118,6 @@ const InfoAdTable = ({
     },
   ];
 
-  //Este es el metodo para seleccionar la orden de la tabla 
-  useEffect(() => {
-    const handleRowClick = (index) => {
-      const clickedRow = selectedOrdenesData.ordenes_info_ad[index];
-      if (clickedRow) {
-        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdEtiqueta);
-        setIdRowSel(clickedRow.IdEtiquetaOK);
-        //setSelectedRowIndex(index);
-        setEditData(clickedRow);
-        //dispatch(SET_SELECTED_ORDENES_DATA(clickedRow));
-      }
-    };
-
-    //Delimita el rango de selecion en la tabla
-    const rows = document.querySelectorAll(".MuiTableRow-root");
-
-    rows.forEach((row, index) => {
-      row.addEventListener("click", () => handleRowClick(index - 1));
-    });
-  }, [selectedOrdenesData.ordenes_info_ad]);
-
-
   return (
     <Box>
       <Box className="box-tables">
@@ -191,9 +167,9 @@ const InfoAdTable = ({
 
       <Dialog open={openModalAdd} onClose={() => openModalAdd(false)}>
         <InfoAdModal
-          productSel={editData}
           openModalAdd={openModalAdd}
           setOpenModalAdd={setOpenModalAdd}
+          productSel={selectedOrdenesData}
           //handleReload={handleReload}
           onClose={() => setOpenModalAdd(false)}
         />
@@ -203,7 +179,6 @@ const InfoAdTable = ({
         <UpdateInfoAd
           idRowSel={idRowSel}
           infoAdSel={infoAdSel}
-          productSel={editData}
           openModalUpdate={openModalUpdate}
           //handleReload={handleReload}
           setOpenModalUpdate={setOpenModalUpdate}

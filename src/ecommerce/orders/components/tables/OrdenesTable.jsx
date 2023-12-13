@@ -15,6 +15,7 @@ import AddOrdenesModal from "../modals/AddOrdenesModal";
 import PatchOrdenesModal from "../modals/PatchOrdenesModal";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/slices/OrdenesSlice";
 import OrdenesEstatusModal from "../modals/OrdenesEstatusModal";
+import InfoAdModal from "../modals/InfoAdModal";
 //REutilizables
 import {
   showMensajeConfirm,
@@ -187,7 +188,10 @@ const OrdenesTable = () => {
                 setSelectedRowIndex(row.id);
                 <OrdenesEstatusModal
                 row={editData}
-                /> 
+                />,
+                <InfoAdModal
+                row={editData}
+                />
               },
               sx: {
                 cursor: loadingTable ? "not-allowed" : "pointer",
