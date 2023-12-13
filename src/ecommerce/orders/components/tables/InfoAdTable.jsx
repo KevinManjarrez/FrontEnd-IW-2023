@@ -182,6 +182,7 @@ const InfoAdTable = ({
         <UpdateInfoAd
           idRowSel={idRowSel}
           infoAdSel={infoAdSel}
+          productSel={selectedOrdenesData}
           openModalUpdate={openModalUpdate}
           handleReload={handleReload}
           setOpenModalUpdate={setOpenModalUpdate}
