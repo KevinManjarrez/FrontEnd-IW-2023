@@ -16,6 +16,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormControl,
   FormHelperText,
 } from "@mui/material";
 
@@ -112,7 +113,7 @@ const AddOrdenesModal = ({
     try {
       const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
-        (label) => label.IdEtiquetaOK === "IdTiposRolesUsuarios"
+        (label) => label.IdEtiquetaOK === "IdTipoRol"
       );
       const valores = OrdenesTypes.valores; // Obtenemos el array de valores
       const IdValoresOK = valores.map((valor, index) => ({
@@ -307,6 +308,7 @@ const AddOrdenesModal = ({
             error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
             helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
+          <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="dynamic-select-tipo-orden">Tipo de Orden</InputLabel>
           <Select
             id="dynamic-select-tipo-orden"
@@ -322,6 +324,8 @@ const AddOrdenesModal = ({
               </MenuItem>
             ))}
           </Select>
+          </FormControl >
+          <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="dynamic-select-rol">Rol</InputLabel>
           <Select
             id="dynamic-select-rol"
@@ -337,9 +341,12 @@ const AddOrdenesModal = ({
               </MenuItem>
             ))}
           </Select>
+          </FormControl>
+          <div style={{ margin: '10px 0' }}></div>
           <Autocomplete
             id="dynamic-autocomplete-persona"
             options={PersonaValuesLabel}
+            
             getOptionLabel={(option) => option.IdValorOK}
             value={PersonaValuesLabel.find((option) => option.key === formik.values.IdPersonaOK) || null}
             onChange={(e, newValue) => {
@@ -348,7 +355,7 @@ const AddOrdenesModal = ({
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="TipoOrden"
+                label={"Selecciona una Persona"}
                 error={formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)}
                 helperText={formik.touched.IdPersonaOK && formik.errors.IdPersonaOK}
               />

@@ -1,9 +1,9 @@
 import React from "react";
-import { Dialog, DialogContent, DialogTitle, Typography, TextField, DialogActions, Box, Alert } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Typography, TextField, DialogActions, Box, Alert,InputLabel, Select, MenuItem  } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 //FIC: Formik - Yup
 import { useFormik } from "formik";
@@ -13,12 +13,15 @@ import * as Yup from "yup";
 import { OrdenesEstatusValues } from "../../helpers/OrdenesEstatusValues";
 import { UpdatePatchOneOrder } from "../../service/remote/post/AddOrdenesEstatus";
 import { GetOneOrderByID } from "../../service/remote/get/GetOneOrderByID";
+import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 
 const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal,row,handleReload }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
+    const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
+
     //Para ver la data que trae el documento completo desde el dispatch de ShippingsTable
     //FIC: Definition Formik y Yup.
     const formik = useFormik({
@@ -76,6 +79,33 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
         disabled: !!mensajeExitoAlert,
     };
 
+
+    async function getDataSelectOrdenesType2() {
+        try {
+          const Labels = await GetAllLabels();
+          const OrdenesTypes = Labels.find(
+            (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
+          );
+          const valores = OrdenesTypes.valores; // Obtenemos el array de valores
+          const IdValoresOK = valores.map((valor, index) => ({
+            IdValorOK: valor.Valor,
+            key: valor.IdValorOK, // Asignar el índice como clave temporal
+          }));
+          setOrdenesValuesLabel(IdValoresOK);
+          console.log(OrdenesValuesLabel)
+        } catch (e) {
+          console.error(
+            "Error al obtener Etiquetas para Tipos Giros de Institutos:",
+            e
+          );
+        }
+      }
+
+      useEffect(() => {
+        getDataSelectOrdenesType2();
+      },[]);
+  
+
     return(
         <Dialog
             open={OrdenesEstatusShowModal}
@@ -95,14 +125,29 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
                     dividers
                 >
                     {/* FIC: Campos de captura o selección */}
-                    <TextField
+                    {/*<TextField
                         id="IdTipoEstatusOK"
                         label="IdTipoEstatusOK*"
                         value={formik.values.IdTipoEstatusOK}
                         {...commonTextFieldProps}
                         error={ formik.touched.IdTipoEstatusOK && Boolean(formik.errors.IdTipoEstatusOK) }
                         helperText={ formik.touched.IdTipoEstatusOK && formik.errors.IdTipoEstatusOK }
-                    />
+    />*/}
+                    <InputLabel htmlFor="dynamic-select-tipo-orden">Tipo de Orden</InputLabel>
+                    <Select
+                        id="dynamic-select-tipo-orden"
+                        value={formik.values.IdTipoEstatusOK}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        name="IdTipoEstatusOK"
+                        aria-label="TipoOrden"
+                    >
+                        {OrdenesValuesLabel.map((option, index) => (
+                        <MenuItem key={option.IdValorOK} value={`IdEstatusOrden-${option.key}`}>
+                            {option.IdValorOK}
+                        </MenuItem>
+                        ))}
+                    </Select>
                     <TextField
                         id="Actual"
                         label="Actual*"
