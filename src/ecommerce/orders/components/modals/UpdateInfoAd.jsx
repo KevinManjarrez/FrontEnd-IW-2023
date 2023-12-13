@@ -14,7 +14,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-//import {  PatchInfoAd } from "../../service/remote/update/UpdateInfoAd";
+import {  PatchInfoAd } from "../../service/remote/update/PatchInfoAd";
 const UpdateInfoAd = ({
   infoAdSel,
   productSel,
@@ -49,7 +49,9 @@ const UpdateInfoAd = ({
       setLoading(true);
       try {
         //Modificar el producto con el Formulario
-        let product = productSel;
+        console.log(infoAdSel)
+        let product = infoAdSel;
+        console.log("algo",product)
         product.cat_prod_serv_info_ad[idRowSel].IdEtiquetaOK =
           values.IdEtiquetaOK;
         product.cat_prod_serv_info_ad[idRowSel].IdEtiqueta = values.IdEtiqueta;
@@ -59,8 +61,9 @@ const UpdateInfoAd = ({
         product.cat_prod_serv_info_ad[idRowSel].Secuencia = Number(
           values.Secuencia
         );
+        console.log(product)
         const dataToUpdate = {
-          cat_prod_serv_info_ad: product.cat_prod_serv_info_ad,
+          ordenes_info_ad: product.cat_prod_serv_info_ad,
         };
         await PatchInfoAd(product.IdProdServOK, dataToUpdate);
         setMensajeExitoAlert("InfoAd modificada Correctamente");

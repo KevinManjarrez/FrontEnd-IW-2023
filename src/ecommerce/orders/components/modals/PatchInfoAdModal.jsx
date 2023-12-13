@@ -113,12 +113,14 @@ const PatchInfoAdModal = ({
           console.log(values);
 
             try {
-                /*let model = InfoAdModel();
+                console.log("algo",productSel)
+                let model = InfoAdModel();
                 const infoAd = {
                 ...model,
                 ...values,
                 };
                 infoAd.Secuencia = Number(infoAd.Secuencia);
+                
                 let product = JSON.parse(JSON.stringify(productSel));
                 console.log("product", product);
                 product.cat_prod_serv_info_ad.push(infoAd);
@@ -132,7 +134,7 @@ const PatchInfoAdModal = ({
                 await updateProduct(product.IdProdServOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-                handleReload();*/
+                handleReload();
             } catch (e) {
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
