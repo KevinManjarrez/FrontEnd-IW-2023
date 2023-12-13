@@ -207,6 +207,7 @@ const OrdenesTable = () => {
         <AddOrdenesModal
           AddOrdenesShowModal={AddOrdenesShowModal}
           setAddOrdenesShowModal={setAddOrdenesShowModal}
+          handleReload={handleReload()}
           onClose={() => {
             setAddOrdenesShowModal(false);
           }}
@@ -216,6 +217,7 @@ const OrdenesTable = () => {
         <PatchOrdenesModal
           PatchOrdenesShowModal={PatchOrdenesShowModal}
           setPatchOrdenesShowModal={setPatchOrdenesShowModal}
+          handleReload={handleReload()}
           row={editData}         //actualizar se ponga la info si es que hay
           onClose={() => {
             setPatchOrdenesShowModal(false); //Cerrar la modal

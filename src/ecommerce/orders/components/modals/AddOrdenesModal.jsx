@@ -44,7 +44,8 @@ import { v4 as genID } from "uuid";
 
 const AddOrdenesModal = ({
   AddOrdenesShowModal,
-  setAddOrdenesShowModal
+  setAddOrdenesShowModal,
+  handleReload
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
@@ -165,11 +166,7 @@ const AddOrdenesModal = ({
   // Dentro del componente AddShippingModal
 
   //Este metodo es para refrescar la tabla
-  const handleReload = async () => {
-    const AllOrdenesData = await getAllOrdenes();
-    setOrdenesData(AllOrdenesData);
-    //setInfoAdSel(null);
-  };
+ 
 
   
   
