@@ -94,7 +94,6 @@ const InfoAdModal = ({
                 //console.log("Ordenes", ordenInfoAd);
                 
                 ordenInfoAd.ordenes_info_ad.push(infoAd);
-
                 const dataToUpdate = {
                     ordenes_info_ad: ordenInfoAd.ordenes_info_ad,
                 };
@@ -102,7 +101,7 @@ const InfoAdModal = ({
                 await PatchInfoAd(ordenInfoAd.IdInstitutoOK,ordenInfoAd.IdNegocioOK,ordenInfoAd.IdOrdenOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-                handleReload();
+                //handleReload();
             } catch (e) {
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
             }

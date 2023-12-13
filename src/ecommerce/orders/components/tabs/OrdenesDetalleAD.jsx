@@ -1,9 +1,10 @@
 import { Box } from "@mui/material";
+import OrdenesDetalleInfoAd from '../tables/OrdenesDetalleInfoAd'
 
 export default function OrdenesDetalleAD() {
   return (
     <Box>
-      <h2>Ordenes DetalleAD AD</h2>
+      <OrdenesDetalleInfoAd></OrdenesDetalleInfoAd>
     </Box>
   );
 }

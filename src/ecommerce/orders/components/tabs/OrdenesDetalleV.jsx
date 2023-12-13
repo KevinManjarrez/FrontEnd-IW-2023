@@ -1,10 +1,9 @@
 import { Box } from "@mui/material";
-
+import OrdenesDetalleVTable from "../tables/OrdenesDetalleVTable";
 export default function OrdenesDetalleV() {
   return (
     <Box>
-      <h2>Ordenes Detalle V</h2>
-      
+      <OrdenesDetalleVTable></OrdenesDetalleVTable>
     </Box>
   );
 }
