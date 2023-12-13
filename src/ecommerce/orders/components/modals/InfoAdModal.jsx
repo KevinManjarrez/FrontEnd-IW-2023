@@ -88,11 +88,9 @@ const InfoAdModal = ({
                 ...model,
                 ...values,
                 };
-                console.log("algo",productSel)
                 infoAd.Secuencia = Number(infoAd.Secuencia);
                 //Trae la coleccion ordenes_info_ad de la orden seleccionada
                 let ordenInfoAd = JSON.parse(JSON.stringify(productSel));
-                console.log("algo2",ordenInfoAd)
                 //console.log("Ordenes", ordenInfoAd);
                 
                 ordenInfoAd.ordenes_info_ad.push(infoAd);
