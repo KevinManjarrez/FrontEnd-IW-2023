@@ -15,7 +15,7 @@ import { UpdatePatchOneOrder } from "../../service/remote/post/AddOrdenesEstatus
 import { GetOneOrderByID } from "../../service/remote/get/GetOneOrderByID";
 
 
-const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal,row }) => {
+const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowModal,row,handleReload }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
                 
                 await UpdatePatchOneOrder(row.IdOrdenOK,EstatusOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
                 setMensajeExitoAlert("Envío actualizado Correctamente");
-                //handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
+                handleReload(); //usar la función para volver a cargar los datos de la tabla y que se vea la actualizada
             } catch (e) {
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo Registrar");

@@ -6,6 +6,8 @@ import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
 
+import { GetOneOrderByID } from "../../service/remote/get/GetOneOrderByID";
+
 //FIC: Modals
 import OrdenesEstatusModal from "../modals/OrdenesEstatusModal";
 //REDUX
@@ -39,6 +41,7 @@ const OrdenesEstatusColumn = [
     const [OrdenesEstatusData, setOrdenesEstatusData] = useState([]);
     //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
     const [OrdenesEstatusShowModal, setOrdenesEstatusShowModal] = useState(false);
+    const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
 
     //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
     const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
@@ -55,6 +58,12 @@ const OrdenesEstatusColumn = [
       }
       fetchData();
     }, []);
+
+    const handleReload = async () => {
+      const OneOrdenesData = await GetOneOrderByID(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK);
+      setOrdenesEstatusData(OneOrdenesData.ordenes_estatus);
+      setSelectedRowIndex(null);
+    };
 
     return (
         <Box>
@@ -88,9 +97,6 @@ const OrdenesEstatusColumn = [
                 onClick: () => {
                   setSelectedRowIndex(row.original);
                   setSelectedRowIndex(row.id);
-                  <OrdenesEstatusModal
-                    //row={editData}
-                  /> 
                 },
               })}
           />
@@ -101,6 +107,7 @@ const OrdenesEstatusColumn = [
             <OrdenesEstatusModal
               OrdenesEstatusShowModal={OrdenesEstatusShowModal}
               setOrdenesEstatusShowModal={setOrdenesEstatusShowModal}
+              handleReload={handleReload}
               row={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
               onClose={() => setOrdenesEstatusShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />

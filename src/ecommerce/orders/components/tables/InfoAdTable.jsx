@@ -83,7 +83,7 @@ const InfoAdTable = ({
 
         console.log("se",selectedOrdenesData.IdInstitutoOK)
         await PatchInfoAd?.(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK, dataToUpdate);
-        showToastExito("Info Ad Eliminado");
+        showMensajeConfirm("Info Ad Eliminado");
         handleReload();
       } catch (e) {
         console.error("handleDelete", e);
