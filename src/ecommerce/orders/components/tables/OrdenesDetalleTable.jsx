@@ -2,13 +2,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 //FIC: Material UI
 import { MaterialReactTable } from "material-react-table";
-import { Box, Stack, Tooltip, Button, IconButton, Dialog } from "@mui/material";
+import { Box, Stack, Tooltip, Button, IconButton, Dialog , darken} from "@mui/material";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
 
 //FIC: Modals
 import OrdenesDetalleModal from "../modals/OrdenesDetalleModal";
+
+import OrdenesDetalleFTable from "./OrdenesDetalleFTable";
 //REDUX
+import { useDispatch } from "react-redux";
+import { SET_SELECTED_ORDENES_DETALLE_DATA } from "../../redux/slices/OrdenesSlice";
+
 import { useSelector } from "react-redux";
 
 //FIC: Columns Table Definition.
@@ -44,10 +49,12 @@ const OrdenesDetalleColumn = [
     const [OrdenesDetalleData, setOrdenesDetalleData] = useState([]);
     //FIC: controlar el estado que muesta u oculta la modal de nuevo InfoAd.
     const [OrdenesDetalleShowModal, setOrdenesDetalleShowModal] = useState(false);
+    const [selectedRowIndex, setSelectedRowIndex] = useState(null); //Para saber cual es la fila y pasarla para el color de la tabla
 
     //Con redux sacar la data que se envió del otro archivo (ShippingsTable)
     const selectedOrdenesData = useSelector((state) => state.ordenesReducer.selectedOrdenesData);
     // console.log(selectedShippingData);
+    const dispatch = useDispatch();
 
     useEffect(() => {
       async function fetchData() {
@@ -60,6 +67,25 @@ const OrdenesDetalleColumn = [
       }
       fetchData();
     }, []);
+
+    //Este es el metodo para seleccionar la orden de la tabla 
+  useEffect(() => {
+    const handleRowClick = (index) => {
+      const clickedRow = OrdenesDetalleData[index];
+      if (clickedRow) {
+        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdProdServOK);
+        setSelectedRowIndex(index);
+        dispatch(SET_SELECTED_ORDENES_DETALLE_DATA(clickedRow));
+      }
+    };
+
+    //Delimita el rango de selecion en la tabla
+    const rows = document.querySelectorAll(".MuiTableRow-root");
+
+    rows.forEach((row, index) => {
+      row.addEventListener("click", () => handleRowClick(index - 1));
+    });
+  }, [OrdenesDetalleData]);
 
     return (
         <Box>
@@ -93,11 +119,16 @@ const OrdenesDetalleColumn = [
                 onClick: () => {
                   setSelectedRowIndex(row.original);
                   setSelectedRowIndex(row.id);
+                  
+                },
+                sx: {
+                  cursor: loadingTable ? "not-allowed" : "pointer",
+                  backgroundColor:
+                  selectedRowIndex === row.id ? darken("#EFF999", 0.01) : "inherit",
                 },
               })}
             />
           </Box>
-
           {/* M O D A L E S */}   
           <Dialog open={OrdenesDetalleShowModal}>
             <OrdenesDetalleModal
