@@ -33,14 +33,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 //SERVICES
 import { PatchInfoAd } from "../../service/remote/update/PatchInfoAd";
-import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
 
 
 const InfoAdModal = ({ 
     openModalAdd,
     setOpenModalAdd,
     productSel, 
-    selectedOrdenesData,  
     handleReload
 }) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
@@ -48,10 +46,7 @@ const InfoAdModal = ({
     const [Loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [isNuevaEtiqueta, setINuevaEtiqueta] = React.useState(false);
-    const { etiquetas, etiquetaEspecifica } = useEtiquetas({
-      IdInstitutoOK: productSel.IdInstitutoOK,
-      IdEtiquetaOK: "IdTipoOrdenes",
-    });
+    
 
     /*useEffect(() => {
         console.log("Todas las Etiquetas", etiquetas);
@@ -79,6 +74,8 @@ const InfoAdModal = ({
           Valor: Yup.string("").required("Campo requerido"),
           Secuencia: Yup.string().required("Campo requerido"),
         }),
+
+        
         onSubmit: async (values) => {
           setMensajeExitoAlert("");
           setMensajeErrorAlert("");
@@ -110,7 +107,10 @@ const InfoAdModal = ({
             setLoading(false);
         },
     });
-
+    const { etiquetas, etiquetaEspecifica } = useEtiquetas({
+        IdInstitutoOK: productSel.IdInstitutoOK,
+        IdEtiquetaOK: formik.values.IdEtiquetaOK || "",
+      });
     //FIC: props structure for TextField Control.
     const commonTextFieldProps = {
         onChange: formik.handleChange,

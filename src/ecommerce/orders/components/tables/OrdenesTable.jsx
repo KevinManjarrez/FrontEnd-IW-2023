@@ -3,13 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 //FIC: Material UI
 import { MaterialReactTable } from "material-react-table";
 import { Box, Stack, Tooltip, Button, IconButton, Dialog, darken } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import BarActionsTable from "../../../../share/components/elements/bars/BarActionsTable";
-import EditIcon from "@mui/icons-material/Edit";
-import InfoIcon from "@mui/icons-material/Info";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CachedIcon from '@mui/icons-material/Cached';
 //FIC: DB
 //import InstitutesStaticData from '../../../../../db/security/json/institutes/InstitutesData';
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
@@ -19,6 +14,7 @@ import { useDispatch } from "react-redux";
 import AddOrdenesModal from "../modals/AddOrdenesModal";
 import PatchOrdenesModal from "../modals/PatchOrdenesModal";
 import { SET_SELECTED_ORDENES_DATA } from "../../redux/slices/OrdenesSlice";
+import OrdenesEstatusModal from "../modals/OrdenesEstatusModal";
 //REutilizables
 import {
   showMensajeConfirm,
@@ -189,6 +185,9 @@ const OrdenesTable = () => {
               onClick: () => {
                 setSelectedRowIndex(row.original);
                 setSelectedRowIndex(row.id);
+                <OrdenesEstatusModal
+                row={editData}
+                /> 
               },
               sx: {
                 cursor: loadingTable ? "not-allowed" : "pointer",
@@ -219,6 +218,7 @@ const OrdenesTable = () => {
           }}
           
           />
+          
       </Dialog>
     </Box>
   );
