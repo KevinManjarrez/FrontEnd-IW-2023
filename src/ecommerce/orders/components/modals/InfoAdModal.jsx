@@ -98,7 +98,7 @@ const InfoAdModal = ({
                 ordenInfoAd.ordenes_info_ad.push(infoAd);
 
                 const dataToUpdate = {
-                    InfoAdModel: ordenInfoAd.ordenes_info_ad,
+                    ordenes_info_ad: ordenInfoAd.ordenes_info_ad,
                 };
                 console.log(" ks",ordenInfoAd.ordenes_info_ad);
                 await PatchInfoAd(ordenInfoAd.IdInstitutoOK,ordenInfoAd.IdNegocioOK,ordenInfoAd.IdOrdenOK, dataToUpdate);
