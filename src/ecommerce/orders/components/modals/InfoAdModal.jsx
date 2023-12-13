@@ -104,7 +104,7 @@ const InfoAdModal = ({
                 await PatchInfoAd(ordenInfoAd.IdInstitutoOK,ordenInfoAd.IdNegocioOK,ordenInfoAd.IdOrdenOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
-                //handleReload();
+                handleReload();
             } catch (e) {
                 setMensajeErrorAlert("No se pudo crear la Info Adicional");
             }
