@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 //FIC: Material
 import {
   Dialog,
+  Autocomplete,
   DialogContent,
   DialogTitle,
   Typography,
@@ -52,11 +53,6 @@ const PatchOrdenesModal = ({
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
   const [RolValuesLabel, setRolValuesLabel] = useState([]);
   const [PersonaValuesLabel, setPersonaValuesLabel] = useState([]);
-  const [OrdenesData, setOrdenesData] = useState([]);
-  const [selectedValue, setSelectedValue] = useState('');
-  const [selectedValue2, setSelectedValue2] = useState('');
-  const [selectedValue3, setSelectedValue3] = useState('');
-  
   console.log(row)
 
   const [IdGen, setIdGen] = useState(
@@ -71,11 +67,8 @@ const PatchOrdenesModal = ({
     getDataSelectOrdenesType4();
   }, []);
 
-  //FIC: Ejecutamos la API que obtiene todas las etiquetas
-  //y filtramos solo la etiqueta de Tipos Giros de Institutos
-  //para que los ID y Nombres se agreguen como items en el
-  //control <Select> del campo IdTipoGiroOK en la Modal.
-  /*async function getDataSelectOrdenesType() {
+
+  async function getDataSelectOrdenesType2() {
     try {
       const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
@@ -83,28 +76,8 @@ const PatchOrdenesModal = ({
       );
       const valores = OrdenesTypes.valores; // Obtenemos el array de valores
       const IdValoresOK = valores.map((valor, index) => ({
-        IdValorOK: valor.IdValorOK,
-        key: index, // Asignar el índice como clave temporal
-      }));
-      setOrdenesValuesLabel(IdValoresOK);
-      console.log(OrdenesValuesLabel)
-    } catch (e) {
-      console.error(
-        "Error al obtener Etiquetas para Tipos Giros de Institutos:",
-        e
-      );
-    }
-  }*/
-  async function getDataSelectOrdenesType2() {
-    try {
-      const Labels = await GetTipoOrden();
-      const OrdenesTypes = Labels.find(
-        (label) => label.IdEtiquetaOK === "IdTipoOrdenes"
-      );
-      const valores = OrdenesTypes.valores; // Obtenemos el array de valores
-      const IdValoresOK = valores.map((valor, index) => ({
-        IdValorOK: valor.IdValorOK,
-        key: index, // Asignar el índice como clave temporal
+        IdValorOK: valor.Valor,
+        key: valor.IdValorOK, // Asignar el índice como clave temporal
       }));
       setOrdenesValuesLabel(IdValoresOK);
       console.log(OrdenesValuesLabel)
@@ -117,17 +90,17 @@ const PatchOrdenesModal = ({
   }
   async function getDataSelectOrdenesType3() {
     try {
-      const Labels = await GetRol();
+      const Labels = await GetAllLabels();
       const OrdenesTypes = Labels.find(
         (label) => label.IdEtiquetaOK === "IdTiposRolesUsuarios"
       );
       const valores = OrdenesTypes.valores; // Obtenemos el array de valores
       const IdValoresOK = valores.map((valor, index) => ({
-        IdValorOK: valor.IdValorOK,
-        key: index, // Asignar el índice como clave temporal
+        IdValorOK: valor.Valor,
+        key: valor.IdValorOK, // Asignar el índice como clave temporal
       }));
       setRolValuesLabel(IdValoresOK);
-      console.log(OrdenesValuesLabel)
+      console.log(RolValuesLabel)
     } catch (e) {
       console.error(
         "Error al obtener Etiquetas para Tipos Giros de Institutos:",
@@ -142,12 +115,12 @@ const PatchOrdenesModal = ({
       // Comprueba si Labels es un array y si tiene datos
       if (Array.isArray(Labels) && Labels.length > 0) {
         const IdValoresOK = Labels.map((valor, index) => ({
-          IdValorOK: valor.IdPersonaOK,
-          key: index,
+          IdValorOK: valor.Nombre,
+          key: valor.IdPersonaOK,
         }));
         
         setPersonaValuesLabel(IdValoresOK);
-        console.log(OrdenesValuesLabel);
+        console.log(PersonaValuesLabel);
       } else {
         console.log('El resultado de GetPersona() no es un array o está vacío');
       }
@@ -158,6 +131,13 @@ const PatchOrdenesModal = ({
       );
     }
   }
+
+  useEffect(() => {
+    //getDataSelectOrdenesType();
+    getDataSelectOrdenesType2();
+    getDataSelectOrdenesType3();
+    getDataSelectOrdenesType4();
+  }, []);
 
   //useEffect para si estamos actualizando el campo no se pueda editar, se usa dentro del mismo textfield
   
@@ -294,103 +274,54 @@ const PatchOrdenesModal = ({
             error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
             helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
+          <InputLabel htmlFor="dynamic-select-tipo-orden">Tipo de Orden</InputLabel>
           <Select
-            id="dynamic-select"
-            value={formik.values.IdTipoOrdenOK}
-            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            id="dynamic-select-tipo-orden"
+            value={formik.values.IdTipoOrdenOK} // Asegúrate de que este valor coincide con las opciones disponibles
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             name="IdTipoOrdenOK"
-            label="TipoOrden"
+            aria-label="TipoOrden"
           >
             {OrdenesValuesLabel.map((option, index) => (
-              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+              <MenuItem key={option.IdValorOK} value={option.key}>
                 {option.IdValorOK}
               </MenuItem>
             ))}
           </Select>
+          <InputLabel htmlFor="dynamic-select-rol">Rol</InputLabel>
           <Select
-            id="dynamic-select"
+            id="dynamic-select-rol"
             value={formik.values.IdRolOK}
-            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             name="IdRolOK"
-            label="Rol"
+            aria-label="Rol"
           >
             {RolValuesLabel.map((option, index) => (
-              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
+              <MenuItem key={option.IdValorOK} value={option.key}>
                 {option.IdValorOK}
               </MenuItem>
             ))}
           </Select>
-          <Select
-            id="dynamic-select"
-            value={formik.values.IdPersonaOK}
-            onChange={formik.handleChange}  // Usa la función de Formik directamente
-            onBlur={formik.handleBlur}
-            name="IdPersonaOK"
-            label="Persona"
-          >
-            {PersonaValuesLabel.map((option, index) => (
-              <MenuItem key={option.IdValorOK} value={option.IdValorOK}>
-                {option.IdValorOK}
-              </MenuItem>
-            ))}
-          </Select>
-          {/*
-          <TextField
-            id="Matriz"
-            label="Matriz*"
-            value={formik.values.Matriz}
-            {...commonTextFieldProps}
-            error={formik.touched.Matriz && Boolean(formik.errors.Matriz)}
-            helperText={formik.touched.Matriz && formik.errors.Matriz}
-          />*/}
-          {/*<FormControlLabel
-            control={
-              <Checkbox
-                checked={formik.values.Matriz}
-                onChange={(event) => {
-                  formik.setFieldValue("Matriz", event.target.checked);
-                }}
-                name="Matriz"
-                color="primary"
-                disabled={!!mensajeExitoAlert}
+          <Autocomplete
+            id="dynamic-autocomplete-persona"
+            options={PersonaValuesLabel}
+            getOptionLabel={(option) => option.IdValorOK}
+            value={PersonaValuesLabel.find((option) => option.key === formik.values.IdPersonaOK) || null}
+            onChange={(e, newValue) => {
+              formik.setFieldValue("IdPersonaOK", newValue ? newValue.key : "");
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="TipoOrden"
+                error={formik.touched.IdPersonaOK && Boolean(formik.errors.IdPersonaOK)}
+                helperText={formik.touched.IdPersonaOK && formik.errors.IdPersonaOK}
               />
-            }
-            label="Matriz"
-          />*/}
-
-          {/* <TextField
-            id="IdTipoGiroOK"
-            label="IdTipoGiroOK*"
-            value={formik.values.IdTipoGiroOK}
-            {...commonTextFieldProps}
-            error={
-              formik.touched.IdTipoGiroOK && Boolean(formik.errors.IdTipoGiroOK)
-            }
-            helperText={
-              formik.touched.IdTipoGiroOK && formik.errors.IdTipoGiroOK
-            }
-          /> */}
-          {/*<Select
-            value={formik.values.IdTipoGiroOK}
-            label="Selecciona una opción"
-            onChange={formik.handleChange}
-            name="IdTipoGiroOK" //FIC: Asegúrate que coincida con el nombre del campo
-            onBlur={formik.handleBlur}
-            disabled={!!mensajeExitoAlert}
-          >
-            {OrdenesValuesLabel.map((tipoGiro) => {
-              return (
-                <MenuItem
-                  value={`IdTipoGiros-${tipoGiro.IdValorOK}`}
-                  key={tipoGiro.Valor}
-                >
-                  {tipoGiro.Valor}
-                </MenuItem>
-              );
-            })}
-          </Select>*/}
+            )}
+          />
+          
         </DialogContent>
         {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}
         <DialogActions sx={{ display: "flex", flexDirection: "row" }}>

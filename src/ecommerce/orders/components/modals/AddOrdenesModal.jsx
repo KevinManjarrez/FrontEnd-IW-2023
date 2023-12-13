@@ -307,28 +307,29 @@ const AddOrdenesModal = ({
             error={formik.touched.IdOrdenBK && Boolean(formik.errors.IdOrdenBK)}
             helperText={formik.touched.IdOrdenBK && formik.errors.IdOrdenBK}
           />
+          <InputLabel htmlFor="dynamic-select-tipo-orden">Tipo de Orden</InputLabel>
           <Select
-            id="dynamic-select"
+            id="dynamic-select-tipo-orden"
             value={formik.values.IdTipoOrdenOK}
-            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             name="IdTipoOrdenOK"
-            label="TipoOrden"
+            aria-label="TipoOrden"
           >
-            {OrdenesValuesLabel.map((option, index) => {return(
+            {OrdenesValuesLabel.map((option, index) => (
               <MenuItem key={option.IdValorOK} value={option.key}>
                 {option.IdValorOK}
               </MenuItem>
-            );
-            })}
+            ))}
           </Select>
+          <InputLabel htmlFor="dynamic-select-rol">Rol</InputLabel>
           <Select
-            id="dynamic-select"
+            id="dynamic-select-rol"
             value={formik.values.IdRolOK}
-            onChange={formik.handleChange}  // Usa la función de Formik directamente
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             name="IdRolOK"
-            label="Rol"
+            aria-label="Rol"
           >
             {RolValuesLabel.map((option, index) => (
               <MenuItem key={option.IdValorOK} value={option.key}>
