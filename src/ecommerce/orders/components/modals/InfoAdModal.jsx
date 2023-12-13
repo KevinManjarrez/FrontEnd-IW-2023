@@ -88,17 +88,20 @@ const InfoAdModal = ({
                 ...model,
                 ...values,
                 };
-                console.log(productSel)
+                console.log("algo",productSel)
                 infoAd.Secuencia = Number(infoAd.Secuencia);
                 //Trae la coleccion ordenes_info_ad de la orden seleccionada
                 let ordenInfoAd = JSON.parse(JSON.stringify(productSel));
+                console.log("algo2",ordenInfoAd)
                 //console.log("Ordenes", ordenInfoAd);
-                ordenInfoAd.InfoAdModel.push(infoAd);
-                /*const dataToUpdate = {
-                    InfoAdModel: ordenInfoAd.InfoAdModel,
+                
+                ordenInfoAd.ordenes_info_ad.push(infoAd);
+
+                const dataToUpdate = {
+                    InfoAdModel: ordenInfoAd.ordenes_info_ad,
                 };
-                console.log(" ks",ordenInfoAd.InfoAdModel);
-                await PatchInfoAd(ordenInfoAd.IdOrdenOK, dataToUpdate);*/
+                console.log(" ks",ordenInfoAd.ordenes_info_ad);
+                await PatchInfoAd(ordenInfoAd.IdInstitutoOK,ordenInfoAd.IdNegocioOK,ordenInfoAd.IdOrdenOK, dataToUpdate);
 
                 setMensajeExitoAlert("Info Adicional creada y guardada Correctamente");
                 //handleReload();

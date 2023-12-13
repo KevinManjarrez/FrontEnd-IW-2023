@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export function PatchInfoAd(id, dataToUpdate) {
+export function PatchInfoAd(IdInstitutoOK,IdNegocioOK,id, dataToUpdate) {
   return new Promise((resolve, reject) => {
-    axios.patch(`http://127.0.0.1:3020/api/pwa/orders?IdInstitutoOK=9001&IdNegocioOK=1101&IdOrdenOK=${id}`, dataToUpdate)
+    axios.patch(`${import.meta.env.VITE_ORDERS_URL}one?IdInstitutoOK=${IdInstitutoOK}&IdNegocioOK=${IdNegocioOK}&IdOrdenOK=${id}`, dataToUpdate)
       .then((response) => {
         const data = response.data;
         
