@@ -79,7 +79,7 @@ const OrdenesEstatusColumn = [
               positionToolbarAlertBanner="bottom"
               renderTopToolbarCustomActions={({ table }) => (
                   <BarActionsTable
-                handleBtnAdd={() => setAddOrdenesShowModal(true)}
+                handleBtnAdd={() => setOrdenesEstatusShowModal(true)}
                 handleBtnDetails={() => console.log("clic handleBtnDetails")}
                 handleBtnReload={() => handleReload()}
               />
