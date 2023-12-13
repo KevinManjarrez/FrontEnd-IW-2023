@@ -60,7 +60,7 @@ const InfoAdTable = ({
     const OneOrdenesData = await GetOneOrderByID(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK);
     setinfoAdEstatusData(OneOrdenesData.ordenes_info_ad);
     setIdRowSel(null);
-    setInfoAdSel(null);
+    //setInfoAdSel(null);
   };
 
   const handleDelete = async () => {

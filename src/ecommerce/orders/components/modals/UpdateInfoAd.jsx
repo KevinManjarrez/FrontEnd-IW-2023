@@ -77,7 +77,7 @@ const UpdateInfoAd = ({
         await PatchInfoAd(product.IdInstitutoOK,product.IdNegocioOK,product.IdOrdenOK, dataToUpdate);
         
         setMensajeExitoAlert("InfoAd modificada Correctamente");
-        //handleReload();
+        handleReload();
         console.log("Se modifico")
       } catch (e) {
         setMensajeErrorAlert("No se pudo Modificar InfoAd");
