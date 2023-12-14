@@ -3,12 +3,11 @@ import React, { useState } from "react";
 
 const OrdenesDetalleTabs = [
   "Orden Detalle",
-  "Detalle F",
-  "Detalle V",
-  "Detalle U",
-  "Detalle P",
-  "Detalle INFO AD",
-  "Detalle PS PAQ",
+  "ESTATUS FISICO",
+  "ESTATUS VENTA",
+  "ESTATUS UBICACION",
+  "ESTATUS PROCESO",
+  "ESTATUS INFO AD"
 ];
 
 const OrdenesDetalleNavTab = ({
@@ -24,23 +23,20 @@ const OrdenesDetalleNavTab = ({
       case "ORDEN DETALLE":
         setCurrentTabIndex(0);
         break;
-      case "DETALLE F":
+      case "ESTATUS FISICO":
         setCurrentTabIndex(1);
         break;
-      case "DETALLE V":
+      case "ESTATUS VENTA":
         setCurrentTabIndex(2);
         break;
-      case "DETALLE U":
+      case "ESTATUS UBICACION":
         setCurrentTabIndex(3);
         break;
-      case "DETALLE P":
+      case "ESTATUS PROCESO":
         setCurrentTabIndex(4);
         break;
-      case "DETALLE INFO AD":
+      case "ESTATUS INFO AD":
         setCurrentTabIndex(5);
-        break;
-      case "DETALLE PS PAQ":
-        setCurrentTabIndex(6);
         break;
     }
   };

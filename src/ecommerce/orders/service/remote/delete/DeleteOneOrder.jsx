@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export function DeleteOneOrder(id) {
+export function DeleteOneOrder(IdInstitutoOK,IdNegocioOK,id) {
   return new Promise((resolve, reject) => {
     // Puedes ajustar la URL según tu API
-    axios.delete(`http://127.0.0.1:3020/api/pwa/orders?IdInstitutoOK=9001&IdNegocioOK=1101&IdOrdenOK=${id}`)
+    axios.delete(`${import.meta.env.VITE_ORDERS_URL}one?IdInstitutoOK=${IdInstitutoOK}&IdNegocioOK=${IdNegocioOK}&IdOrdenOK=${id}`)
       .then((response) => {
         const data = response.data;
         

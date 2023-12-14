@@ -136,7 +136,7 @@ const OrdenesTable = () => {
         let orden = idRowSel;
         //const indexToDelete = idRowSel;
         //orden.splice(indexToDelete, 1);
-        await DeleteOneOrder(orden);
+        await DeleteOneOrder(orden.IdInstitutoOK,orden.IdNegocioOK,orden.IdOrdenOK);
         /*const dataToUpdate = {
           cat_prod_serv_info_ad: orden,
         };
