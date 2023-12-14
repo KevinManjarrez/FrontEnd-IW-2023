@@ -6,7 +6,9 @@ import OrdenesTab from "../components/tabs/OrdenesTab";
 import OrdenesDetalleTab from "../components/tabs/OrdenesDetalleTab";
 import OrdenesStatusTab from "../components/tabs/OrdenesStatusTab";
 import InfoAdModal from "../components/tabs/InfoAdTab";
+import ProveedorTab from "../components/tabs/OrdenesProveedorTab";
 import { useSelector } from "react-redux";
+ 
 
 
 const Ordenes = () => {
@@ -32,6 +34,8 @@ const Ordenes = () => {
             {currentTabInPrincipalTab === "ORDENES_INFO" && <InfoAdModal/>}
 
             {currentTabInPrincipalTab == "ORDENES_DETALLES" && <OrdenesDetalleTab/>} 
+            
+            {currentTabInPrincipalTab == "ORDENES_PROVEEDOR" && <ProveedorTab/>} 
 
         </Box>
     );

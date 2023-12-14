@@ -6,6 +6,7 @@ const OrdenesTabs = [
   "ORDENES_STATUS",
   "ORDENES_INFO",
   "ORDENES_DETALLES",
+  "ORDENES_PROVEEDOR"
 ];
 
 const OrdenesNavTab = ({
@@ -27,7 +28,6 @@ const OrdenesNavTab = ({
     switch (e.target.innerText.toUpperCase()) {
       case "ORDENES":
         setCurrentTabIndex(0);
-
         break;
       case "ORDENES_STATUS":
         setCurrentTabIndex(1);
@@ -39,6 +39,10 @@ const OrdenesNavTab = ({
 
       case "ORDENES_DETALLES":
         setCurrentTabIndex(3);
+        break;
+
+        case "ORDENES_PROVEEDOR":
+        setCurrentTabIndex(4);
         break;
     }
     //FIC: cambiamos el estado de la tap de business a un true para indicar
