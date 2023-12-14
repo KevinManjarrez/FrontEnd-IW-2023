@@ -40,7 +40,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
             setMensajeExitoAlert("");
             setMensajeErrorAlert("");
             setLoading(true);
-
+            
             //FIC: notificamos en consola que si se llamo y entro al evento.
             console.log(
                 "FIC: entro al onSubmit despues de hacer click en boton Guardar"

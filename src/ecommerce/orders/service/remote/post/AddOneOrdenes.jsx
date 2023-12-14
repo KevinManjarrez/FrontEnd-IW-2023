@@ -6,7 +6,7 @@ export function AddOneOrdenes(ordenes) {
     return new Promise((resolve, reject) => {
       //FIC: URL = http://localhost:8080/api/pwa/institutes
       //axios.get("http://localhost:8080/api/pwa/institute")
-      axios.post("http://127.0.0.1:3020/api/pwa/orders/", ordenes)
+      axios.post(import.meta.env.VITE_ORDERS_URL, ordenes)
         .then((response) => {
           console.log("<<RESPONSE>> AddOneOrden", ordenes)
           const data = response.data;
