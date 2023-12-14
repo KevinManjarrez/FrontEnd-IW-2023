@@ -34,8 +34,38 @@ const OrdenesDetalleColumn = [
       size: 150,
     },
     {
+      accessorKey: "Cantidad",
+      header: "Cantidad",
+      size: 150,
+    },
+    {
+      accessorKey: "PrecioUniSinIVA",
+      header: "Precio Unidad Sin IVA",
+      size: 150,
+    },
+    {
+      accessorKey: "PrecioUniConIVA",
+      header: "Precio Unidad Con IVA",
+      size: 150,
+    },
+    {
+      accessorKey: "PorcentajeIVA",
+      header: "Porcentaje IVA",
+      size: 150,
+    },
+    {
+      accessorKey: "MontoUniIVA",
+      header: "Monto Unidad IVA",
+      size: 150,
+    },
+    {
+      accessorKey: "SubTotalSinIVA",
+      header: "SubTotal Sin IVA",
+      size: 150,
+    },
+    {
       accessorKey: "SubTotalConIVA",
-      header: "Subtotal con IVA",
+      header: "Subtotal Con IVA",
       size: 50,
     },
   ];
@@ -134,7 +164,7 @@ const OrdenesDetalleColumn = [
             <OrdenesDetalleModal
               OrdenesDetalleShowModal={OrdenesDetalleShowModal}
               setOrdenesDetalleShowModal={setOrdenesDetalleShowModal}
-              selectedOrdenesData={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
+              row={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
               onClose={() => setOrdenesDetalleShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />
           </Dialog>

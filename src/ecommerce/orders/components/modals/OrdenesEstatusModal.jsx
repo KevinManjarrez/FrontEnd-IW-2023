@@ -33,7 +33,7 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
         validationSchema: Yup.object({
             IdTipoEstatusOK: Yup.string().required("Campo requerido"),
             Actual: Yup.string().required("Campo requerido").max(1, 'Solo se permite una letra').matches(/^[SN]$/, 'Solo se permite un caracter S/N'),
-            Observacion: Yup.string().required("Campo requerido"),
+            
         }),
         onSubmit: async (values) => {
             //FIC: mostramos el Loading.

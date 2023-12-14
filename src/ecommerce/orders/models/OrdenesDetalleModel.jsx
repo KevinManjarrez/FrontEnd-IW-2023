@@ -1,5 +1,5 @@
 import { getDetailRow } from "../helpers/Utils";
-export function OrdenesModel() {
+export function OrdenesDetalleModel() {
     let ordenes_detalle = {
         IdProdServOK: { type: String, require: true }, //"9001-64e148b5ae58"
         IdPresentaOK: { type: String, require: true }, //"9001-64e148b5ae58-64e148b5"(64e148b5: se extrae la precentacion que se desea desede la colecion)
@@ -16,7 +16,8 @@ export function OrdenesModel() {
         pedidos_detalle_ps_estatus_u: [],
         pedidos_detalle_ps_estatus_p: [],
         pedidos_detalle_ps_info_ad: [],
-        ordenes_presenta_ps_paq: []
+        ordenes_presenta_ps_paq: [],
+        detail_row: getDetailRow(),
     };
     return ordenes_detalle
 };
