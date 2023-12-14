@@ -69,7 +69,7 @@ const OrdenesProveedorColumn = [
     const handleRowClick = (index) => {
       const clickedRow = OrdenesProveedorData[index];
       if (clickedRow) {
-        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdProdServOK);
+        console.log("<<ID DEL DOCUMENTO SELECCIONADO>>:", clickedRow.IdOrdenOK);
         setSelectedRowIndex(index);
         dispatch(SET_SELECTED_ORDENES_DETALLE_DATA(clickedRow));
       }
