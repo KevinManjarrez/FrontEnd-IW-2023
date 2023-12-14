@@ -208,6 +208,7 @@ const OrdenesTable = () => {
           AddOrdenesShowModal={AddOrdenesShowModal}
           setAddOrdenesShowModal={setAddOrdenesShowModal}
           handleReload={handleReload}
+          productSel={editData}
           onClose={() => {
             setAddOrdenesShowModal(false);
           }}

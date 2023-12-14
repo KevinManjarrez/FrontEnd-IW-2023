@@ -117,6 +117,12 @@ const OrdenesDetalleColumn = [
     });
   }, [OrdenesDetalleData]);
 
+  const handleReload = async () => {
+    const OneOrdenesData = await GetOneOrderByID(selectedOrdenesData.IdInstitutoOK,selectedOrdenesData.IdNegocioOK,selectedOrdenesData.IdOrdenOK);
+    setOrdenesDetalleData(OneOrdenesData.ordenes_detalle);
+    setSelectedRowIndex(null);
+  };
+
     return (
         <Box>
           <Box>
@@ -164,6 +170,7 @@ const OrdenesDetalleColumn = [
             <OrdenesDetalleModal
               OrdenesDetalleShowModal={OrdenesDetalleShowModal}
               setOrdenesDetalleShowModal={setOrdenesDetalleShowModal}
+              handleReload={handleReload}
               row={selectedOrdenesData} //Pasar como prop los datos que sacamos de redux desde ordentable para 
               onClose={() => setOrdenesDetalleShowModal(false)}   //usarlos en InfoAdModal y consecuentemente en formik.
             />

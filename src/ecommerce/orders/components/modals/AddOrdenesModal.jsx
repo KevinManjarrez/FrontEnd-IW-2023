@@ -18,6 +18,9 @@ import {
   MenuItem,
   FormControl,
   FormHelperText,
+  Stack,
+  Tooltip,
+  Switch
 } from "@mui/material";
 
 import { LoadingButton } from "@mui/lab";
@@ -30,11 +33,11 @@ import { OrdenesValues } from "../../helpers/OrdenesValues";
 //FIC: Services
 import { AddOneOrdenes } from "../../service/remote/post/AddOneOrdenes";
 import { getAllOrdenes } from "../../service/remote/get/GetAllOrdenes";
+import MyAutoComplete from "../../../../share/components/elements/atomos/MyAutoComplete";
+import useInstitutos from "../../../orders/service/remote/useInstitutos";
 
 //FIC: Services
 import { GetAllLabels } from "../../../labels/services/remote/get/GetAllLabels";
-import { GetTipoOrden } from "../../../labels/services/remote/get/GetAllTipoOrden";
-import { GetRol } from "../../../labels/services/remote/get/GetRol";
 import { GetPersona } from "../../../labels/services/remote/get/GetPersona";
 
 import { useFormik } from "formik";
@@ -45,7 +48,8 @@ import { v4 as genID } from "uuid";
 const AddOrdenesModal = ({
   AddOrdenesShowModal,
   setAddOrdenesShowModal,
-  handleReload
+  handleReload,
+  productSel
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
@@ -54,7 +58,17 @@ const AddOrdenesModal = ({
   const [OrdenesValuesLabel, setOrdenesValuesLabel] = useState([]);
   const [RolValuesLabel, setRolValuesLabel] = useState([]);
   const [PersonaValuesLabel, setPersonaValuesLabel] = useState([]);
+  const [isNuevoInstituto, setINuevoInstituto] = React.useState(false);
+  const [refresh, setRefresh] = useState(false);
 
+  /*useEffect(() => {
+      console.log("Todas las Etiquetas", etiquetas);
+      console.log(" etiquetaEspecifica", etiquetaEspecifica);
+    }, [etiquetas, etiquetaEspecifica]);
+*/
+    useEffect(() => {
+      console.log("isNuevoInstituto", isNuevoInstituto);
+    }, [isNuevoInstituto]);
   
 
   const [IdGen, setIdGen] = useState(
@@ -173,8 +187,8 @@ const AddOrdenesModal = ({
   //FIC: Definition Formik y Yup.
   const formik = useFormik({
     initialValues: {
-      IdInstitutoOK: "9001",
-      IdNegocioOK: "1101",
+      IdInstitutoOK: "",
+      IdNegocioOK: "",
       IdOrdenOK: `9001-${IdGen}`,
       IdOrdenBK: "",
       IdTipoOrdenOK: "",
@@ -242,7 +256,8 @@ const AddOrdenesModal = ({
     disabled: !!mensajeExitoAlert,
   };
 
-  
+  const { etiquetas, etiquetaEspecifica } = useInstitutos({IdInstitutoOK: formik.values.IdInstitutoOK || "",});
+
   return (
     <Dialog
       open={AddOrdenesShowModal}
@@ -266,27 +281,96 @@ const AddOrdenesModal = ({
           dividers
         >
           {/* FIC: Campos de captura o selección */}
-          <TextField
+          <Stack direction="row" alignItems="center">
+                    <MyAutoComplete
+                    disabled={!!mensajeExitoAlert || isNuevoInstituto}
+                    label={"Selecciona un Instituto"}
+                    options={etiquetas} //Arreglo de objetos
+                    displayProp="IdInstitutoOK" // Propiedad a mostrar
+                    idProp="IdInstitutoOK" // Propiedad a guardar al dar clic
+                    onSelectValue={(selectedValue) => {
+                        //console.log("Selección:", selectedValue);
+                        formik.values.IdInstitutoOK = selectedValue
+                        ? selectedValue?.IdInstitutoOK
+                        : "";
+                        formik.values.IdInstitutoOK = selectedValue
+                        ? selectedValue?.IdInstitutoOK
+                        : "";
+                        setRefresh(!refresh);
+                    }}
+                    />
+                    <Tooltip title="Agrega manualmente una etiqueta nueva">
+                    <FormControlLabel
+                        sx={{ ml: 2 }}
+                        control={<Switch defaultChecked />}
+                        label={
+                        isNuevoInstituto
+                            ? "Agregar Nuevo Instituto"
+                            : "Seleccionar un Instituto"
+                        }
+                        onChange={() => {
+                        setINuevoInstituto(!isNuevoInstituto);
+                        formik.values.IdInstitutoOK = "";
+                        }}
+                    />
+                    </Tooltip>
+                </Stack>
+                    <TextField
+                        id="IdInstitutoOK"
+                        label="IdInstitutoOK*"
+                        value={formik.values.IdInstitutoOK}
+                        {...commonTextFieldProps}
+                        error={ formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK) }
+                        helperText={ formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK }
+                    />
+
+
+          {/*<TextField
             id="IdInstitutoOK"
             label="IdInstitutoOK*"
-            value={formik.values.IdInstitutoOK}
-            /* onChange={formik.handleChange} */
-            {...commonTextFieldProps}
+                      value={formik.values.IdInstitutoOK}
+            /* onChange={formik.handleChange} */}
+            {/*...commonTextFieldProps}
             error={formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK)}
             helperText={formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK}
             disabled={true}
-          />
-          <TextField
+          />*/}
+          {/*<TextField
             id="IdNegocioOK"
             label="IdNegocioOK*"
             value={formik.values.IdNegocioOK}
             
-            /* onChange={formik.handleChange} */
-            {...commonTextFieldProps}
+            /* onChange={formik.handleChange} */}
+            {/*...commonTextFieldProps}
             error={formik.touched.IdNegocioOK && Boolean(formik.errors.IdNegocioOK)}
             helperText={formik.touched.IdNegocioOK && formik.errors.IdNegocioOK}
             disabled={true}
-          />
+          />*/}
+          <FormControl fullWidth margin="normal">
+                    <InputLabel>Selecciona un Negocio</InputLabel>
+                    <Select
+                    value={formik.values.IdNegocioOK}
+                    label="Selecciona una opción"
+                    onChange={formik.handleChange}
+                    name="IdNegocioOK" // Asegúrate de que coincida con el nombre del campo
+                    onBlur={formik.handleBlur}
+                    disabled={!!mensajeExitoAlert}
+                    >
+                    {etiquetaEspecifica?.cat_negocios.map((seccion) => {
+                        return (
+                        <MenuItem
+                            value={seccion.IdNegocioOK}
+                            key={seccion.IdNegocioOK}
+                        >
+                            {seccion.Alias}
+                        </MenuItem>
+                        );
+                    })}
+                </Select>
+                    <FormHelperText>
+                    {formik.touched.IdNegocioOK && formik.errors.IdNegocioOK}
+                    </FormHelperText>
+                </FormControl>
           <TextField
             id="IdOrdenOK"
             label="IdOrdenOK*"

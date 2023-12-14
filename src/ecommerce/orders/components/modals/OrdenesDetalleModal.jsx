@@ -23,6 +23,7 @@ const OrdenesDetalleModal = ({
   OrdenesDetalleShowModal,
   setOrdenesDetalleShowModal,
   row,
+  handleReload
 }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
@@ -71,7 +72,7 @@ const OrdenesDetalleModal = ({
                 
                 await UpdatePatchOneOrderDetalle(row.IdInstitutoOK,row.IdNegocioOK,row.IdOrdenOK,DetalleOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
                 setMensajeExitoAlert("Envío actualizado Correctamente");
-                //handleReload(); //usar la función para volver a cargar
+                handleReload(); //usar la función para volver a cargar
       } catch (e) {
         setMensajeErrorAlert("No se pudo registrar");
       }
