@@ -3,7 +3,7 @@ import axios from "axios";
 export function AddOneInfoAd(OrdenesId, ordenes, subdocument) {
     console.log("<<EJECUTA>> API <<AddOneShipping>> Requiere:", ordenes)
     return new Promise((resolve, reject) => {
-        axios.post(`http://localhost:3020/api/pwa/orders/${OrdenesId}`, { ...ordenes, ordenes_info_ad: subdocument })
+        axios.post(`${import.meta.env.VITE_ORDERS_URL}${OrdenesId}`, { ...ordenes, ordenes_info_ad: subdocument })
             .then((response) => {
                 console.log("<<RESPONSE>> AddOneOrdenInfoAd", ordenes)
                 const data = response.data;
