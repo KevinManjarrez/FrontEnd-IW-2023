@@ -49,11 +49,21 @@ const OrdenesEstatusModal = ({ OrdenesEstatusShowModal, setOrdenesEstatusShowMod
             setMensajeErrorAlert(null);
             setMensajeExitoAlert(null);
             try {
-                console.log("<<Ordenes>>",row.IdOrdenOK );
                 const ordenExistente = await GetOneOrderByID(row.IdInstitutoOK,row.IdNegocioOK,row.IdOrdenOK);
-                console.log("<<Ordenes>>", ordenExistente);
+                //console.log("<<Ordenes>>", ordenExistente.ordenes_estatus[0].Actual);
+                
+                for (let index = 0; index < ordenExistente.ordenes_estatus.length; index++) {
+                    console.log("Entro")
+                    ordenExistente.ordenes_estatus[index]= {
+                        IdTipoEstatusOK: ordenExistente.ordenes_estatus[index].IdTipoEstatusOK,
+                        Actual: "N",
+                        Observacion:ordenExistente.ordenes_estatus[index].Observacion
+                      };
+                      console.log("Realizo",ordenExistente)
+                }
                 const EstatusOrdenes = OrdenesEstatusValues(values, ordenExistente);
                 //const EstatusOrdenes = OrdenesEstatusValues(values);
+                
                 console.log("<<Ordenes>>", EstatusOrdenes);
                 // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
                 // Utiliza la función de actualización si estamos en modo de edición
