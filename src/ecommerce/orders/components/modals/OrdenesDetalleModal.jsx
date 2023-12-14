@@ -14,7 +14,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { UpdatePatchOneOrder } from "../../service/remote/post/AddOrdenesEstatus";
+import { UpdatePatchOneOrderDetalle } from "../../service/remote/post/AddOrdenesDetalle";
+import { OrdenesDetalleModel } from "../../models/OrdenesDetalleModel";
+import { OrdenesDetalleValues } from "../../helpers/OrdenesDetallesValues";
+import { GetOneOrderByID } from "../../service/remote/get/GetOneOrderByID";
 
 const OrdenesDetalleModal = ({
   OrdenesDetalleShowModal,
@@ -56,9 +59,19 @@ const OrdenesDetalleModal = ({
       setLoading(true);
 
       try {
-        const DetalleOrdenes = { ...values }; // Hacer cualquier transformación de datos si es necesario
-        await UpdatePatchOneOrder(row.IdOrdenOK,DetalleOrdenes);
-        setMensajeExitoAlert("Envío actualizado correctamente");
+        const ordenDetalleExistente = await GetOneOrderByID(row.IdInstitutoOK,row.IdNegocioOK,row.IdOrdenOK);
+                //console.log("<<Ordenes>>", ordenExistente.ordenes_estatus[0].Actual);
+                
+                const DetalleOrdenes = OrdenesDetalleValues(values, ordenDetalleExistente);
+                //const EstatusOrdenes = OrdenesEstatusValues(values);
+                
+                console.log("<<Ordenes>>", DetalleOrdenes);
+                // console.log("LA ID QUE SE PASA COMO PARAMETRO ES:", row._id);
+                // Utiliza la función de actualización si estamos en modo de edición
+                
+                await UpdatePatchOneOrderDetalle(row.IdInstitutoOK,row.IdNegocioOK,row.IdOrdenOK,DetalleOrdenes); //se puede sacar el objectid con row._id para lo del fic aaaaaaaaaaaaaaaaaaa
+                setMensajeExitoAlert("Envío actualizado Correctamente");
+                //handleReload(); //usar la función para volver a cargar
       } catch (e) {
         setMensajeErrorAlert("No se pudo registrar");
       }
@@ -124,6 +137,97 @@ const OrdenesDetalleModal = ({
             }
             helperText={
               formik.touched.DesPresentaPS && formik.errors.DesPresentaPS
+            }
+          />
+          <TextField
+            id="Cantidad"
+            label="Cantidad*"
+            value={formik.values.Cantidad}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.Cantidad &&
+              Boolean(formik.errors.Cantidad)
+            }
+            helperText={
+              formik.touched.Cantidad && formik.errors.Cantidad
+            }
+          />
+          <TextField
+            id="PrecioUniSinIVA"
+            label="PrecioUniSinIVA*"
+            value={formik.values.PrecioUniSinIVA}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.PrecioUniSinIVA &&
+              Boolean(formik.errors.PrecioUniSinIVA)
+            }
+            helperText={
+              formik.touched.PrecioUniSinIVA && formik.errors.PrecioUniSinIVA
+            }
+          />
+          <TextField
+            id="PrecioUniConIVA"
+            label="PrecioUniConIVA*"
+            value={formik.values.PrecioUniConIVA}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.PrecioUniConIVA &&
+              Boolean(formik.errors.PrecioUniConIVA)
+            }
+            helperText={
+              formik.touched.PrecioUniConIVA && formik.errors.PrecioUniConIVA
+            }
+          />
+          <TextField
+            id="PorcentajeIVA"
+            label="PorcentajeIVA*"
+            value={formik.values.PorcentajeIVA}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.PorcentajeIVA &&
+              Boolean(formik.errors.PorcentajeIVA)
+            }
+            helperText={
+              formik.touched.PorcentajeIVA && formik.errors.PorcentajeIVA
+            }
+          />
+          <TextField
+            id="MontoUniIVA"
+            label="MontoUniIVA*"
+            value={formik.values.MontoUniIVA}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.MontoUniIVA &&
+              Boolean(formik.errors.MontoUniIVA)
+            }
+            helperText={
+              formik.touched.MontoUniIVA && formik.errors.MontoUniIVA
+            }
+          />
+          <TextField
+            id="SubTotalSinIVA"
+            label="SubTotalSinIVA*"
+            value={formik.values.SubTotalSinIVA}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.SubTotalSinIVA &&
+              Boolean(formik.errors.SubTotalSinIVA)
+            }
+            helperText={
+              formik.touched.SubTotalSinIVA && formik.errors.SubTotalSinIVA
+            }
+          />
+          <TextField
+            id="SubTotalConIVA"
+            label="SubTotalConIVA*"
+            value={formik.values.SubTotalConIVA}
+            {...commonTextFieldProps}
+            error={
+              formik.touched.SubTotalConIVA &&
+              Boolean(formik.errors.SubTotalConIVA)
+            }
+            helperText={
+              formik.touched.SubTotalConIVA && formik.errors.SubTotalConIVA
             }
           />
           {/* Agregar el resto de los campos aquí */}
