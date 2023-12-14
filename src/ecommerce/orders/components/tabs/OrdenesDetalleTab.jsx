@@ -2,9 +2,9 @@ import { Box } from "@mui/material";
 import OrdenesDetalleTable from "../tables/OrdenesDetalleTable";
 import OrdenesDetalleNavTab from "./OrdenesDetalleNavTab";
 import React, { useState } from 'react';
-import OrdenesDetalleF from "./OrdenesDetalleF";
-import OrdenesDetalleV from "./OrdenesDetalleV";
-import OrdenesDetalleU from "./OrdenesDetalleU";
+import OrdenesDetalleF from "./OrdenesDetalleFisico";
+import OrdenesDetalleV from "./OrdenesDetalleVenta";
+import OrdenesDetalleU from "./OrdenesDetalleUbicacion";
 import OrdenesDetalleAD from "./OrdenesDetalleAD";
 import OrdenesDetalleP from "./OrdenesDetalleP";
 
